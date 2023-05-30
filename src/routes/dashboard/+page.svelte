@@ -9,8 +9,8 @@
     import DeviceStatusGrid from "./DeviceStatusGrid.svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
-    import NavTop from "../dashboard2/NavTop.svelte";
-    import NavSide from "../dashboard2/NavSide.svelte";
+    import NavTop from "../dashboard3/NavTop.svelte";
+    import NavSide from "../dashboard3/NavSide.svelte";
 
 
     /*import '../../../static/vendors/list.js'*/

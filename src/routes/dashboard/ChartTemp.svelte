@@ -7,7 +7,6 @@
     let timerID
     let timerDelay = 60 * 1000 // 1분
 
-
     let portfolio;
     const data = {
         // labels: tempdata.map(row => row.year),
