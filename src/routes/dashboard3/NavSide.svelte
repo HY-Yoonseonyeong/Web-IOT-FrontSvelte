@@ -91,10 +91,11 @@
               <hr class="mb-0 navbar-vertical-divider"/>
             </div>
           </div><!-- parent pages-->
-          <a class="nav-link" on:click={noService} role="button">
+
+          <a class="nav-link" class:active={$page.url.pathname === '/aelist'} href="../aelist">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
-              <span class="nav-link-text ps-1">Device Management</span>
+              <span class="nav-link-text ps-1">AE 조회</span>
             </div>
           </a><!-- parent pages-->
           <a class="nav-link" on:click={noService} role="button">
@@ -180,7 +181,6 @@
 
 <!--로그아웃 모달-->
 <!--<ModalLogout/>-->
-
 
 
 <style>
