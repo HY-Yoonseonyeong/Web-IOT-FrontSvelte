@@ -189,6 +189,8 @@
         </div>
         <div class="col-auto d-flex">
           <select class="form-select form-select-sm select-month me-2" bind:value={selected} on:change={change}>
+            <option value="1">1분</option>
+            <option value="5">5분</option>
             <option value="10">10분</option>
             <option value="30">30분</option>
             <option value="60">1시간</option>

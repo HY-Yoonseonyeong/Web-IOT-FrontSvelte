@@ -103,6 +103,7 @@
             <a class="nav-link dropdown-toggle fs-0" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dashboards">대시보드</a>
             <div class="dropdown-menu dropdown-caret dropdown-menu-card border-0 mt-0" aria-labelledby="dashboards">
               <div class="bg-white dark__bg-1000 rounded-3 py-2">
+                <a class="dropdown-item link-600 fw-medium" href="./dashboard3">Mobius</a>
                 <a class="dropdown-item link-600 fw-medium" href="./dashboard">온도/습도 모니터링</a>
               </div>
             </div>
