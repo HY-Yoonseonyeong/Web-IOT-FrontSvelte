@@ -1,6 +1,7 @@
 <script>
     import '../../scss/theme.scss'
     import TempHumid from "./Temphumid.svelte";
+    import TemphumidEx  from "./TemphumidEx.svelte";
     import {onMount} from "svelte";
     import Weather from "./Weather.svelte";
     import ChartTemp from "./ChartTemp.svelte";
@@ -11,6 +12,7 @@
     import {goto} from "$app/navigation";
     import NavTop from "../dashboard3/NavTop.svelte";
     import NavSide from "../dashboard3/NavSide.svelte";
+    import DeviceConChange from "./DeviceConChange.svelte";
 
 
     /*import '../../../static/vendors/list.js'*/
@@ -110,9 +112,10 @@
 
       <!-- Row (온습도, 날씨)  -->
       <div class="row g-3 mb-3">
-        <TempHumid aei='DHT22_LCD_0001'/>
-        <TempHumid aei='test2F230102_01'/>
-        <TempHumid aei='testB1F221205_01'/>
+        <!--<TempHumid aei='DHT22_LCD_0001'/>-->
+        <TemphumidEx aei='DHT22_LCD_0001'/>
+        <TemphumidEx aei='test2F230102_01'/>
+        <TemphumidEx aei='testB1F221205_01'/>
         <Weather/>
       </div>
       <!-- Row (차트)  -->
@@ -122,7 +125,7 @@
       </div>
       <!-- Row (장치 로그)  -->
       <div class="row g-3 mb-3">
-        <DeviceStatusGrid/>
+        <DeviceConChange/>
         <div class="col-xxl-3 col-md-6 col-lg-5">
           <div class="card shopping-cart-bar-min-height h-100">
             <div class="card-header d-flex flex-between-center">

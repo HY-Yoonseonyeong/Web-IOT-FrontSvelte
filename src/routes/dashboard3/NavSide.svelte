@@ -91,7 +91,6 @@
               <hr class="mb-0 navbar-vertical-divider"/>
             </div>
           </div><!-- parent pages-->
-
           <a class="nav-link" class:active={$page.url.pathname === '/aelist'} href="../aelist">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
@@ -150,6 +149,22 @@
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-sign-out-alt"></span></span>
               <span class="nav-link-text ps-1">리포트</span>
+            </div>
+          </a><!-- parent pages-->
+        </li>
+        <!-- 기능 테스트-->
+        <li class="nav-item">
+          <!-- label-->
+          <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+            <div class="col-auto navbar-vertical-label">기능테스트</div>
+            <div class="col ps-0">
+              <hr class="mb-0 navbar-vertical-divider"/>
+            </div>
+          </div><!-- parent pages-->
+          <a class="nav-link" class:active={$page.url.pathname === '/funcTest/csv'} href="../funcTest/csv">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-cog"></span></span>
+              <span class="nav-link-text ps-1">다운로드 테스트</span>
             </div>
           </a><!-- parent pages-->
         </li>
