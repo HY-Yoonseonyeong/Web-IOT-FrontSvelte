@@ -13,20 +13,26 @@
     let tempChangeStyle = "text-700"
     let humidChangeStyle = "text-700"
 
+    let alertOff = ""
+    let cssAlertText = ""
+    let alertMessage = ""
+
 
     let timerID // 타이머 아이디
     const delay = 10000 // 타이머 10초 간격
 
     onMount(async () => {
         const url2 = {
-            temp: `${PUBLIC_API_URL}/device/temp/${aei}`,
-            humid: `${PUBLIC_API_URL}/device/humid/${aei}`
+            temp: `${PUBLIC_API_URL}/device/con/temp/${aei}`,
+            humid: `${PUBLIC_API_URL}/device/con/humid/${aei}`,
+            alert: `${PUBLIC_API_URL}/device/alert/${aei}`
         }
 
         // 함수가 끝나고 타이머 재실행
         async function query() {
             await queryDeviceLa(url2.temp, aei)
             await queryDeviceLa(url2.humid, aei)
+            await queryDeviceAlert(url2.alert, aei)
             timerID = setTimeout(query, delay)
         }
 
@@ -49,6 +55,8 @@
         const data = await response.json()
         // {"_index":1779,"datetime":"2023-06-26T20:16:58.000Z","ae":"DHT22_LCD_0001","cin":"humid","con":"80.80","prev_con":"80.60","con_change":"up"}
 
+        console.log(data)
+
         let changeColor = "text-700"
         if (data['con_change'] == 'up') {
             changeColor = "text-danger"
@@ -63,13 +71,54 @@
             humidCon = data['con']
             humidChangeStyle = changeColor
         }
+
+/*        if ('Y' === data['alert_off']) {
+            alertOff = "bg-alert"
+        } else {
+            alertOff = ""
+        }*/
     }
+
+    const queryDeviceAlert = async (url, aei) => {
+        console.log(url)
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+
+        const data = await response.json()
+        // {"_index":1779,"datetime":"2023-06-26T20:16:58.000Z","ae":"DHT22_LCD_0001","cin":"humid","con":"80.80","prev_con":"80.60","con_change":"up"}
+
+        console.log(data)
+
+        if (0 < data.length) {
+            /*if ('Y' === data[0]['alert_off']) {
+                alertOff = "bg-alert"
+                alertMessage = "기기 접속 에러"
+                cssAlertText = "color-alert"
+            } else {
+                alertOff = ""
+                alertMessage = ""
+                cssAlertText = ""
+            }*/
+            alertOff = "bg-alert"
+            alertMessage = "기기 접속 에러"
+            cssAlertText = "color-alert"
+
+        } else {
+            alertOff = ""
+            alertMessage = ""
+            cssAlertText = ""
+        }
+    }
+
 </script>
 
 <div class="col-md-6 col-xxl-3">
-  <div class="card h-md-100">
+  <div class="card h-md-100 {alertOff}">
     <div class="card-header pb-0">
-      <h6 class="mb-0 mt-2">온습도 | {aei}</h6>
+      <h6 class="mb-0 mt-2 {cssAlertText}">온습도 | {aei} <span>{alertMessage}</span></h6>
     </div>
     <div class="card-body d-flex flex-column justify-content-end">
       <div class="row justify-content-between">
@@ -86,3 +135,13 @@
   </div>
 </div>
 
+
+<style>
+  .bg-alert {
+      background-color: #ff121287;
+  }
+
+  .color-alert {
+      color: white;
+  }
+</style>
