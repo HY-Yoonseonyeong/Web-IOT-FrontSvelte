@@ -2,10 +2,7 @@
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
 
-
     let aeiDataList = new Array()
-
-    // http://127.0.0.1:8185/device/history/change
 
     const url = `${PUBLIC_API_URL}/device/history/change`
 
@@ -28,45 +25,24 @@
         return data
     }
 
-
-    // temp();
-
     onMount(() => {
-
         queryCodChange().then(data => aeiDataList = data);
 
         setInterval(async () => {
-            // let data = await queryCodChange();
-            // console.log(data)
-
-            /*            let test = data['m2m:cin']['ct'].replace('T', '')
-            //             console.log(test)
-                        const dattime = new Date(test)
-
-                        //         console.log("datatime : " + dattime)
-
-                        console.log(data['m2m:cin']['ct'])
-                        // console.log(date.getHours())
-
-                        //  var dt = str.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6');
-
-                        aeiDataList.push({
-                            aei: 'test2F230102_01',
-                            ct: test.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6'),
-                            con: data['m2m:cin']['con']
-                        })
-                        console.log(aeiDataList.length)
-
-                        //set(aeiDataList);''
-                        aeiDataList = aeiDataList;
-
-                        if (aeiDataList.length > 10) {
-                            aeiDataList.shift()
-                        }*/
-
+            console.log("setInterval queryCodChange")
+            queryCodChange().then(data => aeiDataList = data);
         }, 10000)
     })
 
+    const get_yyyymmddhhMMss = (datetime) => {
+        let date = new Date(datetime);
+        return date.toISOString().replace('T', ' ').substring(0, 19);
+    }
+
+    const getComment = (item) => {
+        let comment = item.prev_con + " --> " + item.con
+        return comment
+    }
 
 </script>
 
@@ -110,13 +86,7 @@
         <table class="table table-sm fs--1 mb-0 overflow-hidden">
           <thead class="bg-200 text-900">
           <tr>
-            <th class="white-space-nowrap">
-              <div class="form-check mb-0 d-flex align-items-center">
-                <input class="form-check-input" id="checkbox-bulk-purchases-select"
-                       type="checkbox"/>
-                <!--data-bulk-select='{"body":"table-purchase-body","actions":"table-purchases-actions","replacedElement":"table-purchases-replace-element"}'-->
-              </div>
-            </th>
+
             <th class="pe-1 align-middle white-space-nowrap" data-sort="datetime">날짜/시간</th>
             <th class="pe-1 align-middle white-space-nowrap" data-sort="device">디바이스(AEI)</th>
             <th class="pe-1 align-middle white-space-nowrap" data-sort="Status">CIN</th>
@@ -128,12 +98,8 @@
           <tbody class="list" id="table-purchase-body">
           {#each aeiDataList as item, index}
             <tr class="btn-reveal-trigger">
-              <td class="align-middle" style="width: 28px;">
-                <div class="form-check mb-0">
-                  <input class="form-check-input" type="checkbox" id="recent-purchase-0" data-bulk-select-row="data-bulk-select-row"/>
-                </div>
-              </td>
-              <th class="align-middle white-space-nowrap name">{item.datetime}</th>
+
+              <th class="align-middle white-space-nowrap name">{get_yyyymmddhhMMss(item.datetime)}</th>
               <td class="align-middle white-space-nowrap email">{item.ae}</td>
 
               {#if item.cin == 'temp'}
@@ -150,11 +116,10 @@
                 <td class="align-middle white-space-nowrap product danger">{item.con}%</td>
               {/if}
 
-
               {#if item.con_change == 'up'}
-                <td class="align-middle text-end  text-danger">직전 대비 상승</td>
+                <td class="align-middle text-end  text-danger">{getComment(item)}</td>
               {:else if item.con_change == 'dn'}
-                <td class="align-middle text-end text-primary">직전 대비 하락 </td>
+                <td class="align-middle text-end text-primary">{getComment(item)}</td>
               {:else}
                 <td class="align-middle text-end ">-</td>
               {/if}
