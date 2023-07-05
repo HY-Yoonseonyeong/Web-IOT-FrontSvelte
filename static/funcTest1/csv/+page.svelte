@@ -4,29 +4,23 @@
     import NavSide from "../../dashboard3/NavSide.svelte";
     import {onDestroy} from "svelte";
     import {PUBLIC_API_URL, PUBLIC_MOBIUS_URL} from "$env/static/public";
-    import AeDeviceList from "./AeDeviceList.svelte";
+
 
     let aeid = '' // AE ID
 
     onDestroy(() => {
+
     })
 
     const init_m2m_ae = () => {
         return {
-            'aei': '',
-            'api': '',
-            'ri': '',
-            'rn': '',
-            'ty': '',
-            'ct': '',
-            'et': '',
-            'lt': '',
-            'rr': '',
-            'pi': '',
-        };
+            'aei': '',            'api': '',            'ri': '',            'rn': '',            'ty': '',
+            'ct': '',            'et': '',            'lt': '',            'rr': '',            'pi': '',        };
     }
 
     const clickQueryAE = async () => {
+
+        return;
 
         if (aeid === '') {
             alert("AE 아이디를 입력해 주세요!")
@@ -68,9 +62,29 @@
     <NavSide/>
     <div class="content">
       <NavTop/>
+      <div class="card mb-3">
+        <div class="card-header">
+          <div class="row flex-between-end">
+            <div class="col-auto align-self-center">
+              <h5 class="mb-0" data-anchor="data-anchor">다운로드 테스트</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body bg-light">
+          <div class="tab-content">
+            <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-cb148336-8e37-450a-a043-f4b528022939" id="dom-cb148336-8e37-450a-a043-f4b528022939">
+              <div class="mb-3">
+                <label class="form-label" for="exampleFormControlInput1">Mobius URL : {PUBLIC_MOBIUS_URL}</label>
+                <input class="form-control" id="exampleFormControlInput1" type="text" placeholder="" bind:value={aeid}/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer border-top text-end">
+          <button class="btn btn-falcon-default btn-sm" on:click={clickQueryAE}>다운로드 테스트 </button>
+        </div>
+      </div>
 
-
-      <AeDeviceList/>
 
       <footer class="footer">
         <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
