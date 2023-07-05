@@ -86,7 +86,6 @@
         <table class="table table-sm fs--1 mb-0 overflow-hidden">
           <thead class="bg-200 text-900">
           <tr>
-
             <th class="pe-1 align-middle white-space-nowrap" data-sort="datetime">날짜/시간</th>
             <th class="pe-1 align-middle white-space-nowrap" data-sort="device">디바이스(AEI)</th>
             <th class="pe-1 align-middle white-space-nowrap" data-sort="Status">CIN</th>

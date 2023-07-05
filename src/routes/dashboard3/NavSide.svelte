@@ -160,13 +160,19 @@
             <div class="col ps-0">
               <hr class="mb-0 navbar-vertical-divider"/>
             </div>
-          </div><!-- parent pages-->
+          </div>
           <a class="nav-link" class:active={$page.url.pathname === '/funcTest/csv'} href="../funcTest/csv">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-cog"></span></span>
               <span class="nav-link-text ps-1">다운로드 테스트</span>
             </div>
-          </a><!-- parent pages-->
+          </a>
+          <a class="nav-link" class:active={$page.url.pathname === '/funcTest/aealias'} href="../funcTest/aealias">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-cog"></span></span>
+              <span class="nav-link-text ps-1">기기 별칭 변경</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
           <!-- label-->

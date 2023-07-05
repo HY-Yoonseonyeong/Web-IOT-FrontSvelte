@@ -16,6 +16,7 @@
     let alertOff = ""
     let cssAlertText = ""
     let alertMessage = ""
+    let alias = ""
 
 
     let timerID // 타이머 아이디
@@ -72,6 +73,14 @@
             humidChangeStyle = changeColor
         }
 
+        console.log(data);
+
+        if (data['alias']) {
+            alias = data['alias']
+        } else {
+            alias = aei
+        }
+
 /*        if ('Y' === data['alert_off']) {
             alertOff = "bg-alert"
         } else {
@@ -118,7 +127,7 @@
 <div class="col-md-6 col-xxl-3">
   <div class="card h-md-100 {alertOff}">
     <div class="card-header pb-0">
-      <h6 class="mb-0 mt-2 {cssAlertText}">온습도 | {aei} <span>{alertMessage}</span></h6>
+      <h6 class="mb-0 mt-2 {cssAlertText}">온습도 | {alias} <span>{alertMessage}</span></h6>
     </div>
     <div class="card-body d-flex flex-column justify-content-end">
       <div class="row justify-content-between">
