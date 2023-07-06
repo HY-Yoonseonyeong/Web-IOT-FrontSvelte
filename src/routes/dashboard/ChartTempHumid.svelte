@@ -8,7 +8,16 @@
 
     let timerID
     let timerDelay = 60 * 1000 // 1분
-    let conTypeText = (conType === "temp") ? "온도 차트"  : "습도 차트"
+    let conTypeText = (conType === "temp") ? "온도 차트" : "습도 차트"
+
+    // 65초 58초
+    //
+    const aeList = new Array()
+    aeList.push("DHT22_LCD_0001")
+    aeList.push("test2F230102_01")
+    aeList.push("testB1F221205_01")
+
+    console.log(aeList)
 
     let portfolio;
     const data = {
@@ -68,21 +77,23 @@
                     text: ''
                 }
             }
-          /*  onResize : function (myChart, size) {
-                var showTicks = (size.width < 550) ? false : true;
-                console.log("chart size : " + size)
-                console.log(size)
-                myChart.options.plugins.legend.display = showTicks;
-            }*/
+            /*  onResize : function (myChart, size) {
+                  var showTicks = (size.width < 550) ? false : true;
+                  console.log("chart size : " + size)
+                  console.log(size)
+                  myChart.options.plugins.legend.display = showTicks;
+              }*/
         },
     };
 
     let myChart
 
     onMount(async () => {
+
+        await reqAeDeviceAlias()
+
         const ctx = portfolio.getContext('2d')
         myChart = new Chart(ctx, config)
-
 
         //await queryChartData(selected)
         if (timerID) {
@@ -91,6 +102,9 @@
         }
 
         timerChartQuery()
+
+        // 디바이스 별칭 조회
+
     })
 
     // Chart Data Query
@@ -132,7 +146,6 @@
     }
 
 
-
     const timerChartQuery = () => {
         console.log("timerChartQuery")
         queryChartData(selected).then(() => {
@@ -152,25 +165,51 @@
         console.log(queryData)
 
         myChart.data.labels = queryData.map(row => getTime(row.datetime))
+        myChart.data.datasets[0].label = aeList[0]
         myChart.data.datasets[0].data = queryData.map(row => row.con)
-
 
         url = `${PUBLIC_API_URL}/device/history/min/test2F230102_01/${conType}?limit=30&period=${period}`
         const response2 = await fetch(url, {}
         )
 
         const queryData2 = await response2.json()
+        myChart.data.datasets[1].label = aeList[1]
         myChart.data.datasets[1].data = queryData2.map(row => row.con)
 
 
         url = `${PUBLIC_API_URL}/device/history/min/testB1F221205_01/${conType}?limit=30&period=${period}`
-        const response3 = await fetch(url, {}
-        )
+        const response3 = await fetch(url, {})
 
         const queryData3 = await response3.json()
+        myChart.data.datasets[2].label = aeList[2]
         myChart.data.datasets[2].data = queryData3.map(row => row.con)
 
         myChart.update()
+    }
+
+    // 별칭 조회.
+    const reqAeDeviceAlias = async () => {
+        const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
+        let alias1 = await response1.json()
+
+        if (alias1.length > 0) {
+            aeList[0] = alias1[0].alias
+        }
+
+        const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
+        let alias2 = await response2.json()
+
+        if (alias2.length > 0) {
+            aeList[1] = alias2[0].alias
+        }
+
+        const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
+        let alias3 = await response3.json()
+
+        if (alias3.length > 0) {
+            aeList[1] = alias3[0].alias
+        }
+
     }
 
     let stylePadding = conType === "temp" ? "pe-lg-2" : "ps-lg-2"
