@@ -1,7 +1,7 @@
 <script>
     import '../../../scss/theme.scss'
-    import NavTop from "../../dashboard3/NavTop.svelte";
-    import NavSide from "../../dashboard3/NavSide.svelte";
+    import NavSide from "../../../component/nav/NavSide.svelte"
+    import NavTop from "../../../component/nav/NavTop.svelte";
     import {onDestroy} from "svelte";
     import {PUBLIC_API_URL, PUBLIC_MOBIUS_URL} from "$env/static/public";
     import AeDeviceList from "./AeDeviceList.svelte";

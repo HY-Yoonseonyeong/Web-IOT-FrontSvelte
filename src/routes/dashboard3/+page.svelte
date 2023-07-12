@@ -2,8 +2,8 @@
     import '../../scss/theme.scss'
     import './NavSide.svelte'
     import {onMount, onDestroy} from "svelte";
-    import NavSide from "./NavSide.svelte";
-    import NavTop from "./NavTop.svelte";
+    import NavSide from "../../component/nav/NavSide.svelte"
+    import NavTop from "../../component/nav/NavTop.svelte";
     import ChartHitDaily from "./ChartHitDaily.svelte";
     import ChartPieHit from "./ChartPieHit.svelte";
     import {PUBLIC_API_URL} from '$env/static/public'

@@ -10,8 +10,8 @@
     import DeviceStatusGrid from "./DeviceStatusGrid.svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
-    import NavTop from "../dashboard3/NavTop.svelte";
-    import NavSide from "../dashboard3/NavSide.svelte";
+    import NavSide from "../../component/nav/NavSide.svelte"
+    import NavTop from "../../component/nav/NavTop.svelte";
     import DeviceConChange from "./DeviceConChange.svelte";
 
 
