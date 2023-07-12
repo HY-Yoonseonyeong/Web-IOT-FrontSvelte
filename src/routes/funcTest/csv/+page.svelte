@@ -1,5 +1,5 @@
 <script>
-    import '../../../scss/theme.scss'
+    /*import '../../../scss/theme.scss'*/
     import NavTop from "../../dashboard3/NavTop.svelte";
     import NavSide from "../../dashboard3/NavSide.svelte";
     import {onDestroy} from "svelte";
