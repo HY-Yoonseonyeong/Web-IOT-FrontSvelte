@@ -5,20 +5,12 @@
     import Footer from "../../../component/nav/Footer.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    import flatpickr from "flatpickr";
 
     let historyCount = 0
     let historyRows = new Array()
     let datePeriod
     let periodStart, periodEnd
-    let _alias = "DHT22_LCD_0001"
     const queryParams = {};
-
-    const aeList = new Array()
-    aeList.push("DHT22_LCD_0001")
-    aeList.push("test2F230102_01")
-    aeList.push("testB1F221205_01")
-
 
     onMount(async () => {
         datePeriod = flatpickr('#timepicker2', {
@@ -36,14 +28,13 @@
             },
             onChange: ([start, end]) => {
                 if (start && end) {
-                    console.log({start, end});
+                    console.log({ start, end });
                     periodStart = start
                     periodEnd = end
                 }
             }
         })
 
-        await reqAeDeviceAlias()
         await reqKolasHistory();
     })
 
@@ -57,30 +48,7 @@
 
         historyCount = data.count;
         historyRows = data.rows;
-    }
-
-    const reqAeDeviceAlias = async () => {
-        const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
-        let alias1 = await response1.json()
-
-        if (alias1.length > 0) {
-            aeList[0] = alias1[0].alias
-            _alias = alias1[0].alias
-        }
-
-        const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
-        let alias2 = await response2.json()
-
-        if (alias2.length > 0) {
-            aeList[1] = alias2[0].alias
-        }
-
-        const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
-        let alias3 = await response3.json()
-
-        if (alias3.length > 0) {
-            aeList[1] = alias3[0].alias
-        }
+        /*console.log(rows)*/
     }
 
     const clickPeriodQuery = async (e) => {
@@ -122,14 +90,19 @@
         })
 
         const data = await response.json()
+        console.log(data)
+
+
     }
 
 </script>
 
 <svelte:head>
-  <title>Kolas 기간조회 | HYNUX-IOT</title>
+  <title>리포트 생성 | HYNUX-IOT</title>
   <meta name="description" content="About this app"/>
+  <script src="../assets/js/flatpickr.js"></script>
   <link href="../vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>
+  <!--<script src="vendors/simplebar/simplebar.min.js"></script>-->
 </svelte:head>
 
 
@@ -156,7 +129,7 @@
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="aei">
                       <option value="-1" selected="">디바이스를 선택해 주세요.</option>
-                      <option value="DHT22_LCD_0001">{_alias}</option>
+                      <option value="DHT22_LCD_0001">DHT22_LCD_0001</option>
                     </select>
                   </div>
                 </div>
