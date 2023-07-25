@@ -3,17 +3,38 @@
     import NavTop from "../../../component/nav/NavTop.svelte";
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
+    import Pagination from "./Pagination.svelte";
+    import ChartReport from "./ChartReport.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
+    import flatpickr from "flatpickr";
+    import {browser} from "$app/environment";
 
     let historyCount = 0
     let historyRows = new Array()
     let datePeriod
     let periodStart, periodEnd
+    let _alias = "DHT22_LCD_0001"
     const queryParams = {};
 
+    const aeList = new Array()
+    aeList.push("DHT22_LCD_0001")
+    aeList.push("test2F230102_01")
+    aeList.push("testB1F221205_01")
+
+    let pagination;
+    let testNumber = 2;
+    let pageInfo = {
+        curIndex: 0,
+        totalCount: 0
+    }
+
+    let timepicker3
+    let ref;
+    let calendarPicker
+
     onMount(async () => {
-        datePeriod = flatpickr('#timepicker2', {
+        calendarPicker = flatpickr(ref, {
             mode: "range",
             locale: {
                 firstDayOfWeek: 1,
@@ -28,17 +49,26 @@
             },
             onChange: ([start, end]) => {
                 if (start && end) {
-                    console.log({ start, end });
+                    console.log({start, end});
                     periodStart = start
                     periodEnd = end
                 }
             }
-        })
+        });
 
-        await reqKolasHistory();
+        await reqAeDeviceAlias()
+        /*await reqKolasHistory();*/
+
+        pagination.someFunc()
+        testNumber = 15
     })
 
-    onDestroy(() => {
+    onDestroy(async () => {
+        /*calendarPicker.destroy()*/
+        /*calendarPicker.destory()*/
+        //
+        // calendarPicker.destroy()
+        //console.log("onDestroy")
     })
 
     //
@@ -48,7 +78,37 @@
 
         historyCount = data.count;
         historyRows = data.rows;
-        /*console.log(rows)*/
+
+        pageInfo = {
+            curIndex: 0,
+            totalCount: historyCount
+        }
+
+        testNumber = 20
+    }
+
+    const reqAeDeviceAlias = async () => {
+        const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
+        let alias1 = await response1.json()
+
+        if (alias1.length > 0) {
+            aeList[0] = alias1[0].alias
+            _alias = alias1[0].alias
+        }
+
+        const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
+        let alias2 = await response2.json()
+
+        if (alias2.length > 0) {
+            aeList[1] = alias2[0].alias
+        }
+
+        const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
+        let alias3 = await response3.json()
+
+        if (alias3.length > 0) {
+            aeList[1] = alias3[0].alias
+        }
     }
 
     const clickPeriodQuery = async (e) => {
@@ -59,8 +119,14 @@
             queryParams[key] = value;
         }
 
+        let date = new Date(periodEnd)
+        console.log(date)
+        date.setHours(23)
+        date.setMinutes(59)
+        date.setSeconds(59)
+
         queryParams['periodStart'] = periodStart
-        queryParams['periodEnd'] = periodEnd
+        queryParams['periodEnd'] = date
 
         console.log(queryParams)
 
@@ -69,7 +135,7 @@
             return
         }
 
-        const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
+        const response = await fetch(`${PUBLIC_API_URL}/kolas/report`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(queryParams)
@@ -79,10 +145,17 @@
 
         historyCount = data.count;
         historyRows = data.rows;
+
+        testNumber = 20
+
+        pageInfo = {
+            curIndex: 0,
+            totalCount: historyCount
+        }
     }
 
+
     const clickExport = async () => {
-        console.log("clickExport")
         const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
@@ -90,9 +163,6 @@
         })
 
         const data = await response.json()
-        console.log(data)
-
-
     }
 
 </script>
@@ -100,23 +170,19 @@
 <svelte:head>
   <title>리포트 생성 | HYNUX-IOT</title>
   <meta name="description" content="About this app"/>
-  <script src="../assets/js/flatpickr.js"></script>
   <link href="../vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>
-  <!--<script src="vendors/simplebar/simplebar.min.js"></script>-->
 </svelte:head>
-
 
 <main class="main" id="top">
   <div class="container" data-layout="container">
     <NavSide/>
     <div class="content">
       <NavTop/>
-
       <div class="card mb-3">
         <div class="card-header">
           <div class="row flex-between-end">
             <div class="col-auto align-self-center">
-              <h5 class="mb-0" data-anchor="data-anchor">디바이스 기간 조회</h5>
+              <h5 class="mb-0" data-anchor="data-anchor">리포트 생성</h5>
             </div>
           </div>
         </div>
@@ -129,14 +195,17 @@
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="aei">
                       <option value="-1" selected="">디바이스를 선택해 주세요.</option>
-                      <option value="DHT22_LCD_0001">DHT22_LCD_0001</option>
+                      <option value="DHT22_LCD_0001">{_alias}</option>
                     </select>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">날짜 기간 설정</label>
                   <div class="col-sm-10">
-                    <input class="form-control" id="timepicker2" type="text" name="period" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <!--{#if browser}-->
+                    <input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <!--<input bind:this={ref} />-->
+                    <!--{/if}-->
                   </div>
                 </div>
                 <fieldset>
@@ -182,7 +251,6 @@
                   <h6 class="mb-0">조회건수 : <span>{historyCount} 건</span></h6>
                 </div>
               </div>
-              <div class="border-bottom border-200 my-3"></div>
               <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
                 <div class="d-flex align-items-center" id="table-ticket-replace-element">
                   <button class="btn btn-falcon-default btn-sm" type="button" on:click={clickExport}>
@@ -198,12 +266,12 @@
               <table class="table table-sm mb-0 fs--1 table-view-tickets">
                 <thead class="text-800 bg-light">
                 <tr>
-                  <th class="sort align-middle ps-2">날짜/시간</th>
-                  <th class="sort align-middle">디바이스(AE)</th>
-                  <th class="sort align-middle ps-2">디바이스명</th>
-                  <th class="sort align-middle">온도(°)</th>
-                  <th class="sort align-middle">습도(%)</th>
-                  <th class="sort align-middle text-end"></th>
+                  <th class=" align-middle ps-2">날짜/시간</th>
+                  <th class=" align-middle">디바이스(AE)</th>
+                  <th class=" align-middle ps-2" style="min-width: 100px">디바이스명</th>
+                  <th class=" align-middle">온도(°)</th>
+                  <th class=" align-middle">습도(%)</th>
+                  <th class=" align-middle text-end"></th>
                 </tr>
                 </thead>
                 <tbody class="list" id="table-ticket-body">
@@ -211,7 +279,7 @@
                   <tr>
                     <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{row.datetime}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
                     <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
                     <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
                   </tr>
@@ -223,44 +291,62 @@
               </div>
             </div>
           </div>
-          <div class="card-footer">
-            <div class="d-flex justify-content-center">
-              <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev">
-                <span class="fas fa-chevron-left"></span>
+          <Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="card h-100">
+          <div class="card-header d-flex flex-between-center border-bottom border-200 py-2">
+            <h6 class="mb-0">기간 조회 데이터</h6>
+            <div class="dropdown font-sans-serif btn-reveal-trigger">
+              <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button">
+                <span class="fas fa-ellipsis-h fs--2"></span>
               </button>
-              <ul class="pagination mb-0">
-                <li class="active">
-                  <button class="page" type="button" data-i="1" data-page="11">1</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">2</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">3</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">4</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">5</button>
-                </li>
-              </ul>
-              <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next">
-                <span class="fas fa-chevron-right"></span>
-              </button>
+              <!--<div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-deal-forecast-bar">
+                <a class="dropdown-item" href="./">View</a>
+                <a class="dropdown-item" href="./">Export</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" href="./">Remove</a>
+              </div>-->
+            </div>
+          </div>
+          <div class="card-body d-flex align-items-center">
+            <div class="w-100">
+              <!--<h3 class="text-700 mb-6">$90,439</h3>
+              <div class="progress-stacked overflow-visible rounded-5 font-sans-serif fw-medium fs&#45;&#45;1 mt-xxl-auto">
+                <div class="progress" style="width: 50%; height: 20px;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar overflow-visible bg-progress-gradient border-end border-white border-2 rounded-end rounded-pill text-start">
+                    <span class="text-700 mt-n6">$47.8k</span>
+                  </div>
+                </div>
+                <div class="progress" style="width: 20%; height: 20px;" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar overflow-visible bg-primary-subtle border-end border-white border-2 text-start">
+                    <span class="text-700 mt-n6">$20.2k</span>
+                  </div>
+                </div>
+                <div class="progress" style="width: 15%; height: 20px;" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress-bar overflow-visible bg-info-subtle border-end border-white border-2 text-start">
+                    <span class="text-700 mt-n6">$18k</span>
+                  </div>
+                </div>
+                <div class="progress" style="width: 15%; height: 20px;" role="progressbar" aria-valuenow="15" aria-valuemin="15" aria-valuemax="100">
+                  <div class="progress-bar overflow-visible bg-info rounded-start rounded-pill text-start">
+                    <span class="text-700 mt-n6">$16k</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row fs&#45;&#45;1 fw-semi-bold text-500 mt-3 g-0 mt-3 mt-xxl-4">
+                <div class="col-auto d-flex align-items-center pe-3"><span class="dot bg-primary"></span><span>Closed won</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(100%)</span></div>
+                <div class="col-auto d-flex align-items-center pe-3"><span class="dot bg-primary-subtle"></span><span>Contact sent</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(5%)</span></div>
+                <div class="col-auto d-flex align-items-center pe-3"><span class="dot bg-info-subtle"></span><span>Pending</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(5%)</span></div>
+                <div class="col-auto d-flex align-items-center"><span class="dot bg-info"></span><span>Qualified</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(20%)</span></div>
+              </div>-->
+              <ChartReport/>
             </div>
           </div>
         </div>
       </div>
-
       <!--footer-->
       <Footer/>
     </div>

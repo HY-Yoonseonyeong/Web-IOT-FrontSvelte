@@ -96,6 +96,12 @@
               <span class="nav-link-text ps-1">기간 조회</span>
             </div>
           </a>
+          <a class="nav-link" class:active={$page.url.pathname === '/kolas/report'} href="../kolas/report">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
+              <span class="nav-link-text ps-1">리포트 생성</span>
+            </div>
+          </a>
           <a class="nav-link" class:active={$page.url.pathname === '/kolas/filelist'} href="../kolas/filelist">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-tablet"></span></span>

@@ -3,9 +3,11 @@
     import NavTop from "../../../component/nav/NavTop.svelte";
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
+    import Pagination from "./Pagination.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
     import flatpickr from "flatpickr";
+    import { browser } from "$app/environment";
 
     let historyCount = 0
     let historyRows = new Array()
@@ -19,9 +21,19 @@
     aeList.push("test2F230102_01")
     aeList.push("testB1F221205_01")
 
+    let pagination;
+    let testNumber = 2;
+    let pageInfo = {
+        curIndex: 0,
+        totalCount: 0
+    }
+
+    let timepicker3
+    let ref;
+    let calendarPicker
 
     onMount(async () => {
-        datePeriod = flatpickr('#timepicker2', {
+        calendarPicker = flatpickr(ref, {
             mode: "range",
             locale: {
                 firstDayOfWeek: 1,
@@ -41,13 +53,21 @@
                     periodEnd = end
                 }
             }
-        })
+        });
 
         await reqAeDeviceAlias()
-        await reqKolasHistory();
+        /*await reqKolasHistory();*/
+
+        pagination.someFunc()
+        testNumber = 15
     })
 
-    onDestroy(() => {
+    onDestroy(async () => {
+        /*calendarPicker.destroy()*/
+        /*calendarPicker.destory()*/
+        //
+        // calendarPicker.destroy()
+        //console.log("onDestroy")
     })
 
     //
@@ -57,6 +77,13 @@
 
         historyCount = data.count;
         historyRows = data.rows;
+
+        pageInfo = {
+            curIndex: 0,
+            totalCount: historyCount
+        }
+
+        testNumber = 20
     }
 
     const reqAeDeviceAlias = async () => {
@@ -111,10 +138,16 @@
 
         historyCount = data.count;
         historyRows = data.rows;
+
+        testNumber = 20
+
+        pageInfo = {
+            curIndex: 0,
+            totalCount: historyCount
+        }
     }
 
     const clickExport = async () => {
-        console.log("clickExport")
         const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
@@ -138,7 +171,6 @@
     <NavSide/>
     <div class="content">
       <NavTop/>
-
       <div class="card mb-3">
         <div class="card-header">
           <div class="row flex-between-end">
@@ -163,7 +195,10 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">날짜 기간 설정</label>
                   <div class="col-sm-10">
-                    <input class="form-control" id="timepicker2" type="text" name="period" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <!--{#if browser}-->
+                    <input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <!--<input bind:this={ref} />-->
+                    <!--{/if}-->
                   </div>
                 </div>
                 <fieldset>
@@ -225,12 +260,12 @@
               <table class="table table-sm mb-0 fs--1 table-view-tickets">
                 <thead class="text-800 bg-light">
                 <tr>
-                  <th class="sort align-middle ps-2">날짜/시간</th>
-                  <th class="sort align-middle">디바이스(AE)</th>
-                  <th class="sort align-middle ps-2">디바이스명</th>
-                  <th class="sort align-middle">온도(°)</th>
-                  <th class="sort align-middle">습도(%)</th>
-                  <th class="sort align-middle text-end"></th>
+                  <th class=" align-middle ps-2">날짜/시간</th>
+                  <th class=" align-middle">디바이스(AE)</th>
+                  <th class=" align-middle ps-2" style="min-width: 100px">디바이스명</th>
+                  <th class=" align-middle">온도(°)</th>
+                  <th class=" align-middle">습도(%)</th>
+                  <th class=" align-middle text-end"></th>
                 </tr>
                 </thead>
                 <tbody class="list" id="table-ticket-body">
@@ -238,7 +273,7 @@
                   <tr>
                     <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{row.datetime}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
                     <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
                     <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
                   </tr>
@@ -250,44 +285,9 @@
               </div>
             </div>
           </div>
-          <div class="card-footer">
-            <div class="d-flex justify-content-center">
-              <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev">
-                <span class="fas fa-chevron-left"></span>
-              </button>
-              <ul class="pagination mb-0">
-                <li class="active">
-                  <button class="page" type="button" data-i="1" data-page="11">1</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">2</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">3</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">4</button>
-                </li>
-              </ul>
-              <ul class="pagination mb-0">
-                <li>
-                  <button class="page" type="button" data-i="1" data-page="11">5</button>
-                </li>
-              </ul>
-              <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next">
-                <span class="fas fa-chevron-right"></span>
-              </button>
-            </div>
-          </div>
+          <Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>
         </div>
       </div>
-
       <!--footer-->
       <Footer/>
     </div>

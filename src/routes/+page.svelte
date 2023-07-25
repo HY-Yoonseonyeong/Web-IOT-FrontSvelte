@@ -270,48 +270,78 @@
   <!-- ============================================-->
 
 
-  <!-- ============================================-->
-  <!-- <section> begin ============================-->
-  <section class="bg-light text-center">
-    <!--<div class="container">
+  <!---->
+
+  <section class="bg-dark pt-8 pb-4" data-bs-theme="light">
+    <div class="container">
+      <!--<div class="position-absolute btn-back-to-top bg-dark">
+        <a class="text-600" href="#banner" data-bs-offset-top="0"><span class="fas fa-chevron-up" data-fa-transform="rotate-45"></span></a>
+      </div>-->
       <div class="row">
-        <div class="col">
-          <h1 class="fs-2 fs-sm-4 fs-md-5">Here's what's in it for you</h1>
-          <p class="lead">Things you will get right out of the box with Falcon.</p>
-        </div>
-      </div>
-      <div class="row mt-6">
         <div class="col-lg-4">
-          <div class="card card-span h-100">
-            <div class="card-span-img"><span class="fab fa-sass fs-4 text-info"></span></div>
-            <div class="card-body pt-6 pb-4">
-              <h5 class="mb-2">Bootstrap 5.x</h5>
-              <p>Build your webapp with the world's most popular front-end component library along with Falcon's 32 sets of carefully designed elements.</p>
-            </div>
+          <h5 class="text-uppercase text-white opacity-85 mb-3">한영넉스 AI 문래 연구소</h5>
+          <p class="text-600">한영넉스</p>
+          <div class="icon-group mt-4 display-none">
+            <a class="icon-item bg-white text-facebook"><span class="fab fa-facebook-f"></span></a>
+            <a class="icon-item bg-white text-twitter"><span class="fab fa-twitter"></span></a>
+            <a class="icon-item bg-white text-google-plus"><span class="fab fa-google-plus-g"></span></a>
+            <a class="icon-item bg-white text-linkedin"><span class="fab fa-linkedin-in"></span></a>
+            <a class="icon-item bg-white"><span class="fab fa-medium-m"></span></a>
           </div>
         </div>
-        <div class="col-lg-4 mt-6 mt-lg-0">
-          <div class="card card-span h-100">
-            <div class="card-span-img"><span class="fab fa-node-js fs-5 text-success"></span></div>
-            <div class="card-body pt-6 pb-4">
-              <h5 class="mb-2">SCSS &amp; Javascript files</h5>
-              <p>With your purchased copy of Falcon, you will get all the uncompressed & documented SCSS and Javascript source code files.</p>
+        <div class="col ps-lg-6 ps-xl-8 display-none">
+          <div class="row mt-5 mt-lg-0">
+            <div class="col-6 col-md-3 display-none">
+              <h5 class="text-uppercase text-white opacity-85 mb-3">Company</h5>
+              <ul class="list-unstyled">
+                <li class="mb-1"><a class="link-600">About</a></li>
+                <li class="mb-1"><a class="link-600">Contact</a></li>
+                <li class="mb-1"><a class="link-600">Careers</a></li>
+                <li class="mb-1"><a class="link-600">Blog</a></li>
+                <li class="mb-1"><a class="link-600">Terms</a></li>
+                <li class="mb-1"><a class="link-600">Privacy</a></li>
+                <li><a class="link-600" href="#!">Imprint</a></li>
+              </ul>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mt-6 mt-lg-0">
-          <div class="card card-span h-100">
-            <div class="card-span-img"><span class="fab fa-gulp fs-6 text-danger"></span></div>
-            <div class="card-body pt-6 pb-4">
-              <h5 class="mb-2">Gulp based workflow</h5>
-              <p>All the painful or time-consuming tasks in your development workflow such as compiling the SCSS or transpiring the JS are automated.</p>
+            <div class="col-6 col-md-3 display-none">
+              <h5 class="text-uppercase text-white opacity-85 mb-3">Product</h5>
+              <ul class="list-unstyled">
+                <li class="mb-1"><a class="link-600">Features</a></li>
+                <li class="mb-1"><a class="link-600">Roadmap</a></li>
+                <li class="mb-1"><a class="link-600">Changelog</a></li>
+                <li class="mb-1"><a class="link-600">Pricing</a></li>
+                <li class="mb-1"><a class="link-600">Docs</a></li>
+                <li class="mb-1"><a class="link-600">System Status</a></li>
+                <li class="mb-1"><a class="link-600">Agencies</a></li>
+                <li class="mb-1"><a class="link-600">Enterprise</a></li>
+              </ul>
+            </div>
+            <div class="col mt-5 mt-md-0">
+              <h5 class="text-uppercase text-white opacity-85 mb-3">From the Blog</h5>
+              <ul class="list-unstyled">
+                <li>
+                  <h5 class="fs-0 mb-0"><a class="link-600"> Interactive graphs and charts</a></h5>
+                  <p class="text-600 opacity-50">Jan 15 &bull; 8min read </p>
+                </li>
+                <li>
+                  <h5 class="fs-0 mb-0"><a class="link-600"> Lifetime free updates</a></h5>
+                  <p class="text-600 opacity-50">Jan 5 &bull; 3min read &starf;</p>
+                </li>
+                <li>
+                  <h5 class="fs-0 mb-0"><a class="link-600"> Merry Christmas From us</a></h5>
+                  <p class="text-600 opacity-50">Dec 25 &bull; 2min read</p>
+                </li>
+                <li>
+                  <h5 class="fs-0 mb-0"><a class="link-600"> The New Falcon Theme</a></h5>
+                  <p class="text-600 opacity-50">Dec 23 &bull; 10min read </p>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </div>&lt;!&ndash; end of .container&ndash;&gt;-->
+    </div><!-- end of .container-->
   </section><!-- <section> close ============================-->
-  <!-- ============================================-->
 
 
   <!-- ============================================-->
@@ -369,3 +399,10 @@
     </div>
   </div>
 </main><!-- ===============================================-->
+
+
+<style>
+    .display-none {
+        display: none;
+    }
+</style>
