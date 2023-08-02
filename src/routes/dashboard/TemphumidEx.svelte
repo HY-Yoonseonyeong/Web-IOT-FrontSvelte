@@ -80,12 +80,6 @@
         } else {
             alias = aei
         }
-
-/*        if ('Y' === data['alert_off']) {
-            alertOff = "bg-alert"
-        } else {
-            alertOff = ""
-        }*/
     }
 
     const queryDeviceAlert = async (url, aei) => {

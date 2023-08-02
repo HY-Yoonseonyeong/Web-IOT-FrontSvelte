@@ -3,8 +3,10 @@
     import NavTop from "../../../component/nav/NavTop.svelte";
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
-    import Pagination from "./Pagination.svelte";
+
     import ChartReport from "./ChartReport.svelte";
+    import PdfExport from "./PdfExport.svelte";
+
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
     import flatpickr from "flatpickr";
@@ -16,6 +18,8 @@
     let periodStart, periodEnd
     let _alias = "DHT22_LCD_0001"
     const queryParams = {};
+
+    let queryInfo = {}
 
     const aeList = new Array()
     aeList.push("DHT22_LCD_0001")
@@ -59,7 +63,7 @@
         await reqAeDeviceAlias()
         /*await reqKolasHistory();*/
 
-        pagination.someFunc()
+
         testNumber = 15
     })
 
@@ -125,8 +129,20 @@
         date.setMinutes(59)
         date.setSeconds(59)
 
-        queryParams['periodStart'] = periodStart
-        queryParams['periodEnd'] = date
+        const get_yyyymmddhhMMss = (datetime) => {
+
+            return datetime.toISOString().replace("T", " ").substring(0, 19);
+        };
+
+        let start = new Date();
+        let end = new Date();
+
+        start.setTime(periodStart.getTime() + (0*60*60*1000))
+        end.setTime(date.getTime() + (0*60*60*1000))
+
+
+        queryParams['periodStart'] = start
+        queryParams['periodEnd'] = end
 
         console.log(queryParams)
 
@@ -134,6 +150,10 @@
             alert("디바이스를 선택해 주세요")
             return
         }
+
+        queryInfo =  queryParams;
+
+        return;
 
         const response = await fetch(`${PUBLIC_API_URL}/kolas/report`, {
             method: "POST",
@@ -153,7 +173,6 @@
             totalCount: historyCount
         }
     }
-
 
     const clickExport = async () => {
         const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
@@ -213,15 +232,15 @@
                     <label class="col-form-label col-sm-2 pt-0">조회 타입</label>
                     <div class="col-sm-10">
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" id="gridRadios1" type="radio" name="periodType" value="1"/>
+                        <input class="form-check-input" id="gridRadios1" type="radio" name="periodType" value="1" disabled/>
                         <label class="form-check-label" for="gridRadios1">1분</label>
                       </div>
                       <div class="form-check form-check-inline">
-                        <input class="form-check-input" id="gridRadios2" type="radio" name="periodType" value="5"/>
+                        <input class="form-check-input" id="gridRadios2" type="radio" name="periodType" value="5" disabled/>
                         <label class="form-check-label" for="gridRadios2">5분</label>
                       </div>
                       <div class="form-check form-check-inline disabled">
-                        <input class="form-check-input" id="gridRadios3" type="radio" name="periodType" value="10"/>
+                        <input class="form-check-input" id="gridRadios3" type="radio" name="periodType" value="10" disabled/>
                         <label class="form-check-label" for="gridRadios3">10분</label>
                       </div>
                       <div class="form-check form-check-inline disabled">
@@ -229,7 +248,7 @@
                         <label class="form-check-label" for="gridRadios4">30분</label>
                       </div>
                       <div class="form-check form-check-inline disabled">
-                        <input class="form-check-input" id="gridRadios5" type="radio" name="periodType" value="60"/>
+                        <input class="form-check-input" id="gridRadios5" type="radio" name="periodType" value="60" disabled/>
                         <label class="form-check-label" for="gridRadios5">60분</label>
                       </div>
                     </div>
@@ -242,73 +261,17 @@
         </div>
       </div>
 
-      <div class="card mb-3">
-        <div class="card" id="ticketsTable" data-list=''>
-          <div class="card-header border-bottom border-200 px-0">
-            <div class="d-lg-flex justify-content-between">
-              <div class="row flex-between-center gy-2 px-x1">
-                <div class="col-auto pe-0">
-                  <h6 class="mb-0">조회건수 : <span>{historyCount} 건</span></h6>
-                </div>
-              </div>
-              <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
-                <div class="d-flex align-items-center" id="table-ticket-replace-element">
-                  <button class="btn btn-falcon-default btn-sm" type="button" on:click={clickExport}>
-                    <span class="fas fa-external-link-alt" data-fa-transform="shrink-3"></span>
-                    <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">Export</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body p-0">
-            <div class="table-responsive scrollbar">
-              <table class="table table-sm mb-0 fs--1 table-view-tickets">
-                <thead class="text-800 bg-light">
-                <tr>
-                  <th class=" align-middle ps-2">날짜/시간</th>
-                  <th class=" align-middle">디바이스(AE)</th>
-                  <th class=" align-middle ps-2" style="min-width: 100px">디바이스명</th>
-                  <th class=" align-middle">온도(°)</th>
-                  <th class=" align-middle">습도(%)</th>
-                  <th class=" align-middle text-end"></th>
-                </tr>
-                </thead>
-                <tbody class="list" id="table-ticket-body">
-                {#each historyRows as row, index}
-                  <tr>
-                    <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{row.datetime}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
-                    <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
-                    <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
-                  </tr>
-                {/each}
-                </tbody>
-              </table>
-              <div class="text-center d-none" id="tickets-table-fallback">
-                <p class="fw-bold fs-1 mt-3">No ticket found</p>
-              </div>
-            </div>
-          </div>
-          <Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>
-        </div>
-      </div>
-
       <div class="col-md-12">
         <div class="card h-100">
           <div class="card-header d-flex flex-between-center border-bottom border-200 py-2">
             <h6 class="mb-0">기간 조회 데이터</h6>
-            <div class="dropdown font-sans-serif btn-reveal-trigger">
-              <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal" type="button">
-                <span class="fas fa-ellipsis-h fs--2"></span>
-              </button>
-              <!--<div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="crm-deal-forecast-bar">
-                <a class="dropdown-item" href="./">View</a>
-                <a class="dropdown-item" href="./">Export</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" href="./">Remove</a>
-              </div>-->
+            <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
+              <div class="d-flex align-items-center" id="">
+                <button class="btn btn-falcon-default btn-sm" type="button" on:click={clickExport}>
+                  <span class="fas fa-external-link-alt" data-fa-transform="shrink-3"></span>
+                  <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">리포트 생성</span>
+                </button>
+              </div>
             </div>
           </div>
           <div class="card-body d-flex align-items-center">
@@ -340,13 +303,17 @@
                 <div class="col-auto d-flex align-items-center pe-3"><span class="dot bg-primary"></span><span>Closed won</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(100%)</span></div>
                 <div class="col-auto d-flex align-items-center pe-3"><span class="dot bg-primary-subtle"></span><span>Contact sent</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(5%)</span></div>
                 <div class="col-auto d-flex align-items-center pe-3"><span class="dot bg-info-subtle"></span><span>Pending</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(5%)</span></div>
-                <div class="col-auto d-flex align-items-center"><span class="dot bg-info"></span><span>Qualified</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(20%)</span></div>
+                <div class="col-auto d-flex align-items-center"><span class="dot  bg-info"></span><span>Qualified</span><span class="d-none d-md-inline-block d-lg-none d-xxl-inline-block">(20%)</span></div>
               </div>-->
-              <ChartReport/>
+              <ChartReport queryInfo={queryInfo}/>
             </div>
           </div>
         </div>
       </div>
+      <div style="display: none">
+      <PdfExport queryInfo={queryInfo}/>
+      </div>
+
       <!--footer-->
       <Footer/>
     </div>

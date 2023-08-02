@@ -1,7 +1,7 @@
 <script>
     import '../../scss/theme.scss'
     import TempHumid from "./Temphumid.svelte";
-    import TemphumidEx  from "./TemphumidEx.svelte";
+    import TemphumidEx from "./TemphumidEx.svelte";
     import {onMount} from "svelte";
     import Weather from "./Weather.svelte";
     import ChartTemp from "./ChartTemp.svelte";
@@ -141,7 +141,6 @@
         </div>
       </div>
 
-
       <footer class="footer">
         <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
           <div class="col-12 col-sm-auto text-center">
@@ -156,8 +155,7 @@
         </div>
       </footer>
     </div>
-    <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog"
-         aria-labelledby="authentication-modal-label" aria-hidden="true">
+    <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">
       <div class="modal-dialog mt-6" role="document">
         <div class="modal-content border-0">
           <div class="modal-header px-5 position-relative modal-shape-header bg-shape">
@@ -165,24 +163,27 @@
               <h4 class="mb-0 text-white" id="authentication-modal-label">Register</h4>
               <p class="fs--1 mb-0 text-white">Please create your free Falcon account</p>
             </div>
-            <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
+            <button class="btn-close btn-close-white position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body py-4 px-5">
             <form>
-              <div class="mb-3"><label class="form-label" for="modal-auth-name">Name</label><input
-                      class="form-control" type="text" autocomplete="on" id="modal-auth-name"/></div>
-              <div class="mb-3"><label class="form-label" for="modal-auth-email">Email
-                address</label><input class="form-control" type="email" autocomplete="on"
-                                      id="modal-auth-email"/></div>
+              <div class="mb-3">
+                <label class="form-label" for="modal-auth-name">Name</label>
+                <input class="form-control" type="text" autocomplete="on" id="modal-auth-name"/>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="modal-auth-email">Email address</label>
+                <input class="form-control" type="email" autocomplete="on" id="modal-auth-email"/>
+              </div>
               <div class="row gx-2">
-                <div class="mb-3 col-sm-6"><label class="form-label"
-                                                  for="modal-auth-password">Password</label><input
-                        class="form-control" type="password" autocomplete="on"
-                        id="modal-auth-password"/></div>
-                <div class="mb-3 col-sm-6"><label class="form-label" for="modal-auth-confirm-password">Confirm
-                  Password</label><input class="form-control" type="password" autocomplete="on"
-                                         id="modal-auth-confirm-password"/></div>
+                <div class="mb-3 col-sm-6">
+                  <label class="form-label" for="modal-auth-password">Password</label>
+                  <input class="form-control" type="password" autocomplete="on" id="modal-auth-password"/>
+                </div>
+                <div class="mb-3 col-sm-6">
+                  <label class="form-label" for="modal-auth-confirm-password">Confirm Password</label>
+                  <input class="form-control" type="password" autocomplete="on" id="modal-auth-confirm-password"/>
+                </div>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="modal-auth-register-checkbox"/>

@@ -101,7 +101,7 @@
         /*doc.text("Hello world!", 10, 10);
         doc.save("a4.pdf");*/
 
-        var elementHTML = document.querySelector("#chartTest");
+        var elementHTML =  document.querySelector("#chartTest");
 
         doc.html(elementHTML, {
             callback: function (doc) {

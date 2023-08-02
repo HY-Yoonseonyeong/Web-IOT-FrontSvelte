@@ -1,88 +1,716 @@
 <script>
+    import '../../../scss/theme.scss'
     import {onMount, onDestroy} from "svelte";
-    import {PUBLIC_API_URL} from '$env/static/public'
+    import Chart from "chart.js/auto"
+    import {jsPDF} from "jspdf";
+    import html2canvas from 'html2canvas';
+    import {PUBLIC_API_URL} from "$env/static/public";
 
-    export let pageNumber = 0
+    let portfolio;
 
-    export let pageInfo = {
-        curIndex: 0,
-        totalCount: 0
-    }
+    let myChart
 
-    let _cssDisplay = ""
+    export let queryInfo;
 
-    onMount(async () => {
+    onMount(() => {
+        const ctx = portfolio.getContext('2d')
+
+        const plugin = {
+            id: 'custom_canvas_background_color',
+            beforeDraw: (chart) => {
+                const {ctx} = chart;
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-over';
+                /*ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, chart.width, chart.height);*/
+                ctx.restore();
+            }
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            plugins: [plugin],
+            options: {
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        ticks: {
+                            fontSize: 5,
+                            callback: function (label, index, labels) {
+                                /*return label+'%R.H.';*/
+                                return label + '';
+                            }
+                        },
+                        min: 30,
+                        max: 90,
+                        title: {
+                            display: true,
+                            text: '%R.H.'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        fontSize: 5,
+                        grid: {
+                            display: false
+                        },
+                        min: 10,
+                        max: 40,
+                        ticks: {
+                            callback: function (label, index, labels) {
+                                /*return label+'\u00B0C';*/
+                                return label + '';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '\u00B0C'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: false,
+                            maxRotation: 90,
+                            minRotation: 90,
+                            font: {
+                                size: 9,
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                },
+                borderRadius: '30',
+                responsive: true,
+                cutout: '95%',
+                spacing: 2,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        display: false,
+                        labels: {
+                            // usePointStyle: true,
+                            useLineStyle: true,
+                            /*padding: 20,*/
+                        }
+                    },
+                    title: {
+                        display: true,
+                        /*text: 'My Personal Portfolio'*/
+                    }
+                }
+            }
+        };
+
+        myChart = new Chart(ctx, config)
+        myChart.data.labels = tempdata.map(row => row.year)
+        /*myChart.data.datasets[0].borderDash =  [2, 2]*/
+        myChart.data.datasets[0].data = tempdata.map(row => row.count)
+        myChart.update()
     })
 
     onDestroy(() => {
     })
 
-    export const changePage = () => {
-        console.log("changePage")
+    let canvas
+
+    function test() {
+        const doc = new jsPDF('l', 'mm', [210, 297]);
+
+        /*doc.text("Hello world!", 10, 10);
+        doc.save("a4.pdf");*/
+
+        var elementHTML = document.querySelector("#chartTest");
+
+        doc.html(elementHTML, {
+            callback: function (doc) {
+                // Save the PDF
+                doc.save('document-html.pdf');
+            },
+            margin: [10, 10, 10, 10],
+            autoPaging: 'text',
+            x: 0,
+            y: 0,
+            width: 1500, //target width in the PDF document
+            windowWidth: 3500 //window width in CSS pixels
+        });
+
+        // portfolio = portfolio.width
+        var canvasHeight = portfolio.height
+        var canvasWidth = portfolio.width
     }
 
-    export const someFunc = () => console.log('someFunc');
+    const reqHistoryData = async (queryInfo) => {
 
-    const changeNumber = (pageNumber) => {
-        console.log("changeNumber : " + pageNumber)
+        console.log(queryInfo)
+
+        const response = await fetch(`${PUBLIC_API_URL}/kolas/report2`, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(queryInfo)
+        });
+
+        const data = await response.json()
+
+        console.log(data)
+
+
+        let sliceDate3 = ''
+
+        data.rows.forEach((row, index) => {
+            // console.log('Index: ' + index + ' Value: ' + number);
+
+            //console.log(row)
+            console.log(row.datetime)
+            if (0 !== index % 4) {
+                row.datetime = ''
+            } else {
+                let cDate = new Date(row.datetime)
+                cDate = cDate.setTime(cDate.getTime() - (9 * 60 * 60 * 1000))
+                cDate = new Date(cDate)
+                // let sDate = [cDate.getFullYear(), cDate.getMonth(), cDate.getDay()].join('-');
+
+                console.log(cDate.getDay())
+                console.log(new Date(row.datetime).toISOString().slice(0, 10))
+
+                let sliceDate2 = new Date(row.datetime).toISOString().slice(0, 10)
+
+                // row.datetime = sliceDate2
+
+                if (sliceDate3 !== sliceDate2) {
+                    row.datetime = sliceDate2
+                    sliceDate3 = sliceDate2
+                } else {
+                    let ampm = 'am'
+                    if (cDate.getHours() >= 12) {
+                        ampm = 'pm'
+                    }
+                    let hour = ('00' + cDate.getHours()).slice(-2)
+                    let min = ('00' + cDate.getMinutes()).slice(-2)
+
+                    row.datetime = [hour, min, ampm].join(':')
+                }
+            }
+        })
+
+
+        myChart.data.labels = data.rows.map(row => row.datetime)
+        myChart.data.datasets[0].yAxisID = 'y1'
+        myChart.data.datasets[0].data = data.rows.map(row => row.temp)
+
+        myChart.data.datasets[1].yAxisID = 'y'
+        myChart.data.datasets[1].borderDash = [5, 5]
+        myChart.data.datasets[1].data = data.rows.map(row => row.humid)
+
+        myChart.update()
     }
 
-    $: changeNumber(pageNumber)
 
+    const changeQueryInfo = (queryInfo) => {
+        console.log("changeQueryInfo")
 
-    const changePageInfo = (pageInfo) => {
-        console.log("changePageInfo")
-        console.log(pageInfo)
-
-        if (pageInfo.totalCount < 21) {
-            _cssDisplay = "display-none"
-        } else {
-            _cssDisplay = ""
+        console.log(queryInfo)
+        if (queryInfo.aei) {
+            reqHistoryData(queryInfo)
         }
+
     }
 
-    $: changePageInfo(pageInfo)
+    $: changeQueryInfo(queryInfo)
 
+    const tempdata = [
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 80},
+        {year: "", count: 90},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 20}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 60}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 50},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+        {year: "", count: 100},
+
+        {year: "20:10 PM", count: 200},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+        {year: "20:10 PM", count: 100},
+        {year: "", count: 100}, {year: "", count: 100}, {year: "", count: 100},
+
+
+    ];
+
+
+    const data = {
+        labels: tempdata.map(row => row.year),
+
+        datasets: [
+            {
+                label: '온도',
+            },
+            {
+                label: '습도',
+            },
+        ]
+    };
+
+    let h2c
+    let docPdf
+    const clickCreatePdf = () => {
+        html2canvas(docPdf, {
+            quality: 1,
+            scale: 2,
+        }).then((canvas) => {
+            h2c = canvas
+            console.log("html2canvas")
+            var img = canvas.toDataURL("image/png"); //image data of canvas
+            var doc = new jsPDF('l', 'mm', 'a4');
+            doc.addImage(img, "PNG", 0, 0, 297, 210);
+            doc.save('test.pdf');
+        })
+    }
 </script>
 
-<div class="card-footer {_cssDisplay}">
-  <div class="d-flex justify-content-center">
-    <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev">
-      <span class="fas fa-chevron-left"></span>
-    </button>
-    <ul class="pagination mb-0 ">
-      <li class="active">
-        <button class="page" type="button" data-i="1" data-page="11">1</button>
-      </li>
-    </ul>
-    <ul class="pagination mb-0">
-      <li>
-        <button class="page" type="button" data-i="1" data-page="11">2</button>
-      </li>
-    </ul>
-    <ul class="pagination mb-0">
-      <li>
-        <button class="page" type="button" data-i="1" data-page="11">3</button>
-      </li>
-    </ul>
-    <ul class="pagination mb-0">
-      <li>
-        <button class="page" type="button" data-i="1" data-page="11">4</button>
-      </li>
-    </ul>
-    <ul class="pagination mb-0">
-      <li>
-        <button class="page" type="button" data-i="1" data-page="11">5</button>
-      </li>
-    </ul>
-    <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next">
-      <span class="fas fa-chevron-right"></span>
-    </button>
+<svelte:head>
+  <title>리포트 테스트</title>
+  <meta name="description" content="About this app"/>
+</svelte:head>
+
+<div>test4</div>
+<button on:click={test}>pdf</button>
+<button on:click={clickCreatePdf}>Create Pdf</button>
+
+
+<div class="h-100" id="chartTest" style="min-height: 250px; display:none">
+  <div>test</div>
+  <canvas bind:this={portfolio}></canvas>
+</div>
+
+<div style="width: 500px;">
+  <div id="content">
+    <h1 style="color:red; width: 400px; height: 50px; font-size: 18px">안녕하세요</h1>
+    <p>PDF 문서의 내용입니다</p>
+  </div>
+</div>
+
+<!--// 2480px(가로) X 3508px-->
+
+<div>
+  <canvas bind:this={h2c}></canvas>
+
+</div>
+
+<div class="page" bind:this={docPdf} style="backgound-color: white">
+  <div style="background-color: white">
+    <div class="flex-center mb-6" style="display:flex">
+      <div class="item1">
+        <span style="font-size: 24px">온습도 기록표</span>
+      </div>
+      <div>
+        <table class="" style=" border: 1px solid black;">
+          <thead class="">
+          <tr>
+            <th class="align-middle" style="width: 110px; text-align: center;">작성</th>
+            <th class="align-middle" style="width: 110px; text-align: center;">승인</th>
+          </tr>
+          </thead>
+          <tbody class="list">
+          <tr style="height: 60px">
+            <td></td>
+            <td></td>
+          </tr>
+          <tr style="height: 30px">
+            <td></td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="color-red">
+      <div class="align-center mb-2">제2실</div>
+      <div class="align-center mb-3">전기 표준실(27.5m2)</div>
+      <div>
+        <canvas bind:this={portfolio}></canvas>
+      </div>
+      <div style="text-align: center; font-size: 12px">
+        <span><div class="test4"><hr></div>온도</span>
+        <span><div class="test4"><hr class="test3"></div>습도</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <style>
-    .display-none {
-        display: none
+
+    .page {
+        /*width: 21cm;
+        min-height: 29.7cm;*/
+        width: 29.7cm;
+        min-height: 21cm;
+        padding: 1cm 1cm 1cm 1cm;
     }
+
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    @media print {
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .color-red {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    .align-center {
+        display: table;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /*/.d-inline-block*/
+
+    .item1 {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        transform: translateX(120px); /*D element Width[if needed]*/
+    }
+
+    table {
+        width: 100%;
+        /*border: 1px solid #444444;*/
+        /*border-collapse: collapse;*/
+    }
+
+    th, td {
+        border: 1px solid #444444;
+    }
+
+    hr {
+        border: none;
+        border-top: 2px solid black;
+    }
+
+    .test3 {
+        border: none;
+        border-top: 2px dotted black;
+    }
+
+    .test4 {
+        width: 50px;
+        display: inline-block;
+    }
+
 </style>
