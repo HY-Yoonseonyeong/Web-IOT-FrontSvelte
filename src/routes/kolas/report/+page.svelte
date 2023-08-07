@@ -137,8 +137,8 @@
         let start = new Date();
         let end = new Date();
 
-        start.setTime(periodStart.getTime() + (0*60*60*1000))
-        end.setTime(date.getTime() + (0*60*60*1000))
+        start.setTime(periodStart.getTime() + (0 * 60 * 60 * 1000))
+        end.setTime(date.getTime() + (0 * 60 * 60 * 1000))
 
 
         queryParams['periodStart'] = start
@@ -151,7 +151,7 @@
             return
         }
 
-        queryInfo =  queryParams;
+        queryInfo = queryParams;
 
         return;
 
@@ -311,10 +311,8 @@
         </div>
       </div>
       <div style="display: none">
-      <PdfExport queryInfo={queryInfo}/>
+        <PdfExport queryInfo={queryInfo}/>
       </div>
-
-      <!--footer-->
       <Footer/>
     </div>
   </div>

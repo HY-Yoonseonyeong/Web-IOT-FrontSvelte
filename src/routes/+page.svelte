@@ -280,7 +280,8 @@
       <div class="row">
         <div class="col-lg-4">
           <h5 class="text-uppercase text-white opacity-85 mb-3">한영넉스 AI 문래 연구소</h5>
-          <p class="text-600">한영넉스</p>
+          <p class="text-600">한영넉스 문래 AI 연구소는 2021년 설립되어
+          온도, 센서 및 자동제어 계측 분야를 연구하고 있습니다.</p>
           <div class="icon-group mt-4 display-none">
             <a class="icon-item bg-white text-facebook"><span class="fab fa-facebook-f"></span></a>
             <a class="icon-item bg-white text-twitter"><span class="fab fa-twitter"></span></a>
@@ -289,7 +290,7 @@
             <a class="icon-item bg-white"><span class="fab fa-medium-m"></span></a>
           </div>
         </div>
-        <div class="col ps-lg-6 ps-xl-8 display-none">
+        <div class="col ps-lg-6 ps-xl-8">
           <div class="row mt-5 mt-lg-0">
             <div class="col-6 col-md-3 display-none">
               <h5 class="text-uppercase text-white opacity-85 mb-3">Company</h5>
@@ -317,24 +318,25 @@
               </ul>
             </div>
             <div class="col mt-5 mt-md-0">
-              <h5 class="text-uppercase text-white opacity-85 mb-3">From the Blog</h5>
+              <h5 class="text-uppercase text-white opacity-85 mb-3">한영넉스 주소</h5>
               <ul class="list-unstyled">
                 <li>
-                  <h5 class="fs-0 mb-0"><a class="link-600"> Interactive graphs and charts</a></h5>
-                  <p class="text-600 opacity-50">Jan 15 &bull; 8min read </p>
+                  <h5 class="fs-0 mb-0"><a class="link-600">본사</a></h5>
+                  <p class="text-600 opacity-50">(22121) 인천광역시 미추홀구 길파로 71번길 28</p>
                 </li>
                 <li>
-                  <h5 class="fs-0 mb-0"><a class="link-600"> Lifetime free updates</a></h5>
-                  <p class="text-600 opacity-50">Jan 5 &bull; 3min read &starf;</p>
+                  <h5 class="fs-0 mb-0"><a class="link-600">문래 AI 연구소</a></h5>
+                  <p class="text-600 opacity-50">(07290) 서울 영등포구 도림로125길 29</p>
                 </li>
                 <li>
-                  <h5 class="fs-0 mb-0"><a class="link-600"> Merry Christmas From us</a></h5>
-                  <p class="text-600 opacity-50">Dec 25 &bull; 2min read</p>
+                  <h5 class="fs-0 mb-0"><a class="link-600">대구 영업소</a></h5>
+                  <p class="text-600 opacity-50">(41504) 대구광역시 북구 유통단지로 103 건축자재관 1층 1호</p>
                 </li>
                 <li>
-                  <h5 class="fs-0 mb-0"><a class="link-600"> The New Falcon Theme</a></h5>
-                  <p class="text-600 opacity-50">Dec 23 &bull; 10min read </p>
+                  <h5 class="fs-0 mb-0"><a class="link-600">부산 영업소</a></h5>
+                  <p class="text-600 opacity-50">(46977) 부산광역시 사상구 괘감로37 사상산업용품 유통상가 2동 121호</p>
                 </li>
+
               </ul>
             </div>
           </div>
@@ -349,18 +351,21 @@
   <section class="py-0 bg-dark" data-bs-theme="light">
     <div>
       <hr class="my-0 text-600 opacity-25"/>
-      <!--<div class="container py-3">
-        <div class="row justify-content-between fs&#45;&#45;1">
+      <div class="container py-3">
+        <div class="row justify-content-between fs--1">
           <div class="col-12 col-sm-auto text-center">
-            <p class="mb-0 text-600 opacity-85">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none"/> 2023 &copy; <a class="text-white opacity-85" href="https://themewagon.com">Themewagon</a></p>
+            <p class="mb-0 text-600 opacity-85">Copyright &copy HANYOUNG NUX. All Rights reserved.
+              <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none"/> 2023
+              <a class="text-white opacity-85" href="https://hanyoungnux.co.kr/">Hanyoungnux</a>
+            </p>
           </div>
           <div class="col-12 col-sm-auto text-center">
-            <p class="mb-0 text-600 opacity-85">v3.16.0</p>
+            <p class="mb-0 text-600 opacity-85">v0.0.1</p>
           </div>
         </div>
-      </div>-->
-    </div><!-- end of .container-->
-  </section><!-- <section> close ============================-->
+      </div>
+    </div>
+  </section>
   <!-- ============================================-->
 
   <div class="modal fade" id="authentication-modal" tabindex="-1" role="dialog" aria-labelledby="authentication-modal-label" aria-hidden="true">

@@ -44,7 +44,6 @@
 
         // navbar-vertical
         //
-
         /*var navbarPosition = localStorage.getItem('navbarPosition');
         var navbarVertical = document.querySelector('.navbar-vertical');
         var navbarTopVertical = document.querySelector('.content .navbar-top');

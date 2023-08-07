@@ -503,7 +503,6 @@
   </div>
 </div>
 
-<!--// 2480px(가로) X 3508px-->
 
 <div>
   <canvas bind:this={h2c}></canvas>

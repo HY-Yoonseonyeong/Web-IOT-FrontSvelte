@@ -250,8 +250,8 @@
   <section class="py-0 bg-dark" data-bs-theme="light">
     <div>
       <hr class="my-0 text-600 opacity-25"/>
-      <!--<div class="container py-3">
-        <div class="row justify-content-between fs&#45;&#45;1">
+      <div class="container py-3">
+        <div class="row justify-content-between fs--1">
           <div class="col-12 col-sm-auto text-center">
             <p class="mb-0 text-600 opacity-85">Thank you for creating with Falcon <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none"/> 2023 &copy; <a class="text-white opacity-85" href="https://themewagon.com">Themewagon</a></p>
           </div>
@@ -259,7 +259,7 @@
             <p class="mb-0 text-600 opacity-85">v3.16.0</p>
           </div>
         </div>
-      </div>-->
+      </div>
     </div><!-- end of .container-->
   </section><!-- <section> close ============================-->
   <!-- ============================================-->

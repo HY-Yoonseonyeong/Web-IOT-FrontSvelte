@@ -138,27 +138,8 @@
         const ctx = portfolio.getContext('2d')
         myChart = new Chart(ctx, config)
 
-
-        clickPeriodQuery();
-        queryMobiusHit()
-
-        const canvas = document.querySelector('#draw1');
-
-        if (!canvas.getContext) {
-            return;
-        }
-        const ctx2 = canvas.getContext('2d');
-
-        // set line stroke and line width
-        ctx2.strokeStyle = 'red';
-        ctx2.lineWidth = 3;
-
-        // draw a red line
-        ctx2.beginPath();
-        ctx2.moveTo(0, 0);
-        ctx2.lineTo(100, 0);
-        ctx2.stroke();
-
+        await clickPeriodQuery();
+        await queryMobiusHit()
     })
 
     // Chart Data Query
