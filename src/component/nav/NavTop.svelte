@@ -58,8 +58,9 @@
     <li class="nav-item dropdown">
       <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait"
          id="navbarDropdownNotification" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-         aria-expanded="false" data-hide-on-body-scroll="data-hide-on-body-scroll"><span
-              class="fas fa-bell" data-fa-transform="shrink-6" style="font-size: 33px;"></span></a>
+         aria-expanded="false" data-hide-on-body-scroll="data-hide-on-body-scroll">
+        <span class="fas fa-bell" data-fa-transform="shrink-6" style="font-size: 33px;"></span>
+      </a>
       <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end dropdown-menu-card dropdown-menu-notification dropdown-caret-bg"
            aria-labelledby="navbarDropdownNotification">
         <div class="card card-notification shadow-none">
@@ -87,8 +88,7 @@
                   <div class="notification-body">
                     <p class="mb-1"><strong>Emma Watson</strong> replied to your comment
                       : "Hello world 😍"</p>
-                    <span class="notification-time"><span class="me-2" role="img"
-                                                          aria-label="Emoji">💬</span>Just now</span>
+                    <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">💬</span>Just now</span>
                   </div>
                 </a>
               </div>
@@ -125,13 +125,11 @@
                    href="#">
                   <div class="notification-avatar">
                     <div class="avatar avatar-xl me-3">
-                      <img class="rounded-circle" src="../assets/img/logos/oxford.png"
-                           alt=""/>
+                      <img class="rounded-circle" src="../assets/img/logos/oxford.png" alt=""/>
                     </div>
                   </div>
                   <div class="notification-body">
-                    <p class="mb-1"><strong>University of Oxford</strong> created an
-                      event : "Causal Inference Hilary 2019"</p>
+                    <p class="mb-1"><strong>University of Oxford</strong> created an event : "Causal Inference Hilary 2019"</p>
                     <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">✌️</span>1w</span>
                   </div>
                 </a>
@@ -144,8 +142,7 @@
                     </div>
                   </div>
                   <div class="notification-body">
-                    <p class="mb-1"><strong>James Cameron</strong> invited to join the
-                      group: United Nations International Children's Fund</p>
+                    <p class="mb-1"><strong>James Cameron</strong> invited to join the group: United Nations International Children's Fund</p>
                     <span class="notification-time"><span class="me-2" role="img" aria-label="Emoji">🙋‍</span>2d</span>
                   </div>
                 </a>
@@ -158,7 +155,7 @@
       </div>
     </li>
     <li class="nav-item dropdown">
-      <a class="nav-link pe-0 ps-2"  role="button"
+      <a class="nav-link pe-0 ps-2" role="button"
          data-bs-toggle="dropdown" aria-haspopup="true"
          aria-expanded="false">
         <div class="avatar avatar-xl">

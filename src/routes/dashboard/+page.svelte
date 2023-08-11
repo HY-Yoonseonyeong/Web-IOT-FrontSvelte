@@ -14,13 +14,9 @@
     import NavTop from "../../component/nav/NavTop.svelte";
     import DeviceConChange from "./DeviceConChange.svelte";
 
-
     /*import '../../../static/vendors/list.js'*/
 
     function onclick() {
-        console.log("click me");
-
-        // console.log(localStorage.getItem('token'))
 
         const fetchData = (async () => {
             const response = await fetch(`${PUBLIC_API_URL}/users/me`, {
@@ -41,27 +37,6 @@
 
     onMount(async () => {
         console.log("OnMount")
-
-        // navbar-vertical
-        //
-        /*var navbarPosition = localStorage.getItem('navbarPosition');
-        var navbarVertical = document.querySelector('.navbar-vertical');
-        var navbarTopVertical = document.querySelector('.content .navbar-top');
-        var navbarTop = document.querySelector('[data-layout] .navbar-top:not([data-double-top-nav]');
-        var navbarDoubleTop = document.querySelector('[data-double-top-nav]');
-        var navbarTopCombo = document.querySelector('.content [data-navbar-top="combo"]');*/
-
-        /*        navbarVertical.removeAttribute('style');
-                navbarTopCombo.removeAttribute('style');
-                navbarTop.remove(navbarTop);
-                navbarTopVertical.remove(navbarTopVertical);
-                navbarDoubleTop.remove(navbarDoubleTop);*/
-
-        /*navbarVertical.removeAttribute('style');
-        navbarTopVertical.removeAttribute('style');
-        navbarTop.remove(navbarTop);
-        navbarDoubleTop.remove(navbarDoubleTop);
-        navbarTopCombo.remove(navbarTopCombo);*/
     })
 
     const clickLogout = () => {

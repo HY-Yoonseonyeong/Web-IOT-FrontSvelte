@@ -1,0 +1,130 @@
+<script>
+    import '../../scss/theme.scss'
+    import NavSide from "../../component/nav/NavSide.svelte"
+    import NavTop from "../../component/nav/NavTop.svelte";
+    import Footer from "../../component/nav/Footer.svelte";
+    import {onMount, onDestroy} from "svelte";
+    import {PUBLIC_API_URL} from "$env/static/public";
+
+    onMount(() => {
+    })
+
+    onDestroy(() => {
+    })
+
+    const clickDeviceQuery = () => {
+        console.log("clickDeviceQuery")
+    }
+
+</script>
+
+<svelte:head>
+  <title>디바이스 리스트 | HYNUX-IOT</title>
+  <meta name="description" content="About this app"/>
+</svelte:head>
+
+
+<main class="main" id="top">
+  <div class="container" data-layout="container">
+    <NavSide/>
+    <div class="content">
+      <NavTop/>
+
+      <div class="card mb-3">
+        <div class="card" id="ticketsTable" data-list=''>
+          <div class="card-header border-bottom border-200 px-0">
+            <div class="d-lg-flex justify-content-between">
+              <div class="row flex-between-center gy-2 px-x1">
+                <div class="col-auto pe-0">
+                  <h6 class="mb-0">조회건수 : <span> 건</span></h6>
+                </div>
+              </div>
+              <div class="border-bottom border-200 my-3"></div>
+              <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
+                <div class="d-flex align-items-center" id="table-ticket-replace-element">
+                  <button class="btn btn-falcon-default btn-sm" type="button">
+                    <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">디바이스 추가</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive scrollbar">
+              <table class="table table-sm mb-0 fs--1 table-view-tickets">
+                <thead class="text-800 bg-light">
+                <tr>
+                  <th class=" align-middle ps-2">ID</th>
+                  <th class=" align-middle">종류</th>
+                  <th class=" align-middle ps-2" style="min-width: 100px">디바이스명</th>
+                  <th class=" align-middle">rn</th>
+                  <th class=" align-middle">IP</th>
+                  <th class=" align-middle text-end">Mac 주소</th>
+                  <th class=" align-middle text-end">수정</th>
+                </tr>
+                </thead>
+                <tbody class="list" id="table-ticket-body">
+                <!--{#each historyRows as row, index}
+                  <tr>
+                    <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{row.datetime}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
+                    <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
+                    <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
+                  </tr>
+                {/each}-->
+                </tbody>
+              </table>
+              <div class="text-center d-none" id="tickets-table-fallback">
+                <p class="fw-bold fs-1 mt-3">No ticket found</p>
+              </div>
+            </div>
+          </div>
+          <!--<Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>-->
+        </div>
+      </div>
+      <Footer/>
+    </div>
+  </div>
+</main>
+
+<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#error-modal">Launch demo modal</button>
+<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
+    <div class="modal-content position-relative">
+      <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+        <button class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+          <h4 class="mb-1">디바이스 등록</h4>
+        </div>
+        <div class="p-4 pb-0">
+          <form>
+            <div class="mb-3">
+              <label class="col-form-label" for="recipient-name1">디바이스 ID 입력:</label>
+              <input class="form-control" id="recipient-name1" type="text" placeholder="ID를 입력해 주세요."/>
+            </div>
+            <div class="mb-3">
+              <label class="col-form-label" for="recipient-name2">리소스명(rn) 입력:</label>
+              <input class="form-control" id="recipient-name2" type="text"/>
+            </div>
+            <div class="mb-3">
+              <label class="col-form-label" for="recipient-name3">디바이스명:</label>
+              <input class="form-control" id="recipient-name3" type="text"/>
+            </div>
+            <div class="mb-3">
+              <label class="col-form-label" for="message-text">Message:</label>
+              <textarea class="form-control" id="message-text"></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" on:click={clickDeviceQuery}>조회</button>
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">등록</button>
+        <button class="btn btn-primary" type="button">취소</button>
+      </div>
+    </div>
+  </div>
+</div>

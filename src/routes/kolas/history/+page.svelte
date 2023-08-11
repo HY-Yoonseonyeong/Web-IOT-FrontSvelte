@@ -288,7 +288,6 @@
           <Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>
         </div>
       </div>
-      <!--footer-->
       <Footer/>
     </div>
   </div>

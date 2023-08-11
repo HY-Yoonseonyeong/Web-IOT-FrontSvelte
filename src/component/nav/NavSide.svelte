@@ -76,7 +76,7 @@
               <span class="nav-link-text ps-1">디바이스 조회</span>
             </div>
           </a>
-          <a class="nav-link" on:click={noService} role="button">
+          <a class="nav-link" class:active={$page.url.pathname === '/devicelist'} href="../devicelist">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-tablet"></span></span>
               <span class="nav-link-text ps-1">디바이스 관리</span>
@@ -183,7 +183,7 @@
               <hr class="mb-0 navbar-vertical-divider"/>
             </div>
           </div>
-          <a class="nav-link" on:click={noService} role="button">
+          <a class="nav-link" class:active={$page.url.pathname === '/usersetting'} href="../usersetting">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-cog"></span></span>
               <span class="nav-link-text ps-1">설정</span>
