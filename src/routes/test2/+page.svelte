@@ -5,17 +5,7 @@
 
 	onDestroy(()=>{
 
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
-		console.log("sdfasdfa")
+
 
 	})
 
