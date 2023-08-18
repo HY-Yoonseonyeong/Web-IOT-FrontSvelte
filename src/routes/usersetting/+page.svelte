@@ -5,8 +5,12 @@
     import NavTop from "../../component/nav/NavTop.svelte";
     import Footer from "../../component/nav/Footer.svelte";
     import {onMount, onDestroy} from "svelte";
+    import {PUBLIC_API_URL} from "$env/static/public";
+
+    let userName, userNick, userEmail
 
     onMount(() => {
+        getUserInfo()
     })
 
     onDestroy(() => {
@@ -15,6 +19,19 @@
     // 프로필 변경
     // 비밀번호 변경
     // 회원 탈퇴
+
+    const getUserInfo = async () => {
+
+        const response = await fetch(`${PUBLIC_API_URL}/users/p`, {headers: {"Content-Type": "application/json"}})
+        const data = await response.json()
+        console.log(data)
+
+        userName = data.name
+        userNick = data?.nick
+        userEmail = data.email
+
+        //currentUser?.
+    }
 
 </script>
 
@@ -42,9 +59,17 @@
                 <input class="d-none" id="upload-cover-image" type="file"/><label class="cover-image-file-input" for="upload-cover-image"><span class="fas fa-camera me-2"></span><span>Change cover photo</span></label>
               </div>
               <div class="avatar avatar-5xl avatar-profile shadow-sm img-thumbnail rounded-circle">
-                <div class="h-100 w-100 rounded-circle overflow-hidden position-relative"><img src="../../assets/img/team/2.jpg" width="200" alt="" data-dz-thumbnail="data-dz-thumbnail"/><input class="d-none" id="profile-image" type="file"/><label class="mb-0 overlay-icon d-flex flex-center"
-                                                                                                                                                                                                                                                        for="profile-image"><span
-                        class="bg-holder overlay overlay-0"></span><span class="z-1 text-white dark__text-white text-center fs--1"><span class="fas fa-camera"></span><span class="d-block">Update</span></span></label></div>
+                <div class="h-100 w-100 rounded-circle overflow-hidden position-relative">
+                  <img src="../../assets/img/team/2.jpg" width="200" alt="" data-dz-thumbnail="data-dz-thumbnail"/>
+                  <input class="d-none" id="profile-image" type="file"/>
+                  <label class="mb-0 overlay-icon d-flex flex-center" for="profile-image">
+                    <span class="bg-holder overlay overlay-0"></span>
+                    <span class="z-1 text-white dark__text-white text-center fs--1">
+                      <span class="fas fa-camera"></span>
+                      <span class="d-block">Update</span>
+                    </span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -58,10 +83,10 @@
             </div>
             <div class="card-body bg-light">
               <form class="row g-3">
-                <div class="col-lg-6"><label class="form-label" for="first-name">이름</label><input class="form-control" id="first-name" type="text" value=""/></div>
-                <div class="col-lg-6"><label class="form-label" for="last-name">닉네임</label><input class="form-control" id="last-name" type="text" value=""/></div>
-                <div class="col-lg-6"><label class="form-label" for="email1">이메일 주소</label><input class="form-control" id="email1" type="text" value=""/></div>
-                <div class="col-lg-6"><label class="form-label" for="email2">연락처</label><input class="form-control" id="email2" type="text" value=""/></div>
+                <div class="col-lg-6"><label class="form-label" for="user-name">이름</label><input class="form-control" id="user-name" type="text" value="{userName}" disabled/></div>
+                <div class="col-lg-6"><label class="form-label" for="user-nick">닉네임</label><input class="form-control" id="user-nick" type="text" value="{userNick}"/></div>
+                <div class="col-lg-6"><label class="form-label" for="user-email">이메일 주소</label><input class="form-control" id="user-email" type="text" value="{userEmail}" disabled/></div>
+                <div class="col-lg-6"><label class="form-label" for="user-hp">연락처</label><input class="form-control" id="user-hp" type="text" value=""/></div>
                 <div class="col-lg-12"><label class="form-label" for="email3"></label><input class="form-control" id="email3" type="text" value=""/></div>
                 <div class="col-12 d-flex justify-content-end">
                   <button class="btn btn-primary" type="submit">변경</button>
@@ -69,7 +94,6 @@
               </form>
             </div>
           </div>
-
         </div>
         <div class="col-lg-4 ps-lg-2">
           <div class="sticky-sidebar">

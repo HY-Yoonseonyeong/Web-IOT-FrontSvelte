@@ -4,14 +4,8 @@ import {goto} from "$app/navigation";
 /** @type {import('./$types').PageLoad} */
 export function load({}) {
     console.log("load")
-    console.log("load")
-    console.log("load")
-    console.log("load")
-    console.log("load")
 
     // const tokentest =  localStorage.getItem('hynuxiot-token')
-
-
 
     const wait=(ms:any)=>new Promise(resolve => setTimeout(resolve, ms));
 
@@ -27,7 +21,6 @@ export function load({}) {
     });
 
     wait(2*1000).then(() => console.log("waited for 2 seconds"));
-
 
     /*    (async () => {
             console.time("Slept for")
