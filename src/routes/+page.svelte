@@ -143,7 +143,6 @@
               </label>
               <label class="mb-0 py-2 theme-switch-toggle-dark d-lg-none" for="themeControlToggle">
                 <span>Switch to dark theme</span>
-              </label>
             </div>
           </li>-->
           {#if userToken}

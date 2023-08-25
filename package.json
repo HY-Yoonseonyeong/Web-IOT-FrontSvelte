@@ -39,7 +39,8 @@
 		"chart.js": "^4.2.1",
 		"flatpickr": "^4.6.13",
 		"html2canvas": "^1.4.1",
-		"jspdf": "^2.5.1"
+		"jspdf": "^2.5.1",
+		"svelte-flatpickr": "^3.3.2"
 	},
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",

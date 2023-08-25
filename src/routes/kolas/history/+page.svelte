@@ -6,8 +6,9 @@
     import Pagination from "./Pagination.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    import flatpickr from "flatpickr";
-    import { browser } from "$app/environment";
+    //import flatpickr from "flatpickr";
+    import Flatpickr from 'svelte-flatpickr'
+    import 'flatpickr/dist/flatpickr.css';
 
     let historyCount = 0
     let historyRows = new Array()
@@ -31,6 +32,11 @@
     let timepicker3
     let ref;
     let calendarPicker
+
+    const options = {
+        mode: "range",
+
+    };
 
     onMount(async () => {
         calendarPicker = flatpickr(ref, {
@@ -162,7 +168,7 @@
 <svelte:head>
   <title>Kolas 기간조회 | HYNUX-IOT</title>
   <meta name="description" content="About this app"/>
-  <link href="../vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>
+  <!--<link href="../vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>-->
 </svelte:head>
 
 
@@ -196,7 +202,8 @@
                   <label class="col-sm-2 col-form-label">날짜 기간 설정</label>
                   <div class="col-sm-10">
                     <!--{#if browser}-->
-                    <input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <Flatpickr {options} class="form-control" name="date" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <!--<input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>-->
                     <!--<input bind:this={ref} />-->
                     <!--{/if}-->
                   </div>

@@ -47,7 +47,7 @@
 </script>
 
 
-<div class="col-xxl-9 col-md-12">
+<div class="col-md-12">
   <div class="card z-1" id="recentPurchaseTable" data-list=''>
     <!-- data-list='{"valueNames":["name","email","product","payment","amount"],"page":7,"pagination":true}'>-->
     <div class="card-header">
