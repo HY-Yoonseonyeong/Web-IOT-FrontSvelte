@@ -10,7 +10,8 @@
     let userName, userNick, userEmail
 
     onMount(() => {
-        getUserInfo()
+        // getUserInfo()
+        meCheck()
     })
 
     onDestroy(() => {
@@ -33,11 +34,27 @@
         //currentUser?.
     }
 
+    //
+
+    const meCheck = async () =>  {
+        console.log(localStorage.getItem('hynuxiot-token'))
+
+        const response = await fetch(`${PUBLIC_API_URL}/users/mec`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization" : localStorage.getItem('hynuxiot-token')}
+        })
+
+        const data = await response.json()
+
+        console.log(data)
+    }
+
 </script>
 
 <svelte:head>
   <title>회원 정보 설정 | HYNUX-IOT</title>
-  <meta name="description" content="About this app"/>
+  <meta name="" content=""/>
 </svelte:head>
 
 

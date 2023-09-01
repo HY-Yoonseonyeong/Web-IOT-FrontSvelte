@@ -42,7 +42,7 @@
               <div class="border-bottom border-200 my-3"></div>
               <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
                 <div class="d-flex align-items-center" id="table-ticket-replace-element">
-                  <button class="btn btn-falcon-default btn-sm" type="button">
+                  <button class="btn btn-falcon-default btn-sm" data-bs-toggle="modal" data-bs-target="#error-modal" type="button">
                     <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">디바이스 추가</span>
                   </button>
                 </div>
@@ -88,7 +88,7 @@
   </div>
 </main>
 
-<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#error-modal">Launch demo modal</button>
+<!--<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#error-modal">Launch demo modal</button>-->
 <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
     <div class="modal-content position-relative">

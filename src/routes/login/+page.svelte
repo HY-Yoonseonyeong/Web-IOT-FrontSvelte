@@ -11,10 +11,10 @@
     console.log("svelte load")
 
     let userToken
-    onMount(()=>{
+    onMount(() => {
         console.log("svelte onMount")
 
-        const userToken =  localStorage.getItem('hynuxiot-token')
+        const userToken = localStorage.getItem('hynuxiot-token')
         if (userToken) {
             goto('/')
         }
@@ -30,21 +30,20 @@
     }
 
 
-    const wait=ms=>new Promise(resolve => setTimeout(resolve, ms));
+    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    function failureCallback(){
+    function failureCallback() {
         console.log("This is failure callback");
     }
 
-    wait(4*1000).then(() => {
+    wait(4 * 1000).then(() => {
         console.log("waited for 4 seconds");
         throw new Error("error occurred");
     }).catch(() => {
         failureCallback();
     });
 
-    wait(2*1000).then(() => console.log("waited for 2 seconds"));
-
+    wait(2 * 1000).then(() => console.log("waited for 2 seconds"));
 
 
     function onSubmitLogin(e) {
@@ -118,7 +117,6 @@
   <title>Login | HYNUX-IOT</title>
   <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
-
 
 
 <!-- ===============================================-->

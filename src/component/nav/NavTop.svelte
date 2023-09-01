@@ -6,7 +6,7 @@
     let userChar = "H"
 
     onMount(() => {
-        queryUserName().then((data) => {
+        /*queryUserName().then((data) => {
             console.log("queryUserName")
             console.log(data)
 
@@ -17,8 +17,7 @@
                     userChar = split[0]
                 }
             }
-            // usedDiskSize = Math.round((data / 1024) / 1024);
-        })
+        })*/
     })
 
     const queryUserName = async () => {
