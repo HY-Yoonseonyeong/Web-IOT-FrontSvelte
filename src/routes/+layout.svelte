@@ -1,16 +1,9 @@
 <script>
-    // import Header from './Header.svelte';
-    // import './styles.css';
-    import {handle} from '../hooks.sever'
-
+  import "../scss/theme.scss"
 </script>
 
 <div class="app">
-  <!--<Header />-->
   <slot/>
-  <!--<footer>
-    <p>HYNUX-IOT 2023 ©<a href="https://hynux.co.kr/">HYNUX</a></p>
-  </footer>-->
 </div>
 
 <style>

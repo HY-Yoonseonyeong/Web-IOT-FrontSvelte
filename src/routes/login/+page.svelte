@@ -1,58 +1,27 @@
 <script>
-    import '../../scss/theme.scss'
     import {goto} from "$app/navigation";
     import {onMount} from "svelte";
-    import {browser} from "$app/environment";
     import {PUBLIC_API_URL} from '$env/static/public'
 
-
-    console.log("svelte load")
-    console.log("svelte load")
-    console.log("svelte load")
-
-    let userToken
     onMount(() => {
-        console.log("svelte onMount")
-
         const userToken = localStorage.getItem('hynuxiot-token')
         if (userToken) {
             goto('/')
         }
     })
 
-    if (!browser) {
-        console.log("!browser")
-        // console.log(localStorage.getItem('hynuxiot-token'))
-
-    } else {
-        console.log("browser")
-        console.log(localStorage.getItem('hynuxiot-token'))
-    }
-
-
-    const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-    function failureCallback() {
-        console.log("This is failure callback");
-    }
-
-    wait(4 * 1000).then(() => {
-        console.log("waited for 4 seconds");
-        throw new Error("error occurred");
-    }).catch(() => {
-        failureCallback();
-    });
-
-    wait(2 * 1000).then(() => console.log("waited for 2 seconds"));
-
-
-    function onSubmitLogin(e) {
+    const onSubmitLogin = (e) => {
         const formData = new FormData(e.target);
         const data = {};
 
         for (let field of formData) {
             const [key, value] = field;
             data[key] = value;
+
+            if (!value) {
+                alert("입력 정보가 잘못되었습니다.")
+                return
+            }
         }
 
         const fetchData = (async () => {
@@ -66,29 +35,23 @@
                 if (!response.ok) //
                     throw new Error(response.statusText);
 
-                console.log(response)
+                const jsonData = await response.json();
 
-                const fetchData = await response.json();
-
-                if (fetchData.error) {
-                    alert(fetchData.message)
+                if (jsonData.error) {
+                    alert(jsonData.msg)
                 } else {
                     // Login
-                    localStorage.setItem('hynuxiot-token', fetchData.hynuxiot_token)
+                    localStorage.setItem('hynuxiot-token', jsonData.hynuxiot_token)
                     alert("로그인 완료 :)")
-                    goto('./dashboard')
+                    await goto('./dashboard')
                 }
             } catch (err) {
-                console.log("조회 에러")
-                alert("조회 에러")
+                alert("조회 에러!")
             }
         })()
     }
 
-    /**
-     * 비밀번호 찾기
-     */
-    const clickFindPassword = () => {
+    /*const clickFindPassword = () => {
         // 이메일 유효성 확인
         const checkUserMail = (async () => {
             try {
@@ -105,12 +68,7 @@
                 console.log(e)
             }
         })()
-    }
-
-    const notService = () => {
-        alert("준비중입니다.")
-    }
-
+    }*/
 </script>
 
 <svelte:head>
