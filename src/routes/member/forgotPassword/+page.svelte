@@ -8,7 +8,7 @@
 
     onMount(() => {
         console.log($page.path)
-        console.log(window.location)
+        //console.log(window.location)
 
     })
 
@@ -46,7 +46,7 @@
 
                 // goto(`?${query.toString()}`);
 
-                goto(`./confirmMail?email=${fetchData.userEmail}`)
+                await goto(`./confirmMail?email=${fetchData.userEmail}`)
                 /*    goto('../../login')*/
             }
         })()

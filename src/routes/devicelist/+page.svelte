@@ -1,15 +1,11 @@
 <script>
-    import '../../scss/theme.scss'
     import NavSide from "../../component/nav/NavSide.svelte"
     import NavTop from "../../component/nav/NavTop.svelte";
     import Footer from "../../component/nav/Footer.svelte";
-    import {onMount, onDestroy} from "svelte";
+    import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
 
     onMount(() => {
-    })
-
-    onDestroy(() => {
     })
 
     const clickDeviceQuery = () => {
@@ -20,7 +16,7 @@
 
 <svelte:head>
   <title>디바이스 리스트 | HYNUX-IOT</title>
-  <meta name="description" content="About this app"/>
+  <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
 
 

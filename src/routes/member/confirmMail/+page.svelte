@@ -1,12 +1,13 @@
 <script>
-    import '../../../scss/theme.scss'
+    // import '../../../scss/theme.scss'
     import {page} from '$app/stores';
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const isBeta = urlParams.has('email');
+    //const urlParams = new URLSearchParams(window.location.search);
+    let urlParams = '' //new URLSearchParams(window.location.search);
+    // const isBeta = urlParams.has('email');
 
     let userEmail = '';
 
@@ -18,7 +19,7 @@
     })
 
 
-    console.log("isBetat : ", isBeta)
+    //console.log("isBetat : ", isBeta)
     // alert(urlParams.get('email'))
 
 
@@ -50,7 +51,7 @@
                 alert(fetchData.userEmail)
             } else {
                 alert(fetchData.userEmail)
-                /*    goto('../../login')*/
+                goto('../../login')
             }
         })()
 
