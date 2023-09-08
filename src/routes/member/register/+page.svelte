@@ -1,27 +1,19 @@
 <script>
-    import '../../../scss/theme.scss'
-    import { page } from '$app/stores';
-    import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
 
-    onMount(()=>{
-        console.log($page.path)
-        console.log(window.location)
-
-    })
-
-    console.log("API_KEY : " + PUBLIC_API_URL)
-    /*console.log("TEST_TEST : " + TEST_TEST)*/
-
-
-    function onSubmit(e) {
+    const onSubmit = async (e) => {
         const formData = new FormData(e.target);
         const data = {};
 
         for (let field of formData) {
             const [key, value] = field;
             data[key] = value;
+
+            if (!value) {
+                alert("입력 정보가 잘못되었습니다.")
+                return
+            }
         }
 
         const fetchData = (async () => {
@@ -31,18 +23,15 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
-
             });
 
-            const fetchData = await response.json();
+            const jsonData = await response.json();
 
-            console.log(fetchData)
-
-            if (fetchData.error) {
-                alert(fetchData.msg)
+            if (jsonData.error) {
+                alert(jsonData.msg)
             } else {
-                alert(fetchData.msg)
-                goto('../../login')
+                alert(jsonData.msg)
+                await goto('../../login')
             }
         })()
     }
@@ -51,7 +40,7 @@
 
 <svelte:head>
   <title>회원가입 | HYNUX-IOT</title>
-  <meta name="description" content="HYNUX-IOT"/>
+  <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
 
 <!-- ===============================================-->
@@ -59,14 +48,6 @@
 <!-- ===============================================-->
 <main class="main" id="top">
   <div class="container" data-layout="container">
-    <!--<script>
-      var isFluid = JSON.parse(localStorage.getItem('isFluid'));
-      if (isFluid) {
-        var container = document.querySelector('[data-layout]');
-        container.classList.remove('container');
-        container.classList.add('container-fluid');
-      }
-    </script>-->
     <div class="row flex-center min-vh-100 py-6">
       <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
         <a class="d-flex flex-center mb-4" href="../../../index.html">
