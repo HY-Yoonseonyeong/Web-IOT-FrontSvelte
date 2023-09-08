@@ -4,12 +4,44 @@
     import Footer from "../../component/nav/Footer.svelte";
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
+    import {goto} from "$app/navigation";
+
+    let dataRows = [];
 
     onMount(() => {
+        getMyDeviceList()
     })
 
     const clickDeviceQuery = () => {
         console.log("clickDeviceQuery")
+    }
+
+    // const
+
+    const getMyDeviceList = async () => {
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device/`, {});
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json();
+
+            console.log(jsonData)
+            dataRows = jsonData.rows
+            console.log(dataRows)
+
+            /*if (jsonData.error) {
+                alert(jsonData.msg)
+            } else {
+                // Login
+                localStorage.setItem('hynuxiot-token', jsonData.hynuxiot_token)
+                alert("로그인 완료 :)")
+                await goto('./dashboard')
+            }*/
+        } catch (err) {
+            alert("조회 에러!")
+        }
     }
 
 </script>
@@ -69,6 +101,18 @@
                     <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
                   </tr>
                 {/each}-->
+
+                {#each dataRows as row}
+                  <tr>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.t_type}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap"></td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">127.0.0.1</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">52:EA:AB:CD:EE</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
+                  </tr>
+                {/each}
                 </tbody>
               </table>
               <div class="text-center d-none" id="tickets-table-fallback">

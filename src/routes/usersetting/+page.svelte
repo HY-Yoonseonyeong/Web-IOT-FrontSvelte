@@ -6,12 +6,17 @@
     import Footer from "../../component/nav/Footer.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
+    import {getHyToken} from "$lib/hyToken.js";
+
 
     let userName, userNick, userEmail
 
     onMount(() => {
         // getUserInfo()
-        meCheck()
+        // meCheck()
+        console.log("token : " + getHyToken())
+
+
     })
 
     onDestroy(() => {
@@ -22,7 +27,6 @@
     // 회원 탈퇴
 
     const getUserInfo = async () => {
-
         const response = await fetch(`${PUBLIC_API_URL}/users/p`, {headers: {"Content-Type": "application/json"}})
         const data = await response.json()
         console.log(data)
@@ -30,11 +34,8 @@
         userName = data.name
         userNick = data?.nick
         userEmail = data.email
-
         //currentUser?.
     }
-
-    //
 
     const meCheck = async () =>  {
         console.log(localStorage.getItem('hynuxiot-token'))
