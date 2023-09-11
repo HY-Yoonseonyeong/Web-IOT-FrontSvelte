@@ -6,8 +6,7 @@
     import Footer from "../../component/nav/Footer.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    import {getHyToken} from "$lib/hyToken.js";
-
+    import {getHyToken, checkHyToken} from "$lib/hyToken.js";
 
     let userName, userNick, userEmail
 
@@ -16,7 +15,11 @@
         // meCheck()
         console.log("token : " + getHyToken())
 
-
+        if (checkHyToken()) {
+            getUserInfo()
+        } else {
+            goto('./')
+        }
     })
 
     onDestroy(() => {
@@ -25,6 +28,27 @@
     // 프로필 변경
     // 비밀번호 변경
     // 회원 탈퇴
+
+    const onChangePassword = (e) => {
+        console.log("changeUserPassword")
+        const formData = new FormData(e.target);
+        console.log(formData)
+        const params = {};
+        for (let field of formData) {
+            const [key, value] = field;
+            params[key] = value;
+
+            console.log(field)
+
+            if (!value) {
+                alert("입력 정보가 잘못되었습니다.")
+                return
+            }
+        }
+
+        changeUserPassword(e)
+    }
+
 
     const getUserInfo = async () => {
         const response = await fetch(`${PUBLIC_API_URL}/users/p`, {headers: {"Content-Type": "application/json"}})
@@ -37,25 +61,91 @@
         //currentUser?.
     }
 
-    const meCheck = async () =>  {
+    //
+    const changeUserPassword = async (e) => {
+        const formData = new FormData(e.target);
+        const params = {};
+        for (let field of formData) {
+            const [key, value] = field;
+            params[key] = value;
+
+            if (!value) {
+                alert("입력 정보가 잘못되었습니다.")
+                return
+            }
+        }
+
+        console.log(params)
+
+        // {{local_api_url}}/users/:user_no/password
+        const response = await fetch(`${PUBLIC_API_URL}/users/user/password`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getHyToken(),
+                },
+                body: JSON.stringify(params)
+            })
+
+        if (!response.ok) {
+            alert("조회 에러")
+            return
+        }
+
+        const jsonData = await response.json()
+
+        if (jsonData.error) {
+            alert(jsonData.msg)
+        } else {
+            alert(jsonData.msg)
+        }
+
+    }
+
+    const leaveMember = async () => {
+
+    }
+
+
+    const onLeaveMember = async (e) => {
+
+    }
+
+
+
+
+    const meCheck = async () => {
         console.log(localStorage.getItem('hynuxiot-token'))
 
         const response = await fetch(`${PUBLIC_API_URL}/users/mec`, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization" : localStorage.getItem('hynuxiot-token')}
+                "Authorization": localStorage.getItem('hynuxiot-token')
+            }
         })
 
-        const data = await response.json()
+        if (!response.ok) {
+            alert("조회 에러")
+            return
+        }
 
-        console.log(data)
+        const jsonData = await response.json()
+
+        if (jsonData.error) {
+            alert(jsonData.msg)
+        } else {
+            alert(jsonData.msg)
+        }
+
+        console.log(jsonData)
     }
 
 </script>
 
 <svelte:head>
   <title>회원 정보 설정 | HYNUX-IOT</title>
-  <meta name="" content=""/>
+  <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
 
 
@@ -102,12 +192,12 @@
             <div class="card-body bg-light">
               <form class="row g-3">
                 <div class="col-lg-6"><label class="form-label" for="user-name">이름</label><input class="form-control" id="user-name" type="text" value="{userName}" disabled/></div>
-                <div class="col-lg-6"><label class="form-label" for="user-nick">닉네임</label><input class="form-control" id="user-nick" type="text" value="{userNick}"/></div>
+                <div class="col-lg-6"><label class="form-label" for="user-nick">닉네임</label><input class="form-control" id="user-nick" type="text" value="{userNick}" disabled/></div>
                 <div class="col-lg-6"><label class="form-label" for="user-email">이메일 주소</label><input class="form-control" id="user-email" type="text" value="{userEmail}" disabled/></div>
-                <div class="col-lg-6"><label class="form-label" for="user-hp">연락처</label><input class="form-control" id="user-hp" type="text" value=""/></div>
-                <div class="col-lg-12"><label class="form-label" for="email3"></label><input class="form-control" id="email3" type="text" value=""/></div>
+                <div class="col-lg-6"><label class="form-label" for="user-hp">연락처</label><input class="form-control" id="user-hp" type="text" value="" disabled/></div>
+                <div class="col-lg-12"><label class="form-label" for="email3"></label><input class="form-control" id="email3" type="text" value="" disabled/></div>
                 <div class="col-12 d-flex justify-content-end">
-                  <button class="btn btn-primary" type="submit">변경</button>
+                  <button class="btn btn-primary" type="submit" disabled>변경</button>
                 </div>
               </form>
             </div>
@@ -120,17 +210,20 @@
                 <h5 class="mb-0">비밀번호 변경</h5>
               </div>
               <div class="card-body bg-light">
-                <form>
+                <form on:submit|preventDefault={onChangePassword}>
                   <div class="mb-3">
-                    <label class="form-label" for="old-password">현재 비밀번호</label><input class="form-control" id="old-password" type="password"/>
+                    <label class="form-label" for="old-password">현재 비밀번호</label>
+                    <input class="form-control" id="old-password" name="old_password" type="password"/>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label" for="new-password">신규 비밀번호</label><input class="form-control" id="new-password" type="password"/>
+                    <label class="form-label" for="new-password">신규 비밀번호</label>
+                    <input class="form-control" id="new-password" name="new_password" type="password"/>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label" for="confirm-password">신규 비밀번호 확인</label><input class="form-control" id="confirm-password" type="password"/>
+                    <label class="form-label" for="confirm-password">신규 비밀번호 확인</label>
+                    <input class="form-control" id="confirm-password" name="new_password_confirm" type="password"/>
                   </div>
-                  <button class="btn btn-primary d-block w-100" type="submit">비밀번호 변경</button>
+                  <button class="btn btn-primary d-block w-100" type="submit" name="submit">비밀번호 변경</button>
                 </form>
               </div>
             </div>
