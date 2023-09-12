@@ -3,7 +3,8 @@
 
     // goto('./')
     const clickLogout = () => {
-        goto('./')
+        localStorage.removeItem("hynuxiot-token");
+        goto('/')
     }
 </script>
 

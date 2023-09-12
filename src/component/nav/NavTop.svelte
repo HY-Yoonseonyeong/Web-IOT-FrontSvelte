@@ -48,7 +48,7 @@
       <span class="font-sans-serif">HYNUX-IOT</span></div>
   </a>
   <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown" style="display:none">
       <a class="nav-link notification-indicator notification-indicator-primary px-0 fa-icon-wait"
          id="navbarDropdownNotification" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
          aria-expanded="false" data-hide-on-body-scroll="data-hide-on-body-scroll">
