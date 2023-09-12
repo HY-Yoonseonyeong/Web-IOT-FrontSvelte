@@ -1,22 +1,26 @@
 <script>
-    import '../../../scss/theme.scss'
     import NavTop from "../../../component/nav/NavTop.svelte";
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
+    import moment from "moment";
 
     let _fileList = new Array()
 
     onMount(() => {
-        reqKolasFileList();
+        getReportFileList()
+
+        // 2023-09-12T16:54:31.000Z
+        console.log(moment("2023-09-12T16:54:31.000Z").format("YYYY-MM-DD HH:mm:ss"))
+
     })
 
-    const reqKolasFileList = async () => {
+    // const
+    const getReportFileList = async () => {
         const response = await fetch(`${PUBLIC_API_URL}/file/list`, {headers: {"Content-Type": "application/json"}})
-        const data = await response.json()
-
-        _fileList = data
+        const jsonData = await response.json()
+        _fileList = jsonData
     }
 
     const clickDownload = async (fileKey) => {
@@ -27,39 +31,43 @@
             headers: {"Content-Type": "application/json"}
         })
 
-
-
-
         // convert zip file to url object (for anchor tag download)
         // const data = await response.blob()
         // console.log(data)
 
         let data2 = await response.blob()
         console.log(data2)
+
         //let blob = blob = new Blob(["\ufeff", data2]);
-
         // var blob = new Blob(["\ufeff"+blob2+], {type: 'text/csv;charset=utf-8;'//});
-        var blob = new Blob([data2], {type: 'text/csv;charset=utf-8;'});
 
+        var blob = new Blob([data2], {type: 'text/csv;charset=utf-8;'});
 
         var url = window.URL || window.webkitURL;
         let link = url.createObjectURL(blob);
 
         // generate anchor tag, click it for download and then remove it again
+
         let a = document.createElement("a");
         a.setAttribute("download", `${fileKey}.csv`);
         a.setAttribute("href", link);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
 
+    /**
+     * 파일 다운로드 이벤트
+     */
+    const onClickDownload = (fileKey) => {
 
     }
+
 </script>
 
 <svelte:head>
   <title>Kolas 파일 | HYNUX-IOT</title>
-  <meta name="description" content="About this app"/>
+  <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
 
 
@@ -106,12 +114,13 @@
                   <tr>
                     <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">
                       <div class="d-flex align-items-center gap-2 position-relative">
-                        <h6 class="mb-0 text-700">{row.datetime}</h6>
+                        <!--<h6 class="mb-0 text-700">{moment(row.datetime, "YYYY-MM-DD HH:mm:ss")}</h6>-->
+                        <h6 class="mb-0 text-700">{moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</h6>
                       </div>
                     </td>
-                    <td class="align-middle subject py-2 pe-4 white-space-nowrap">{row.file_key}</td>
+                    <td class="align-middle subject py-2 pe-4 white-space-nowrap">온습도 데이터</td>
                     <td class="align-middle subject py-2 pe-4 white-space-nowrap">{row.file_name}</td>
-                    <td class="align-middle subject py-2 pe-4 white-space-nowrap">Kolas 온습도</td>
+                    <td class="align-middle subject py-2 pe-4 white-space-nowrap">CSV</td>
                     <td class="align-middle status fs-0 pe-4 white-space-nowrap">
                       <small class="badge rounded badge-subtle-success false">가능</small>
                     </td>
@@ -130,7 +139,7 @@
               </div>
             </div>
           </div>
-          <div class="card-footer">
+          <div class="card-footer"  style="display: none">
             <div class="d-flex justify-content-center">
               <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev"><span class="fas fa-chevron-left"></span></button>
               <ul class="pagination mb-0">

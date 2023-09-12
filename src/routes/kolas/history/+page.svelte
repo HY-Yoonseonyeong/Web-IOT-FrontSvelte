@@ -1,5 +1,4 @@
 <script>
-    import '../../../scss/theme.scss'
     import NavTop from "../../../component/nav/NavTop.svelte";
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
@@ -9,6 +8,7 @@
     //import flatpickr from "flatpickr";
     import Flatpickr from 'svelte-flatpickr'
     import 'flatpickr/dist/flatpickr.css';
+    import moment from "moment";
 
     let historyCount = 0
     let historyRows = new Array()
@@ -35,7 +35,13 @@
 
     const options = {
         mode: "range",
-
+        onChange: ([start, end]) => {
+            if (start && end) {
+                console.log({start, end});
+                periodStart = start
+                periodEnd = end
+            }
+        }
     };
 
     onMount(async () => {
@@ -134,7 +140,7 @@
             return
         }
 
-        const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
+        const response = await fetch(`${PUBLIC_API_URL}/kolas/report2`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(queryParams)
@@ -154,7 +160,7 @@
     }
 
     const clickExport = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
+        const response = await fetch(`${PUBLIC_API_URL}/kolas/history/export`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(queryParams)
@@ -167,7 +173,7 @@
 
 <svelte:head>
   <title>Kolas 기간조회 | HYNUX-IOT</title>
-  <meta name="description" content="About this app"/>
+  <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
   <!--<link href="../vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>-->
 </svelte:head>
 
@@ -278,7 +284,7 @@
                 <tbody class="list" id="table-ticket-body">
                 {#each historyRows as row, index}
                   <tr>
-                    <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{row.datetime}</td>
+                    <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
                     <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
@@ -292,7 +298,7 @@
               </div>
             </div>
           </div>
-          <Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>
+          <!--<Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>-->
         </div>
       </div>
       <Footer/>
