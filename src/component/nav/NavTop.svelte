@@ -2,14 +2,12 @@
     import ModalLogout from "../../component/modal/ModalLogout.svelte";
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
+    import {goto} from "$app/navigation";
 
     let userChar = "H"
 
     onMount(() => {
-        /*queryUserName().then((data) => {
-            console.log("queryUserName")
-            console.log(data)
-
+        queryUserName().then((data) => {
             if (data.username) {
                 let split = Array.from(data.username);
 
@@ -17,14 +15,14 @@
                     userChar = split[0]
                 }
             }
-        })*/
+        })
     })
 
     const queryUserName = async () => {
         const response = await fetch(`${PUBLIC_API_URL}/users/name`, {
             headers: {
                 "Content-Type": "application/json",
-                'token': localStorage.getItem('hynuxiot-token')
+                'Authorization': localStorage.getItem('hynuxiot-token')
             }
         })
         const fetchData = await response.json()
@@ -32,15 +30,11 @@
         return fetchData;
     }
 
-    const noService = () => {
-        alert("준비중입니다.")
+    const onClickSetting = async () => {
+        await goto('../../usersetting')
     }
 
 </script>
-
-<!--<script src="assets/js/theme.js"></script>-->
-
-<!--{@html '<script src="assets/js/theme.js" />'}-->
 
 <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
   <button class="btn navbar-toggler-humburger-icon navbar-toggler me-1 me-sm-3" type="button"
@@ -173,9 +167,8 @@
           <a class="dropdown-item" href="/">Profile &amp; account</a>
           <a class="dropdown-item" href="#!">Feedback</a>
           <div class="dropdown-divider"></div>-->
-          <a class="dropdown-item" on:click={noService}>설정</a>
+          <a class="dropdown-item" on:click={onClickSetting}>설정</a>
           <div class="dropdown-divider"></div>
-          <!--<a class="dropdown-item" on:click={noService}>로그아웃</a>-->
           <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-logout" role="button">로그아웃</a>
         </div>
       </div>
