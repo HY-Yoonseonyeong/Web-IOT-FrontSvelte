@@ -5,8 +5,14 @@
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
     import {goto} from "$app/navigation";
+    import {getHyToken, checkHyToken} from "$lib/hyToken.js";
 
     let dataRows = [];
+    let _rowCount = 0
+    let _aei = ""
+    let _addMessage = ""
+    let _modal
+    let _modalCancel
 
     onMount(() => {
         getMyDeviceList()
@@ -14,35 +20,73 @@
 
     const clickDeviceQuery = () => {
         console.log("clickDeviceQuery")
+        onModalClose()
+        // _modal.css()
+        // _test.click()
     }
 
-    // const
+
+    const onModalClose = () => {
+        console.log("onModalClose")
+    }
+
 
     const getMyDeviceList = async () => {
         try {
-            const response = await fetch(`${PUBLIC_API_URL}/device/`, {});
+            const response = await fetch(`${PUBLIC_API_URL}/device/template?t_type=t1`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getHyToken()
+                },
+            });
 
             if (!response.ok) //
                 throw new Error(response.statusText);
 
             const jsonData = await response.json();
-
             console.log(jsonData)
-            dataRows = jsonData.rows
-            console.log(dataRows)
 
-            /*if (jsonData.error) {
-                alert(jsonData.msg)
-            } else {
-                // Login
-                localStorage.setItem('hynuxiot-token', jsonData.hynuxiot_token)
-                alert("로그인 완료 :)")
-                await goto('./dashboard')
-            }*/
+            dataRows = jsonData.rows
+            _rowCount = dataRows.length
+
         } catch (err) {
             alert("조회 에러!")
         }
     }
+
+    const onClickDeviceAdd = async () => {
+        console.log(_aei)
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getHyToken()
+                },
+                body: JSON.stringify({"aei": _aei})
+
+            });
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json()
+
+            console.log(jsonData)
+
+            if (jsonData.errors) {
+                _addMessage = jsonData.msg
+            } else {
+                alert(jsonData.msg)
+                _modalCancel.click()
+            }
+
+        } catch (err) {
+            alert("조회 에러!")
+        }
+    }
+
 
 </script>
 
@@ -64,7 +108,7 @@
             <div class="d-lg-flex justify-content-between">
               <div class="row flex-between-center gy-2 px-x1">
                 <div class="col-auto pe-0">
-                  <h6 class="mb-0">조회건수 : <span> 건</span></h6>
+                  <h6 class="mb-0">조회건수 : <span> {_rowCount} 건</span></h6>
                 </div>
               </div>
               <div class="border-bottom border-200 my-3"></div>
@@ -83,12 +127,12 @@
                 <thead class="text-800 bg-light">
                 <tr>
                   <th class=" align-middle ps-2">ID</th>
-                  <th class=" align-middle">종류</th>
+                  <th class=" align-middle">템플릿</th>
                   <th class=" align-middle ps-2" style="min-width: 100px">디바이스명</th>
-                  <th class=" align-middle">rn</th>
+                  <th class=" align-middle">타입</th>
                   <th class=" align-middle">IP</th>
-                  <th class=" align-middle text-end">Mac 주소</th>
-                  <th class=" align-middle text-end">수정</th>
+                  <th class=" align-middle">Mac 주소</th>
+                  <th class=" align-middle">수정</th>
                 </tr>
                 </thead>
                 <tbody class="list" id="table-ticket-body">
@@ -107,10 +151,14 @@
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.t_type}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap"></td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">온습도</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">127.0.0.1</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">52:EA:AB:CD:EE</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">
+                      <button class="btn btn-falcon-default btn-sm mx-2" type="button" >
+                        <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">수정</span>
+                      </button>
+                    </td>
                   </tr>
                 {/each}
                 </tbody>
@@ -129,7 +177,7 @@
 </main>
 
 <!--<button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#error-modal">Launch demo modal</button>-->
-<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-hidden="true" bind:this={_modal}>
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
     <div class="modal-content position-relative">
       <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
@@ -143,7 +191,7 @@
           <form>
             <div class="mb-3">
               <label class="col-form-label" for="recipient-name1">디바이스 ID 입력:</label>
-              <input class="form-control" id="recipient-name1" type="text" placeholder="ID를 입력해 주세요."/>
+              <input class="form-control" id="recipient-name1" type="text" bind:value={_aei} placeholder="ID를 입력해 주세요."/>
             </div>
             <div class="mb-3">
               <label class="col-form-label" for="recipient-name2">리소스명(rn) 입력:</label>
@@ -155,15 +203,15 @@
             </div>
             <div class="mb-3">
               <label class="col-form-label" for="message-text">Message:</label>
-              <textarea class="form-control" id="message-text"></textarea>
+              <textarea class="form-control" id="message-text">{_addMessage}</textarea>
             </div>
           </form>
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" on:click={clickDeviceQuery}>조회</button>
-        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">등록</button>
-        <button class="btn btn-primary" type="button">취소</button>
+        <!--<button class="btn btn-secondary" type="button" on:click={clickDeviceQuery}>조회</button>-->
+        <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>등록</button>
+        <button class="btn btn-primary" type="button" data-bs-dismiss="modal" on:click={onModalClose} bind:this={_modalCancel}>취소</button>
       </div>
     </div>
   </div>
