@@ -24,16 +24,9 @@
     }
 
     const clickDownload = async (fileKey) => {
-        console.log("clickDownload")
-        console.log(fileKey)
-
         const response = await fetch(`${PUBLIC_API_URL}/file/${fileKey}`, {
             headers: {"Content-Type": "application/json"}
         })
-
-        // convert zip file to url object (for anchor tag download)
-        // const data = await response.blob()
-        // console.log(data)
 
         let data2 = await response.blob()
         console.log(data2)

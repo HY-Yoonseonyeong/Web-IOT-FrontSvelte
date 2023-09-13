@@ -218,7 +218,6 @@
 <svelte:head>
   <title>Kolas 기간조회 | HYNUX-IOT</title>
   <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
-  <!--<link href="../vendors/flatpickr/flatpickr.min.css" rel="stylesheet"/>-->
 </svelte:head>
 
 

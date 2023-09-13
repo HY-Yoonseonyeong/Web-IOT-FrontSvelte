@@ -1,5 +1,4 @@
 <script>
-    import '../../../scss/theme.scss'
     import NavTop from "../../../component/nav/NavTop.svelte";
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";

@@ -151,7 +151,7 @@
         myChart = new Chart(ctx, config)
 
         //await clickPeriodQuery();
-        await queryMobiusHit()
+         // await queryMobiusHit()
     })
 
     // Chart Data Query
@@ -224,7 +224,6 @@
 
     const clickPeriodQuery = async (e) => {
 
-        console.log("clickPeriodQueryclickPeriodQueryclickPeriodQueryclickPeriodQuery")
         const queryParams = {
             aei: 'DHT22_LCD_0001',
             periodType: '1',
