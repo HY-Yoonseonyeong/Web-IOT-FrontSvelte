@@ -1,3 +1,5 @@
+import {goto} from "$app/navigation";
+
 export const getHyToken = () => {
     return localStorage.getItem('hynuxiot-token')
 }
@@ -8,4 +10,8 @@ export const checkHyToken = () => {
     }
 
     return false
+}
+
+export const checkTokenThenLogin = () => {
+    goto('/login')
 }

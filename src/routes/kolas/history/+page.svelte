@@ -9,7 +9,7 @@
     import 'flatpickr/dist/flatpickr.css';
     import moment from "moment";
     import {goto} from "$app/navigation";
-    import {getHyToken} from "$lib/hyToken.js";
+    import {checkTokenThenLogin, getHyToken} from "$lib/hyToken.js";
 
     let historyCount = 0
     let historyRows = new Array()
@@ -47,6 +47,7 @@
     };
 
     onMount(async () => {
+        // checkTokenThenLogin()
         /*
         calendarPicker = flatpickr(ref, {
             mode: "range",
