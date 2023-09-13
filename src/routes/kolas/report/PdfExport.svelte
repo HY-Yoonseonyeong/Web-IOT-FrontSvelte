@@ -1,10 +1,10 @@
 <script>
-    import '../../../scss/theme.scss'
     import {onMount, onDestroy} from "svelte";
     import Chart from "chart.js/auto"
     import {jsPDF} from "jspdf";
     import html2canvas from 'html2canvas';
     import {PUBLIC_API_URL} from "$env/static/public";
+    import moment from "moment";
 
     let portfolio;
 
@@ -172,17 +172,15 @@
             // console.log('Index: ' + index + ' Value: ' + number);
 
             //console.log(row)
-            console.log(row.datetime)
+
             if (0 !== index % 4) {
                 row.datetime = ''
             } else {
                 let cDate = new Date(row.datetime)
-                cDate = cDate.setTime(cDate.getTime() - (9 * 60 * 60 * 1000))
+                cDate = cDate.setTime(cDate.getTime())
                 cDate = new Date(cDate)
                 // let sDate = [cDate.getFullYear(), cDate.getMonth(), cDate.getDay()].join('-');
 
-                console.log(cDate.getDay())
-                console.log(new Date(row.datetime).toISOString().slice(0, 10))
 
                 let sliceDate2 = new Date(row.datetime).toISOString().slice(0, 10)
 
@@ -221,8 +219,12 @@
         console.log("changeQueryInfo")
 
         console.log(queryInfo)
-        if (queryInfo.aei) {
-            reqHistoryData(queryInfo)
+        try {
+            if (queryInfo.aei) {
+                reqHistoryData(queryInfo)
+            }
+        } catch (e) {
+
         }
 
     }
@@ -555,6 +557,7 @@
     let h2c
     let docPdf
     const clickCreatePdf = () => {
+        console.log("clickCreatePdf")
         html2canvas(docPdf, {
             quality: 1,
             scale: 2,
@@ -564,17 +567,22 @@
             var img = canvas.toDataURL("image/png"); //image data of canvas
             var doc = new jsPDF('l', 'mm', 'a4');
             doc.addImage(img, "PNG", 0, 0, 297, 210);
-            doc.save('test.pdf');
+
+            let startDate = moment(queryInfo.periodStart).format('YYYYMMDD')
+            let endDate = moment(queryInfo.periodEnd).format('YYYYMMDD')
+            let filename = ''.concat("온습도", startDate, "-", endDate, ".pdf")
+            doc.save(filename);
         })
     }
+
+    export function createPDF() {
+        clickCreatePdf()
+    }
+
 </script>
 
-<svelte:head>
-  <title>리포트 테스트</title>
-  <meta name="description" content="About this app"/>
-</svelte:head>
 
-<div>test4</div>
+
 <button on:click={test}>pdf</button>
 <button on:click={clickCreatePdf}>Create Pdf</button>
 
@@ -584,12 +592,6 @@
   <canvas bind:this={portfolio}></canvas>
 </div>
 
-<div style="width: 500px;">
-  <div id="content">
-    <h1 style="color:red; width: 400px; height: 50px; font-size: 18px">안녕하세요</h1>
-    <p>PDF 문서의 내용입니다</p>
-  </div>
-</div>
 
 <!--// 2480px(가로) X 3508px-->
 

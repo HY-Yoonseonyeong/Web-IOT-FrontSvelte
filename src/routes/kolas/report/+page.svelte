@@ -17,6 +17,7 @@
     let datePeriod
     let periodStart, periodEnd
     let _alias = "DHT22_LCD_0001"
+    let deviceList = []
     const queryParams = {};
 
     let queryInfo = {}
@@ -60,6 +61,7 @@
             }
         });
 
+        await getDashboardDeviceList()
         await reqAeDeviceAlias()
         /*await reqKolasHistory();*/
 
@@ -89,6 +91,32 @@
         }
 
         testNumber = 20
+    }
+
+    const getDashboardDeviceList = async () => {
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                    /*"Authorization": getHyToken()*/
+                },
+            });
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json();
+            console.log(jsonData)
+
+            deviceList = jsonData.rows
+
+            /*        dataRows = jsonData.rows
+                    _rowCount = dataRows.length*/
+
+        } catch (err) {
+            alert("조회 에러!")
+        }
     }
 
     const reqAeDeviceAlias = async () => {
@@ -174,14 +202,11 @@
         }
     }
 
-    const clickExport = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(queryParams)
-        })
+    let clickCreatePdf
+    let pdf22
 
-        const data = await response.json()
+    const clickExport = async () => {
+        pdf22.createPDF()
     }
 
 </script>
@@ -214,7 +239,9 @@
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="aei">
                       <option value="-1" selected="">디바이스를 선택해 주세요.</option>
-                      <option value="DHT22_LCD_0001">{_alias}</option>
+                      {#each deviceList as row, index}
+                        <option value={row.aei}>{row.aei}</option>
+                      {/each}
                     </select>
                   </div>
                 </div>
@@ -311,7 +338,8 @@
         </div>
       </div>
       <div style="display: none">
-        <PdfExport queryInfo={queryInfo}/>
+        <PdfExport queryInfo={queryInfo} bind:this={pdf22}/>
+        <!--<PdfExport  bind:this={pdf22}/>-->
       </div>
       <Footer/>
     </div>

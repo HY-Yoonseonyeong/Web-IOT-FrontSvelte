@@ -2,6 +2,7 @@
     import {onMount} from "svelte";
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
+    import moment from "moment";
 
     export let conType //
 
@@ -37,8 +38,12 @@
                     ticks: {
                         fontSize: 5,
                         callback: function (label, index, labels) {
-                            return label + '%R.H.';
+                            return label + '';
                         }
+                    },
+                    title: {
+                        display: true,
+                        text: '%R.H.'
                     },
                     min: 30,
                     max: 90,
@@ -52,20 +57,27 @@
                     max: 40,
                     ticks: {
                         callback: function (label, index, labels) {
-                            return label + '\u00B0C';
+                            return label + '';
                         }
                     },
+                    title: {
+                        display: true,
+                        text: '\u00B0C'
+                    }
                 },
                 x: {
                     ticks: {
                         autoSkip: false,
-                        /*   ,
-                           maxRotation: 90,
-                           minRotation: 90*/
+
+                        maxRotation: 90,
+                        minRotation: 90,
                         font: {
-                            size: 10,
+                            size: 9,
                         }
                     },
+                    grid: {
+                        display: false
+                    }
                 },
 
             },
@@ -138,7 +150,7 @@
         const ctx = portfolio.getContext('2d')
         myChart = new Chart(ctx, config)
 
-        await clickPeriodQuery();
+        //await clickPeriodQuery();
         await queryMobiusHit()
     })
 
@@ -211,6 +223,8 @@
     }
 
     const clickPeriodQuery = async (e) => {
+
+        console.log("clickPeriodQueryclickPeriodQueryclickPeriodQueryclickPeriodQuery")
         const queryParams = {
             aei: 'DHT22_LCD_0001',
             periodType: '1',
@@ -240,7 +254,7 @@
         });
 
         const data = await response.json()
-        console.log(data)
+
 
         /*        historyCount = data.count;
                 historyRows = data.rows;
@@ -278,8 +292,6 @@
 
         const data = await response.json()
 
-        console.log(data)
-
 
         let sliceDate3 = ''
 
@@ -287,23 +299,28 @@
             // console.log('Index: ' + index + ' Value: ' + number);
 
             //console.log(row)
-            console.log(row.datetime)
+            /*console.log(row.datetime)*/
             if (0 !== index % 4) {
                 row.datetime = ''
             } else {
                 let cDate = new Date(row.datetime)
-                cDate = cDate.setTime(cDate.getTime() - (9 * 60 * 60 * 1000))
+                cDate = cDate.setTime(cDate.getTime())
                 cDate = new Date(cDate)
                 // let sDate = [cDate.getFullYear(), cDate.getMonth(), cDate.getDay()].join('-');
 
-                console.log(cDate.getDay())
-                console.log(new Date(row.datetime).toISOString().slice(0, 10))
+                // console.log(cDate.getDay())
+                //console.log(new Date(row.datetime).toISOString().slice(0, 10))
 
                 let sliceDate2 = new Date(row.datetime).toISOString().slice(0, 10)
 
                 // row.datetime = sliceDate2
 
+                // moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
+
+
                 if (sliceDate3 !== sliceDate2) {
+                    // moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
+
                     row.datetime = sliceDate2
                     sliceDate3 = sliceDate2
                 } else {
