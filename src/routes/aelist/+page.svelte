@@ -174,7 +174,7 @@
           </div>
         </div>
         <div class="card-footer border-top text-end">
-          <a class="btn btn-falcon-default btn-sm" href="">AE 등록</a>
+          <!--<a class="btn btn-falcon-default btn-sm" href="">AE 등록</a>-->
         </div>
       </div>
       <!--

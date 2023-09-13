@@ -5,16 +5,18 @@
     import Pagination from "./Pagination.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    //import flatpickr from "flatpickr";
     import Flatpickr from 'svelte-flatpickr'
     import 'flatpickr/dist/flatpickr.css';
     import moment from "moment";
+    import {goto} from "$app/navigation";
+    import {getHyToken} from "$lib/hyToken.js";
 
     let historyCount = 0
     let historyRows = new Array()
     let datePeriod
     let periodStart, periodEnd
     let _alias = "DHT22_LCD_0001"
+    let deviceList = []
     const queryParams = {};
 
     const aeList = new Array()
@@ -45,6 +47,7 @@
     };
 
     onMount(async () => {
+        /*
         calendarPicker = flatpickr(ref, {
             mode: "range",
             locale: {
@@ -66,11 +69,16 @@
                 }
             }
         });
+         */
 
+
+
+
+        await getDashboardDeviceList()
         await reqAeDeviceAlias()
         /*await reqKolasHistory();*/
 
-        pagination.someFunc()
+        // pagination.someFunc()
         testNumber = 15
     })
 
@@ -122,6 +130,33 @@
         }
     }
 
+    const getDashboardDeviceList = async () => {
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                    /*"Authorization": getHyToken()*/
+                },
+            });
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json();
+            console.log(jsonData)
+
+            deviceList = jsonData.rows
+
+    /*        dataRows = jsonData.rows
+            _rowCount = dataRows.length*/
+
+        } catch (err) {
+            alert("조회 에러!")
+        }
+    }
+
+
     const clickPeriodQuery = async (e) => {
         const formData = new FormData(e.target);
 
@@ -148,7 +183,9 @@
 
         const data = await response.json()
 
-        historyCount = data.count;
+        console.log(data.length)
+
+        historyCount = data.rows.length;
         historyRows = data.rows;
 
         testNumber = 20
@@ -166,7 +203,14 @@
             body: JSON.stringify(queryParams)
         })
 
-        const data = await response.json()
+        const jsonData = await response.json()
+        console.log(jsonData)
+
+        if (jsonData.errors) {
+            alert(jsonData.msg)
+        } else {
+            alert(jsonData.msg)
+        }
     }
 
 </script>
@@ -200,7 +244,9 @@
                   <div class="col-sm-10">
                     <select class="form-select" aria-label="Default select example" name="aei">
                       <option value="-1" selected="">디바이스를 선택해 주세요.</option>
-                      <option value="DHT22_LCD_0001">{_alias}</option>
+                      {#each deviceList as row, index}
+                        <option value={row.aei}>{row.aei}</option>
+                      {/each}
                     </select>
                   </div>
                 </div>
@@ -262,7 +308,7 @@
                 <div class="d-flex align-items-center" id="table-ticket-replace-element">
                   <button class="btn btn-falcon-default btn-sm" type="button" on:click={clickExport}>
                     <span class="fas fa-external-link-alt" data-fa-transform="shrink-3"></span>
-                    <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">Export</span>
+                    <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">CSV 생성</span>
                   </button>
                 </div>
               </div>
