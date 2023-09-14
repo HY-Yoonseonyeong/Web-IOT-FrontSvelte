@@ -7,6 +7,7 @@
     let userChar = "H"
 
     onMount(() => {
+        console.log("NavTop.")
         queryUserName().then((data) => {
             if (data.username) {
                 let split = Array.from(data.username);
@@ -25,9 +26,10 @@
             }
         })
         const fetchData = await response.json()
+        console.log(fetchData)
         return fetchData;
-    }
 
+    }
     const onClickSetting = async () => {
         await goto('../../usersetting')
     }
