@@ -156,7 +156,7 @@
           </a>
         </li>
         <!-- 기능 테스트-->
-        <li class="nav-item">
+        <li class="nav-item display-none">
           <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
             <div class="col-auto navbar-vertical-label">기능테스트</div>
             <div class="col ps-0">

@@ -6,20 +6,13 @@
     import Footer from "../../component/nav/Footer.svelte";
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    import {getHyToken, checkHyToken} from "$lib/hyToken.js";
+    import {getHyToken, checkHyToken, checkTokenThenLogin} from "$lib/hyToken.js";
 
-    let userName, userNick, userEmail
+    let userName = "", userNick = "", userEmail = ""
 
     onMount(() => {
-        // getUserInfo()
-        // meCheck()
-        console.log("token : " + getHyToken())
-
-        if (checkHyToken()) {
-            getUserInfo()
-        } else {
-            goto('./')
-        }
+        checkTokenThenLogin()
+        getUserInfo()
     })
 
     onDestroy(() => {
@@ -51,14 +44,25 @@
 
 
     const getUserInfo = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/users/p`, {headers: {"Content-Type": "application/json"}})
-        const data = await response.json()
-        console.log(data)
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/users/info`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem('hynuxiot-token')
+                }
+            })
+            const jsonData = await response.json()
+            console.log(jsonData)
 
-        userName = data.name
-        userNick = data?.nick
-        userEmail = data.email
-        //currentUser?.
+            userName = jsonData.name
+            userNick = jsonData.nick
+            userEmail = jsonData.email
+
+        } catch (e) {
+            userName = ""
+            userNick = ""
+            userEmail = ""
+        }
     }
 
     //
@@ -111,8 +115,6 @@
     const onLeaveMember = async (e) => {
 
     }
-
-
 
 
     const meCheck = async () => {

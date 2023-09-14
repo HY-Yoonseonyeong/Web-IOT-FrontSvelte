@@ -336,7 +336,7 @@
           </div>
         </div>
       </div>
-      <div style="display: none">
+      <div>
         <PdfExport queryInfo={queryInfo} bind:this={pdf22}/>
         <!--<PdfExport  bind:this={pdf22}/>-->
       </div>
@@ -346,3 +346,10 @@
 </main>
 
 
+
+<style>
+  .size-zero {
+      width: 0;
+      height: 0;
+  }
+</style>

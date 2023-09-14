@@ -114,9 +114,9 @@
         };
 
         myChart = new Chart(ctx, config)
-        myChart.data.labels = tempdata.map(row => row.year)
+        // myChart.data.labels = tempdata.map(row => row.year)
         /*myChart.data.datasets[0].borderDash =  [2, 2]*/
-        myChart.data.datasets[0].data = tempdata.map(row => row.count)
+        // myChart.data.datasets[0].data = tempdata.map(row => row.count)
         myChart.update()
     })
 
@@ -583,21 +583,22 @@
 
 
 
-<button on:click={test}>pdf</button>
-<button on:click={clickCreatePdf}>Create Pdf</button>
+<!--<button on:click={test}>pdf</button>
+<button on:click={clickCreatePdf}>Create Pdf</button>-->
 
 
+<!--
 <div class="h-100" id="chartTest" style="min-height: 250px; display:none">
   <div>test</div>
   <canvas bind:this={portfolio}></canvas>
 </div>
+-->
 
 
 <!--// 2480px(가로) X 3508px-->
 
 <div>
   <canvas bind:this={h2c}></canvas>
-
 </div>
 
 <div class="page" bind:this={docPdf} style="backgound-color: white">

@@ -3,8 +3,7 @@
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
 
-
-    export let conType //
+    export let conType  = ""
 
     let timerID
     let timerDelay = 60 * 1000 // 1분
@@ -128,7 +127,6 @@
             timerID = setTimeout(timerChartQuery, timerDelay)
         })
     }
-
 
     //
     const queryChartData = async (period) => {

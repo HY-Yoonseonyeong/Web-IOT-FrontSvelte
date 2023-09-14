@@ -1,11 +1,10 @@
 <script>
     import {onMount} from "svelte";
     import Chart from "chart.js/auto"
-    /*    import ChartUtil from "chart.js/utils"*/
     import {PUBLIC_API_URL} from '$env/static/public'
 
 
-    export let conType //
+    export let conType  =""
 
     let timerID
     let timerDelay = 60 * 1000 // 1분
@@ -13,7 +12,6 @@
 
     let portfolio;
     const data = {
-        // labels: tempdata.map(row => row.year),
         datasets: [
             {
                 label: 'HTTP',
