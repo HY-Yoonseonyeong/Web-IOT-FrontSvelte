@@ -13,5 +13,7 @@ export const checkHyToken = () => {
 }
 
 export const checkTokenThenLogin = () => {
-    goto('/login')
+    if (!localStorage.getItem('hynuxiot-token')) {
+        goto('/login')
+    }
 }

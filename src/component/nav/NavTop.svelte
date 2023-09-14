@@ -10,7 +10,6 @@
         queryUserName().then((data) => {
             if (data.username) {
                 let split = Array.from(data.username);
-
                 if (split.length > 0) {
                     userChar = split[0]
                 }
@@ -26,7 +25,6 @@
             }
         })
         const fetchData = await response.json()
-        console.log(fetchData)
         return fetchData;
     }
 
