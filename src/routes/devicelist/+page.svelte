@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
     import {goto} from "$app/navigation";
-    import {getHyToken, checkHyToken} from "$lib/hyToken.js";
+    import {getHyToken, checkHyToken, checkTokenThenLogin} from "$lib/hyToken.js";
 
     let dataRows = [];
     let _rowCount = 0
@@ -15,21 +15,19 @@
     let _modalCancel
 
     onMount(() => {
+        checkTokenThenLogin()
         getMyDeviceList()
     })
 
     const clickDeviceQuery = () => {
         console.log("clickDeviceQuery")
         onModalClose()
-        // _modal.css()
-        // _test.click()
     }
 
 
     const onModalClose = () => {
         console.log("onModalClose")
     }
-
 
     const getMyDeviceList = async () => {
         try {
@@ -87,6 +85,43 @@
         }
     }
 
+    const onClickDeviceModify = async (item) => {
+        console.log("onClickDeviceModify")
+        console.log(item.aei)
+        _aei = item.aei
+
+        // {{local_api_url}}/device/:aei/detail
+
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device/${_aei}/detail`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getHyToken()
+                },
+                body: JSON.stringify({"alias": "테스트"})
+            });
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json()
+
+            console.log(jsonData)
+
+            if (jsonData.errors) {
+                _addMessage = jsonData.msg
+            } else {
+                alert(jsonData.msg)
+                // _modalCancel.click()
+            }
+
+        } catch (err) {
+            alert("조회 에러!")
+        }
+    }
+
+
 
 </script>
 
@@ -94,7 +129,6 @@
   <title>디바이스 리스트 | HYNUX-IOT</title>
   <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
-
 
 <main class="main" id="top">
   <div class="container" data-layout="container">
@@ -136,16 +170,6 @@
                 </tr>
                 </thead>
                 <tbody class="list" id="table-ticket-body">
-                <!--{#each historyRows as row, index}
-                  <tr>
-                    <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{row.datetime}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
-                    <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
-                    <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
-                  </tr>
-                {/each}-->
-
                 {#each dataRows as row}
                   <tr>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
@@ -155,8 +179,9 @@
                     <td class="align-middle py-2 pe-4 white-space-nowrap">127.0.0.1</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">52:EA:AB:CD:EE</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">
-                      <button class="btn btn-falcon-default btn-sm mx-2" type="button" >
-                        <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">수정</span>
+                      <button class="btn btn-falcon-default btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#error-modal" type="button"
+                              on:click={()=>onClickDeviceModify(row)}>
+                        <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">디바이스 수정</span>
                       </button>
                     </td>
                   </tr>
@@ -211,7 +236,9 @@
       <div class="modal-footer">
         <!--<button class="btn btn-secondary" type="button" on:click={clickDeviceQuery}>조회</button>-->
         <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>등록</button>
-        <button class="btn btn-primary" type="button" data-bs-dismiss="modal" on:click={onModalClose} bind:this={_modalCancel}>취소</button>
+        <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>수정</button>
+        <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>삭제</button>
+        <button class="btn btn-primary" type="button" data-bs-dismiss="modal" on:click={onModalClose} bind:this={_modalCancel}>닫기</button>
       </div>
     </div>
   </div>
