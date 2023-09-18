@@ -10,9 +10,11 @@
     let dataRows = [];
     let _rowCount = 0
     let _aei = ""
+    let _deviceAlias = ""
     let _addMessage = ""
     let _modal
     let _modalCancel
+    let _showState = []
 
     onMount(() => {
         checkTokenThenLogin()
@@ -55,6 +57,10 @@
 
     const onClickDeviceAdd = async () => {
         console.log(_aei)
+        _showState[0] = ""
+        _showState[1] = "hide"
+        _showState[2] = "hide"
+
         try {
             const response = await fetch(`${PUBLIC_API_URL}/device`, {
                 method: "POST",
@@ -85,21 +91,50 @@
         }
     }
 
+
+    const onClickAddDevice = async (item) => {
+        console.log("onClickAddDevice")
+        _showState[0] = ""
+        _showState[1] = "hide"
+        _showState[2] = "hide"
+        _aei = ""
+        _deviceAlias = ""
+    }
+
     const onClickDeviceModify = async (item) => {
         console.log("onClickDeviceModify")
         console.log(item.aei)
         _aei = item.aei
+        _deviceAlias = item.alias
 
-        // {{local_api_url}}/device/:aei/detail
+        _showState[0] = "hide"
+        _showState[1] = ""
+        _showState[2] = "hide"
+    }
+    const onClickDeleteDevice = async (item) => {
+        console.log("onClickDeviceModify")
+        console.log(item.aei)
+        _aei = item.aei
+        _deviceAlias = item.alias
 
+        _showState[0] = "hide"
+        _showState[1] = "hide"
+        _showState[2] = ""
+    }
+
+
+
+    const onClickModalAddDevice = async () => {
+        console.log("onClickModalAddDevice")
         try {
-            const response = await fetch(`${PUBLIC_API_URL}/device/${_aei}/detail`, {
-                method: "PUT",
+            const response = await fetch(`${PUBLIC_API_URL}/device`, {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": getHyToken()
                 },
-                body: JSON.stringify({"alias": "테스트"})
+                body: JSON.stringify({"aei": _aei})
+
             });
 
             if (!response.ok) //
@@ -113,6 +148,42 @@
                 _addMessage = jsonData.msg
             } else {
                 alert(jsonData.msg)
+                _modalCancel.click()
+            }
+
+        } catch (err) {
+            alert("조회 에러!")
+        }
+    }
+
+    /**
+     * 모달 디바이스 수정 버튼 클릭 이벤트
+     */
+    const onClickModalModifyDevice = async () => {
+        console.log("onClickModalModifyDevice")
+
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device/${_aei}/detail`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getHyToken()
+                },
+                body: JSON.stringify({"alias": _deviceAlias})
+            });
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json()
+
+            console.log(jsonData)
+
+            if (jsonData.errors) {
+                _addMessage = jsonData.msg
+            } else {
+                _addMessage = jsonData.msg
+                // alert(jsonData.msg)
                 // _modalCancel.click()
             }
 
@@ -121,7 +192,39 @@
         }
     }
 
+    /**
+     * 모달 디바이스 삭제 버튼 클릭 이벤트
+     */
+    const onClickModalDeleteDevice = async () => {
+        console.log("onClickModalDeleteDevice")
 
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/device/`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": getHyToken()
+                },
+                body: JSON.stringify({"aei": _aei})
+            });
+
+            if (!response.ok) //
+                throw new Error(response.statusText);
+
+            const jsonData = await response.json()
+
+            console.log(jsonData)
+
+            if (jsonData.errors) {
+                _addMessage = jsonData.msg
+            } else {
+                alert(jsonData.msg)
+                _modalCancel.click()
+            }
+        } catch (err) {
+            alert("조회 에러!")
+        }
+    }
 
 </script>
 
@@ -148,7 +251,8 @@
               <div class="border-bottom border-200 my-3"></div>
               <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
                 <div class="d-flex align-items-center" id="table-ticket-replace-element">
-                  <button class="btn btn-falcon-default btn-sm" data-bs-toggle="modal" data-bs-target="#error-modal" type="button">
+                  <button class="btn btn-falcon-default btn-sm" data-bs-toggle="modal" data-bs-target="#error-modal" type="button"
+                          on:click={onClickAddDevice}>
                     <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">디바이스 추가</span>
                   </button>
                 </div>
@@ -167,6 +271,7 @@
                   <th class=" align-middle">IP</th>
                   <th class=" align-middle">Mac 주소</th>
                   <th class=" align-middle">수정</th>
+                  <th class=" align-middle">삭제</th>
                 </tr>
                 </thead>
                 <tbody class="list" id="table-ticket-body">
@@ -182,6 +287,12 @@
                       <button class="btn btn-falcon-default btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#error-modal" type="button"
                               on:click={()=>onClickDeviceModify(row)}>
                         <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">디바이스 수정</span>
+                      </button>
+                    </td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">
+                      <button class="btn btn-falcon-default btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#error-modal" type="button"
+                              on:click={()=>onClickDeleteDevice(row)}>
+                        <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">디바이스 삭제</span>
                       </button>
                     </td>
                   </tr>
@@ -224,7 +335,7 @@
             </div>
             <div class="mb-3">
               <label class="col-form-label" for="recipient-name3">디바이스명:</label>
-              <input class="form-control" id="recipient-name3" type="text"/>
+              <input class="form-control" id="recipient-name3" type="text" bind:value={_deviceAlias}/>
             </div>
             <div class="mb-3">
               <label class="col-form-label" for="message-text">Message:</label>
@@ -234,12 +345,17 @@
         </div>
       </div>
       <div class="modal-footer">
-        <!--<button class="btn btn-secondary" type="button" on:click={clickDeviceQuery}>조회</button>-->
-        <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>등록</button>
-        <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>수정</button>
-        <button class="btn btn-secondary" type="button" on:click={onClickDeviceAdd}>삭제</button>
+        <button class="btn btn-secondary {_showState[0]}" type="button" on:click={onClickModalAddDevice}>등록</button>
+        <button class="btn btn-secondary {_showState[1]}" type="button" on:click={onClickModalModifyDevice}>수정</button>
+        <button class="btn btn-secondary {_showState[2]}" type="button" on:click={onClickModalDeleteDevice}>삭제</button>
         <button class="btn btn-primary" type="button" data-bs-dismiss="modal" on:click={onModalClose} bind:this={_modalCancel}>닫기</button>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+    .hide {
+        display: none;
+    }
+</style>
