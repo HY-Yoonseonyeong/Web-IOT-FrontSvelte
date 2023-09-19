@@ -3,7 +3,7 @@
     import NavSide from "../../../component/nav/NavSide.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
     import Pagination from "./Pagination.svelte";
-    import {onMount, onDestroy} from "svelte";
+    import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
     import Flatpickr from 'svelte-flatpickr'
     import 'flatpickr/dist/flatpickr.css';
@@ -37,6 +37,18 @@
 
     const options = {
         mode: "range",
+        enableTime: false,
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ['일', '월', '화', '수', '목', '금', '토'],
+                longhand: ['일', '월', '화', '수', '목', '금', '토'],
+            },
+            months: {
+                shorthand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                longhand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            },
+        },
         onChange: ([start, end]) => {
             if (start && end) {
                 console.log({start, end});
@@ -78,36 +90,12 @@
 
         await getDashboardDeviceList()
         await reqAeDeviceAlias()
-        /*await reqKolasHistory();*/
 
-        // pagination.someFunc()
         testNumber = 15
     })
 
-    onDestroy(async () => {
-        /*calendarPicker.destroy()*/
-        /*calendarPicker.destory()*/
-        //
-        // calendarPicker.destroy()
-        //console.log("onDestroy")
-    })
 
     //
-    const reqKolasHistory = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/kolas/history`, {headers: {"Content-Type": "application/json"}})
-        const data = await response.json()
-
-        historyCount = data.count;
-        historyRows = data.rows;
-
-        pageInfo = {
-            curIndex: 0,
-            totalCount: historyCount
-        }
-
-        testNumber = 20
-    }
-
     const reqAeDeviceAlias = async () => {
         const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
         let alias1 = await response1.json()
@@ -158,7 +146,6 @@
         }
     }
 
-
     const clickPeriodQuery = async (e) => {
         const formData = new FormData(e.target);
 
@@ -167,8 +154,8 @@
             queryParams[key] = value;
         }
 
-        queryParams['periodStart'] = periodStart
-        queryParams['periodEnd'] = periodEnd
+        queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
+        queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')
 
         console.log(queryParams)
 
