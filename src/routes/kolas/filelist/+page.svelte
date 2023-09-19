@@ -5,15 +5,13 @@
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
     import moment from "moment";
+    import {checkTokenThenLogin} from "$lib/hyToken.js";
 
     let _fileList = new Array()
 
-    onMount(() => {
-        getReportFileList()
-
-        // 2023-09-12T16:54:31.000Z
-        console.log(moment("2023-09-12T16:54:31.000Z").format("YYYY-MM-DD HH:mm:ss"))
-
+    onMount(async () => {
+        await checkTokenThenLogin()
+        await getReportFileList()
     })
 
     // const

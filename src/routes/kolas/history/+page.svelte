@@ -72,6 +72,7 @@
         });
          */
 
+        await checkTokenThenLogin()
 
 
 

@@ -2,13 +2,18 @@
     import '../../scss/theme.scss'
     import NavSide from "../../component/nav/NavSide.svelte"
     import NavTop from "../../component/nav/NavTop.svelte";
-    import {onDestroy} from "svelte";
+    import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL, PUBLIC_MOBIUS_URL} from "$env/static/public";
+    import {checkTokenThenLogin} from "$lib/hyToken.js";
 
 
     let aeid = '' // AE ID
 
     onDestroy(() => {
+    })
+
+    onMount(async ()=>{
+        await checkTokenThenLogin()
     })
 
     const init_m2m_ae = () => {

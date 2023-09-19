@@ -19,16 +19,20 @@
     })
 
     const queryUserName = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/users/name`, {
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': localStorage.getItem('hynuxiot-token')
-            }
-        })
-        const fetchData = await response.json()
-        console.log(fetchData)
-        return fetchData;
-
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/users/name`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem('hynuxiot-token')
+                }
+            })
+            const fetchData = await response.json()
+            console.log(fetchData)
+            return fetchData;
+        } catch (e) {
+            console.log("조회 에러")
+            return ""
+        }
     }
     const onClickSetting = async () => {
         await goto('../../usersetting')

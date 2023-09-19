@@ -10,6 +10,7 @@
     import {PUBLIC_API_URL} from "$env/static/public";
     import flatpickr from "flatpickr";
     import {browser} from "$app/environment";
+    import {checkTokenThenLogin} from "$lib/hyToken.js";
 
     let historyCount = 0
     let historyRows = new Array()
@@ -38,6 +39,8 @@
     let calendarPicker
 
     onMount(async () => {
+        await checkTokenThenLogin()
+
         calendarPicker = flatpickr(ref, {
             mode: "range",
             locale: {

@@ -1,24 +1,13 @@
 <script>
-    import '../scss/theme.scss'
     import {onMount} from 'svelte'
-    import {browser} from "$app/environment";
     import {PUBLIC_API_URL} from '$env/static/public'
 
     export let data;
-    import {handle} from '../hooks.sever'
-    import {goto} from "$app/navigation";
 
     let login = false;
 
     //
     let userToken
-
-    // userToken = localStorage.getItem('hynuxiot-token')
-
-    if (browser) {
-        console.log("browser")
-        userToken = localStorage.getItem('hynuxiot-token')
-    }
 
     onMount(async () => {
 
@@ -28,67 +17,27 @@
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                'token': localStorage.getItem('hynuxiot-token')
+                'Authorization': localStorage.getItem('hynuxiot-token')
             },
         });
 
-        console.log(response)
         const fetchData = await response.json();
 
         if (fetchData.user) {
             login = true
         }
-        console.log("login " + login)
-        console.log(fetchData)
-        console.log("1")
     })
 
     const clickLogout = () => {
-        console.log("clickLogout")
         localStorage.removeItem('hynuxiot-token')
-        // localStorage.getItem('hynuxiot-token')
-        // goto('/')
         userToken = ''
     }
 </script>
 
 <svelte:head>
   <title>HYNUX-IOT</title>
-  <meta name="description" content="About this app"/>
-  <!--<script src="assets/js/config.js"></script>
-  <script src="vendors/simplebar/simplebar.min.js"></script>
-  <script src="vendors/popper/popper.min.js"></script>
-  <script src="vendors/bootstrap/bootstrap.min.js"></script>
-  <script src="vendors/anchorjs/anchor.min.js"></script>
-  <script src="vendors/is/is.min.js"></script>
-  <script src="vendors/echarts/echarts.min.js"></script>
-  <script src="vendors/fontawesome/all.min.js"></script>
-  <script src="vendors/lodash/lodash.min.js"></script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-  <script src="assets/js/theme.js"></script>
-  <script src="vendors/typed.js/typed.js"></script>-->
+  <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
-
-
-<!--<main class="main" id="top">
-  <div class="container" data-layout="container">
-    <div class="row flex-center min-vh-100 py-6">
-      <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-        <a class="d-flex flex-center mb-4" href="../../../index.html">
-          <span class="font-sans-serif fw-bolder fs-5 d-inline-block">HYNUX-IOT</span>(Beta)
-        </a>
-        <div class="position-relative d-flex flex-center">
-          {#if login === true}
-            <a class="btn btn-primary m-2" href="./dashboard">대시보드</a>
-          {:else}
-            <a class="btn btn-primary m-2" href="./login">로그인</a>
-          {/if}
-        </div>
-      </div>
-    </div>
-  </div>
-</main>-->
-
 
 <main class="main" id="top">
   <nav class="navbar navbar-standard navbar-expand-lg fixed-top navbar-dark" data-navbar-darken-on-scroll="data-navbar-darken-on-scroll">

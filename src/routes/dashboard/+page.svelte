@@ -1,5 +1,4 @@
 <script>
-    import '../../scss/theme.scss'
     import TemphumidEx from "./TemphumidEx.svelte";
     import {onMount} from "svelte";
     import Weather from "./Weather.svelte";
@@ -10,6 +9,7 @@
     import NavTop from "../../component/nav/NavTop.svelte";
     import DeviceConChange from "./DeviceConChange.svelte";
     import Footer from "../../component/nav/Footer.svelte";
+    import {checkTokenThenLogin} from "$lib/hyToken.js";
 
     function onclick() {
         const fetchData = (async () => {
@@ -31,6 +31,7 @@
 
     onMount(async () => {
         console.log("OnMount")
+        await checkTokenThenLogin()
     })
 
     const clickLogout = () => {
