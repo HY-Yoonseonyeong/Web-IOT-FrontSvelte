@@ -28,6 +28,8 @@
     onMount(() => {
         queryCodChange().then(data => aeiDataList = data);
 
+
+
         setInterval(async () => {
             console.log("setInterval queryCodChange")
             queryCodChange().then(data => aeiDataList = data);
@@ -98,7 +100,7 @@
           {#each aeiDataList as item, index}
             <tr class="btn-reveal-trigger">
 
-              <th class="align-middle white-space-nowrap name">{get_yyyymmddhhMMss(item.datetime)}</th>
+              <th class="align-middle white-space-nowrap name">{item.datetime}</th>
               <td class="align-middle white-space-nowrap email">{item.ae}</td>
 
               {#if item.cin == 'temp'}

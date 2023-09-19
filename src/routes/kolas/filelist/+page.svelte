@@ -21,7 +21,7 @@
         _fileList = jsonData
     }
 
-    const clickDownload = async (fileKey) => {
+    const clickDownload = async (fileKey, file_name) => {
         const response = await fetch(`${PUBLIC_API_URL}/file/${fileKey}`, {
             headers: {"Content-Type": "application/json"}
         })
@@ -40,7 +40,7 @@
         // generate anchor tag, click it for download and then remove it again
 
         let a = document.createElement("a");
-        a.setAttribute("download", `${fileKey}.csv`);
+        a.setAttribute("download", `${file_name}`);
         a.setAttribute("href", link);
         document.body.appendChild(a);
         a.click();
@@ -95,7 +95,7 @@
                   <th class="sort align-middle ps-2">날짜/시간</th>
                   <th class="sort align-middle" style="min-width:15.625rem">제목</th>
                   <th class="sort align-middle">파일명</th>
-                  <th class="sort align-middle">파일 타입</th>
+                  <th class="sort align-middle" style="min-width: 80px">파일 타입</th>
                   <th class="sort align-middle">상태</th>
                   <th class="sort align-middle">다운로드</th>
                 </tr>
@@ -105,7 +105,6 @@
                   <tr>
                     <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">
                       <div class="d-flex align-items-center gap-2 position-relative">
-                        <!--<h6 class="mb-0 text-700">{moment(row.datetime, "YYYY-MM-DD HH:mm:ss")}</h6>-->
                         <h6 class="mb-0 text-700">{moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</h6>
                       </div>
                     </td>
@@ -116,7 +115,7 @@
                       <small class="badge rounded badge-subtle-success false">가능</small>
                     </td>
                     <td class="align-middle agent">
-                      <button class="btn btn-falcon-default btn-sm mx-2" type="button" on:click={()=>clickDownload(row.file_key)}>
+                      <button class="btn btn-falcon-default btn-sm mx-2" type="button" on:click={()=>clickDownload(row.file_key, row.file_name)}>
                         <span class="fas fa-download" data-fa-transform="shrink-3"></span>
                         <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">다운로드</span>
                       </button>
