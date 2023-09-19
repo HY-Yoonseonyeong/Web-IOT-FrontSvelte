@@ -283,9 +283,7 @@
 
 <!--// 2480px(가로) X 3508px-->
 
-<div>
-  <canvas bind:this={h2c}></canvas>
-</div>
+
 
 <div class="page" bind:this={docPdf} style="backgound-color: white">
   <div style="background-color: white">

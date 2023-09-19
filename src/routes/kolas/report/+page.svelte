@@ -8,10 +8,11 @@
 
     import {onMount, onDestroy} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    import flatpickr from "flatpickr";
+    import Flatpickr from 'svelte-flatpickr'
     import {browser} from "$app/environment";
     import {checkTokenThenLogin} from "$lib/hyToken.js";
     import moment from "moment/moment.js";
+    import ModalReport from "./ModalReport.svelte";
 
     let historyCount = 0
     let historyRows = new Array()
@@ -29,47 +30,43 @@
     aeList.push("testB1F221205_01")
 
     let pagination;
-    let testNumber = 2;
-    let pageInfo = {
-        curIndex: 0,
-        totalCount: 0
-    }
+
+
 
     let timepicker3
     let ref;
     let calendarPicker
 
+    const options = {
+        mode: "range",
+        enableTime: false,
+        locale: {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ['일', '월', '화', '수', '목', '금', '토'],
+                longhand: ['일', '월', '화', '수', '목', '금', '토'],
+            },
+            months: {
+                shorthand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                longhand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            },
+        },
+        onChange: ([start, end]) => {
+            if (start && end) {
+                console.log({start, end});
+                periodStart = start
+                periodEnd = end
+            }
+        }
+    };
+
+
     onMount(async () => {
         await checkTokenThenLogin()
-
-        calendarPicker = flatpickr(ref, {
-            mode: "range",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['일', '월', '화', '수', '목', '금', '토'],
-                    longhand: ['일', '월', '화', '수', '목', '금', '토'],
-                },
-                months: {
-                    shorthand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                    longhand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                },
-            },
-            onChange: ([start, end]) => {
-                if (start && end) {
-                    console.log({start, end});
-                    periodStart = start
-                    periodEnd = end
-                }
-            }
-        });
-
         await getDashboardDeviceList()
         await reqAeDeviceAlias()
-        /*await reqKolasHistory();*/
 
 
-        testNumber = 15
     })
 
     onDestroy(async () => {
@@ -88,12 +85,8 @@
         historyCount = data.count;
         historyRows = data.rows;
 
-        pageInfo = {
-            curIndex: 0,
-            totalCount: historyCount
-        }
 
-        testNumber = 20
+
     }
 
     const getDashboardDeviceList = async () => {
@@ -199,13 +192,6 @@
 
         historyCount = data.count;
         historyRows = data.rows;
-
-        testNumber = 20
-
-        pageInfo = {
-            curIndex: 0,
-            totalCount: historyCount
-        }
     }
 
     let clickCreatePdf
@@ -255,9 +241,10 @@
                   <label class="col-sm-2 col-form-label">날짜 기간 설정</label>
                   <div class="col-sm-10">
                     <!--{#if browser}-->
-                    <input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <!--<input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>-->
                     <!--<input bind:this={ref} />-->
                     <!--{/if}-->
+                      <Flatpickr {options} class="form-control" name="date" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
                   </div>
                 </div>
                 <fieldset>
@@ -288,11 +275,14 @@
                   </div>
                 </fieldset>
                 <button class="btn btn-primary" type="submit">기간 조회</button>
+
               </form>
             </div>
           </div>
         </div>
       </div>
+
+      <!--<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#error-modal">기간 조회</button>-->
 
       <div class="col-md-12">
         <div class="card h-100">
@@ -300,7 +290,7 @@
             <h6 class="mb-0">기간 조회 데이터</h6>
             <div class="d-flex align-items-center justify-content-between justify-content-lg-end px-x1">
               <div class="d-flex align-items-center" id="">
-                <button class="btn btn-falcon-default btn-sm" type="button" on:click={clickExport}>
+                <button class="btn btn-falcon-default btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#error-modal">
                   <span class="fas fa-external-link-alt" data-fa-transform="shrink-3"></span>
                   <span class="d-none d-sm-inline-block d-xl-none d-xxl-inline-block ms-1">리포트 생성</span>
                 </button>
@@ -344,12 +334,14 @@
         </div>
       </div>
       <div>
-        <PdfExport queryInfo={queryInfo} bind:this={pdf22}/>
+        <!--<PdfExport queryInfo={queryInfo} bind:this={pdf22}/>-->
         <!--<PdfExport  bind:this={pdf22}/>-->
       </div>
       <Footer/>
     </div>
   </div>
+
+  <ModalReport queryInfo={queryInfo}/>
 </main>
 
 
