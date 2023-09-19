@@ -93,7 +93,7 @@
                 <thead class="text-800 bg-light">
                 <tr>
                   <th class="sort align-middle ps-2">날짜/시간</th>
-                  <th class="sort align-middle" style="min-width:15.625rem">제목</th>
+                  <th class="sort align-middle" >제목</th>
                   <th class="sort align-middle">파일명</th>
                   <th class="sort align-middle" style="min-width: 80px">파일 타입</th>
                   <th class="sort align-middle">상태</th>
