@@ -114,17 +114,8 @@
                 },
 
             },
-
-            /*  onResize : function (myChart, size) {
-                  var showTicks = (size.width < 550) ? false : true;
-                  console.log("chart size : " + size)
-                  console.log(size)
-                  myChart.options.plugins.legend.display = showTicks;
-              }*/
         },
-        /*plugins: [htmlLegendPlugin],*/
     };
-
 
     const getOrCreateLegendList = (chart, id) => {
         const legendContainer = document.getElementById(id);
@@ -151,19 +142,7 @@
         myChart = new Chart(ctx, config)
 
         //await clickPeriodQuery();
-         // await queryMobiusHit()
     })
-
-    // Chart Data Query
-
-
-    const drawLegend = () => {
-        console.log("drawLegend")
-    }
-
-    const htmlLegendPlugin = () => {
-        console.log("htmlLegendPlugin")
-    }
 
 
     //
@@ -197,30 +176,7 @@
     }
 
 
-    const queryMobiusHit = async () => {
-        console.log("queryMobiusHit")
-        const response = await fetch(`${PUBLIC_API_URL}/mobius/hit`, {
-            headers: {"Content-Type": "application/json",}
-        })
-        const fetchData = await response.json()
 
-        // 마지막 데이터 30개
-        let hitData
-        if (fetchData.length > 30) {
-            hitData = fetchData.slice(fetchData.length - 30, fetchData.length)
-        } else {
-            hitData = fetchData
-        }
-
-        /*myChart.data.labels = hitData.map(row => row.ct)
-        myChart.data.datasets[0].data = hitData.map(row => row.http)
-        myChart.data.datasets[0].borderDash = [5, 5]
-        myChart.data.datasets[1].data = hitData.map(row => row.mqtt)
-        myChart.data.datasets[2].data = hitData.map(row => row.coap)
-        myChart.data.datasets[3].data = hitData.map(row => row.ws)
-
-        myChart.update()*/
-    }
 
     const clickPeriodQuery = async (e) => {
 
@@ -244,6 +200,10 @@
          */
 
         console.log(queryParams)
+
+        /*queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
+        queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')*/
+
 
 
         const response = await fetch(`${PUBLIC_API_URL}/kolas/report`, {
@@ -291,6 +251,8 @@
 
         const data = await response.json()
 
+        console.log(data)
+
 
         let sliceDate3 = ''
 
@@ -299,37 +261,48 @@
 
             //console.log(row)
             /*console.log(row.datetime)*/
+
+            let datetime = moment(row.datetime)
+
             if (0 !== index % 4) {
                 row.datetime = ''
             } else {
-                let cDate = new Date(row.datetime)
-                cDate = cDate.setTime(cDate.getTime())
-                cDate = new Date(cDate)
+
+                let date = moment(row.datetime).format("YYYY-MM-DD")
+                let time = moment(row.datetime).format("HH:mm")
+
+
+
+                console.log(date)
+                console.log(time)
+
+                let cDate = moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")
+                console.log(cDate)
+                // cDate = cDate.setTime(cDate.getTime())
+                // cDate = new Date(cDate)
                 // let sDate = [cDate.getFullYear(), cDate.getMonth(), cDate.getDay()].join('-');
 
                 // console.log(cDate.getDay())
                 //console.log(new Date(row.datetime).toISOString().slice(0, 10))
 
-                let sliceDate2 = new Date(row.datetime).toISOString().slice(0, 10)
+                // let sliceDate2 = new Date(row.datetime).toISOString().slice(0, 10)
 
                 // row.datetime = sliceDate2
 
                 // moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
 
-
-                if (sliceDate3 !== sliceDate2) {
+                if (sliceDate3 !== date) {
                     // moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
 
-                    row.datetime = sliceDate2
-                    sliceDate3 = sliceDate2
+                    row.datetime = date
+                    sliceDate3 = date
                 } else {
                     let ampm = 'am'
-                    if (cDate.getHours() >= 12) {
+                    if (moment(row.datetime).hours() >= 12) {
                         ampm = 'pm'
                     }
-                    row.datetime = [cDate.getHours(), cDate.getMinutes(), ampm].join(':')
+                    row.datetime = [time, ampm].join(':')
                 }
-
             }
         })
 

@@ -11,6 +11,7 @@
     import flatpickr from "flatpickr";
     import {browser} from "$app/environment";
     import {checkTokenThenLogin} from "$lib/hyToken.js";
+    import moment from "moment/moment.js";
 
     let historyCount = 0
     let historyRows = new Array()
@@ -173,6 +174,9 @@
 
         queryParams['periodStart'] = start
         queryParams['periodEnd'] = end
+
+        queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
+        queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')
 
         console.log(queryParams)
 
