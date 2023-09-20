@@ -5,8 +5,8 @@
     import ChartHitDaily from "./ChartHitDaily.svelte";
     import ChartPieHit from "./ChartPieHit.svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
-    import MobiusTrafficGrid from "../test3/MobiusTrafficGrid.svelte";
-    import {trafficDataStore} from "../test3/trafficDataStore";
+    import MobiusTrafficGrid from "./MobiusTrafficGrid.svelte";
+    import {trafficDataStore} from "./trafficDataStore";
     import {checkTokenThenLogin} from "$lib/hyToken.js";
 
     let userCount = 0  // 가입자수
@@ -41,24 +41,34 @@
 
     //
     const queryUserCount = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/users/count`, {headers: {"Content-Type": "application/json"}})
-        const fetchData = await response.json()
-        return fetchData
-    }
-
-    const queryRQCount = async () => {
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/users/count`, {headers: {"Content-Type": "application/json"}})
+            const fetchData = await response.json()
+            return fetchData
+        } catch (e) {
+            return ""
+        }
     }
 
     const queryAECount = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/mobius`, {headers: {"Content-Type": "application/json"}})
-        const fetchData = await response.json()
-        return fetchData;
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/mobius`, {headers: {"Content-Type": "application/json"}})
+            const fetchData = await response.json()
+            return fetchData;
+        } catch (e) {
+            return ""
+        }
     }
 
     const queryUsedDiskSize = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/mobius/cbs`, {headers: {"Content-Type": "application/json"}})
-        const fetchData = await response.json()
-        return fetchData['sum(cbs)'];
+        try {
+            const response = await fetch(`${PUBLIC_API_URL}/mobius/cbs`, {headers: {"Content-Type": "application/json"}})
+            const fetchData = await response.json()
+            return fetchData['sum(cbs)'];
+        } catch (e) {
+            return ""
+        }
+
     }
 
 </script>

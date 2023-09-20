@@ -1,12 +1,10 @@
 <script>
-    import '../../scss/theme.scss'
-    import {goto} from "$app/navigation";
     import NavSide from "../../component/nav/NavSide.svelte"
     import NavTop from "../../component/nav/NavTop.svelte";
     import Footer from "../../component/nav/Footer.svelte";
-    import {onMount, onDestroy} from "svelte";
+    import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
-    import {getHyToken, checkHyToken, checkTokenThenLogin} from "$lib/hyToken.js";
+    import {getHyToken, checkTokenThenLogin} from "$lib/hyToken.js";
 
     let userName = "", userNick = "", userEmail = ""
 
@@ -14,13 +12,6 @@
         checkTokenThenLogin()
         getUserInfo()
     })
-
-    onDestroy(() => {
-    })
-
-    // 프로필 변경
-    // 비밀번호 변경
-    // 회원 탈퇴
 
     const onChangePassword = (e) => {
         console.log("changeUserPassword")
