@@ -48,7 +48,7 @@
           </a>
           <ul class="nav collapse show" id="dashboard">
             <li class="nav-item">
-              <a class="nav-link" class:active={$page.url.pathname === '/dashboard3'} href="../dashboard3">
+              <a class="nav-link" class:active={$page.url.pathname === '/dashboardMobius'} href="../dashboardMobius">
                 <div class="d-flex align-items-center">
                   <span class="nav-link-text ps-1">Mobius</span>
                 </div>
