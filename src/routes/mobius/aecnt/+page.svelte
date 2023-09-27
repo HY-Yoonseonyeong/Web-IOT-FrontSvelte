@@ -9,6 +9,7 @@
 
     let _rn
     let _aei
+    let _ae
     let _message = ""
     let _message2 = ""
     const _YYMM = moment().format('YYMM')
@@ -22,6 +23,7 @@
         _aei = "Sdn".concat(_YYMM)
     })
 
+    //
 
     /**
      * 랜덤 4자리
@@ -32,7 +34,15 @@
         _aei = "Sdn".concat(_YYMM, random)
     }
 
+
     const onClickCheckAE = async () => {
+        console.log(_aei)
+
+        _aei = "S".concat(_rn)
+
+        console.log(_rn)
+        console.log(_aei)
+
         try {
             const response = await fetch(`${PUBLIC_MOBIUS_AZURE_URL}/Mobius/${_rn}?rcn=1`, {
                 method: "GET",
@@ -45,9 +55,6 @@
 
             const fetchData = await response.json();
             _message = JSON.stringify(fetchData)
-
-            console.log(fetchData)
-            console.log("1")
 
         } catch (e) {
             console.log(e.message)
@@ -81,9 +88,11 @@
 
             });
 
+            console.log(response)
             const fetchData = await response.json();
             _message2 = JSON.stringify(fetchData)
             console.log(fetchData)
+            console.log("1")
 
         } catch (e) {
             console.log(e.message)
@@ -92,10 +101,53 @@
         // -- 라벨 1.유형, 2. Mac, 3: 온습도, 4. 펌웨어 버전 5. 위치(옵션), 6. 기타
     }
 
+    const onClickCreateCNT = async () => {
+        try {
+            await createCNT("temp")
+            await createCNT("humid")
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    //
+    const createCNT = async (cnt_rn) => {
+
+        const body = {
+            "m2m:cnt": {
+                "rn": cnt_rn,
+                "lbl": [
+                    "온도"
+                ],
+            }
+        }
+
+        try {
+            const response = await fetch(`${PUBLIC_MOBIUS_AZURE_URL}/Mobius/${_rn}`, {
+                method: "POST",
+                headers: {
+                    'Accept': "application/json",
+                    'X-M2M-RI': 12345,
+                    'X-M2M-Origin': _aei,
+                    'Content-Type': "application/json;ty=3"
+                },
+                body: JSON.stringify(body)
+            });
+
+            const fetchData = await response.json();
+            _message2 = JSON.stringify(fetchData)
+            console.log(fetchData)
+
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+
 </script>
 
 <svelte:head>
-  <title>테스트 | 테스트</title>
+  <title>Mobius AE CNT | Mobius AE CNT</title>
   <meta name="HYNUX-IOT" content="HYNUX-IOT"/>
 </svelte:head>
 
@@ -105,10 +157,11 @@
     <div class="content">
       <NavTop/>
 
-      <p>AE 디바이스 생성</p>
+      <p>AE 디바이스 CNT(container)</p>
       <div>
-        <h5>AE : dn(dynamic) + YYMM(년월) + 랜덤값 4자리</h5>
-        <h6> rn (Resource Name) : dn </h6><input value="{_rn}">
+        <h6> rn (Resource Name) : dn </h6>
+        <input bind:value="{_rn}">
+        <input bind:value="{_aei}">
         <h6> aei : {_aei}</h6>
         <button on:click={onClickRandomDigit}>랜덤4자리</button>
         <button on:click={onClickCheckAE}>AE 확인</button>
@@ -130,14 +183,10 @@
         <input>
         <input>
         <input>
-        <button on:click={onClickCreateAE}>AE 생성</button>
+        <button on:click={onClickCreateCNT}>CNT 생성</button>
         <textarea>{_message2}</textarea>
       </div>
-
       <Footer/>
     </div>
   </div>
 </main>
-
-
-
