@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
+    import moment from "moment";
 
     let aeiDataList = new Array()
 
@@ -18,8 +19,6 @@
         })
 
         const data = await response.json()
-        // console.log(data)
-        //return data['m2m:cin']['con']
 
         console.log(data)
         return data
@@ -27,8 +26,6 @@
 
     onMount(() => {
         queryCodChange().then(data => aeiDataList = data);
-
-
 
         setInterval(async () => {
             console.log("setInterval queryCodChange")
@@ -100,7 +97,7 @@
           {#each aeiDataList as item, index}
             <tr class="btn-reveal-trigger">
 
-              <th class="align-middle white-space-nowrap name">{item.datetime}</th>
+              <th class="align-middle white-space-nowrap name">{moment(item.datetime).format("YYYY-MM-DD HH:mm:ss")}</th>
               <td class="align-middle white-space-nowrap email">{item.ae}</td>
 
               {#if item.cin == 'temp'}
