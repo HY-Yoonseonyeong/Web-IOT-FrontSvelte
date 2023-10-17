@@ -3,7 +3,6 @@
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
 
-
     export let conType //
 
     let timerID
@@ -100,13 +99,7 @@
         }
 
         timerChartQuery()
-
-        // 디바이스 별칭 조회
-
     })
-
-    // Chart Data Query
-
 
     //
     const getTime = (datetime) => {
@@ -126,14 +119,7 @@
     let selected = '30'; //
 
     const change = () => {
-        console.log(selected)
         const period = selected
-
-        /*
-        queryChartData(period).then(() => {
-            console.log("query complete!!!")
-        })
-        */
 
         if (timerID) {
             console.log("timerID : " + timerID)
@@ -143,14 +129,12 @@
         timerChartQuery()
     }
 
-
     const timerChartQuery = () => {
         console.log("timerChartQuery")
         queryChartData(selected).then(() => {
             timerID = setTimeout(timerChartQuery, timerDelay)
         })
     }
-
 
     //
     const queryChartData = async (period) => {
@@ -159,21 +143,16 @@
         const response = await fetch(url, {})
         const queryData = await response.json()
 
-        console.log("queryData Chart")
-        console.log(queryData)
-
         myChart.data.labels = queryData.map(row => getTime(row.datetime))
         myChart.data.datasets[0].label = aeList[0]
         myChart.data.datasets[0].data = queryData.map(row => row.con)
 
         url = `${PUBLIC_API_URL}/device/history/min/test2F230102_01/${conType}?limit=30&period=${period}`
-        const response2 = await fetch(url, {}
-        )
+        const response2 = await fetch(url, {})
 
         const queryData2 = await response2.json()
         myChart.data.datasets[1].label = aeList[1]
         myChart.data.datasets[1].data = queryData2.map(row => row.con)
-
 
         url = `${PUBLIC_API_URL}/device/history/min/testB1F221205_01/${conType}?limit=30&period=${period}`
         const response3 = await fetch(url, {})
@@ -214,8 +193,6 @@
 
 
 </script>
-
-<!--// <div class="col-md-6 col-xxl-3">-->
 
 <div class="col-lg-6 {stylePadding} mb-3">
   <div class="card h-lg-100">
