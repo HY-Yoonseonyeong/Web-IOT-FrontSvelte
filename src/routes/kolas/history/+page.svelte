@@ -59,35 +59,8 @@
     };
 
     onMount(async () => {
-        // checkTokenThenLogin()
-        /*
-        calendarPicker = flatpickr(ref, {
-            mode: "range",
-            locale: {
-                firstDayOfWeek: 1,
-                weekdays: {
-                    shorthand: ['일', '월', '화', '수', '목', '금', '토'],
-                    longhand: ['일', '월', '화', '수', '목', '금', '토'],
-                },
-                months: {
-                    shorthand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                    longhand: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-                },
-            },
-            onChange: ([start, end]) => {
-                if (start && end) {
-                    console.log({start, end});
-                    periodStart = start
-                    periodEnd = end
-                }
-            }
-        });
-         */
 
         await checkTokenThenLogin()
-
-
-
         await getDashboardDeviceList()
         await reqAeDeviceAlias()
 
@@ -147,45 +120,65 @@
     }
 
     const clickPeriodQuery = async (e) => {
-        const formData = new FormData(e.target);
 
-        for (let field of formData) {
-            const [key, value] = field;
-            queryParams[key] = value;
-        }
+        try {
+            const formData = new FormData(e.target);
 
-        queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
-        queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')
+            for (let field of formData) {
+                const [key, value] = field;
+                queryParams[key] = value;
+            }
 
-        console.log(queryParams)
+            console.log(periodStart)
+            console.log(queryParams)
 
-        if (queryParams['aei'] === "-1") {
-            alert("디바이스를 선택해 주세요")
-            return
-        }
+            if (queryParams['aei'] === "-1") {
+                alert("디바이스를 선택해 주세요")
+                return
+            }
 
-        const response = await fetch(`${PUBLIC_API_URL}/kolas/report2`, {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(queryParams)
-        });
+            if (undefined === periodStart || undefined === periodEnd) {
+                alert("날짜 기간을 선택해 주세요")
+                return
+            }
 
-        const data = await response.json()
 
-        console.log(data.length)
+            queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
+            queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')
 
-        historyCount = data.rows.length;
-        historyRows = data.rows;
+            const response = await fetch(`${PUBLIC_API_URL}/kolas/report2`, {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(queryParams)
+            });
 
-        testNumber = 20
+            const data = await response.json()
 
-        pageInfo = {
-            curIndex: 0,
-            totalCount: historyCount
+            if (1 > data.rows.length) {
+                alert("조회 결과가 없습니다!")
+                return
+            }
+
+            historyCount = data.rows.length;
+            historyRows = data.rows;
+
+            testNumber = 20
+
+            pageInfo = {
+                curIndex: 0,
+                totalCount: historyCount
+            }
+        } catch (e) {
+            alert("조회 실패")
         }
     }
 
     const clickExport = async () => {
+        if (!queryParams['aei'] || !queryParams['periodStart'] || !queryParams['periodEnd']) {
+            alert("기간 조회를 해주세요.")
+            return false
+        }
+
         const response = await fetch(`${PUBLIC_API_URL}/kolas/history/export`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
