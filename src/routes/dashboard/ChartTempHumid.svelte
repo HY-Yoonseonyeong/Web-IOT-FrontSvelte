@@ -12,8 +12,8 @@
     // 65초 58초
     //
     const aeList = new Array()
-    aeList.push("DHT22_LCD_0001")
-    aeList.push("test2F230102_01")
+    aeList.push("dn23100001")
+    aeList.push("dn23100002")
     aeList.push("testB1F221205_01")
 
     console.log(aeList)
@@ -23,7 +23,7 @@
         // labels: tempdata.map(row => row.year),
         datasets: [
             {
-                label: 'DHT22_LCD_0001',
+                label: 'dn23100001',
                 //data: tempdata.map(row => row.count),
                 /*backgroundColor: ['#7000e1', '#fc8800', '#00b0e8'],*/
                 // hoverOffset: 4,
@@ -31,7 +31,7 @@
                 /*borderWidth: 0*/
             },
             {
-                label: 'test2F230102_01',
+                label: 'dn23100002',
 //                data: tempdata.map(row => row.count),
                 /*backgroundColor: ['#7000e1', '#fc8800', '#00b0e8'],*/
                 // hoverOffset: 4,
@@ -139,7 +139,7 @@
     //
     const queryChartData = async (period) => {
 
-        let url = `${PUBLIC_API_URL}/device/history/min/DHT22_LCD_0001/${conType}?limit=30&period=${period}`
+        let url = `${PUBLIC_API_URL}/device/history/min/dn23100001/${conType}?limit=30&period=${period}`
         const response = await fetch(url, {})
         const queryData = await response.json()
 
@@ -147,7 +147,7 @@
         myChart.data.datasets[0].label = aeList[0]
         myChart.data.datasets[0].data = queryData.map(row => row.con)
 
-        url = `${PUBLIC_API_URL}/device/history/min/test2F230102_01/${conType}?limit=30&period=${period}`
+        url = `${PUBLIC_API_URL}/device/history/min/dn23100002/${conType}?limit=30&period=${period}`
         const response2 = await fetch(url, {})
 
         const queryData2 = await response2.json()
@@ -184,13 +184,11 @@
         let alias3 = await response3.json()
 
         if (alias3.length > 0) {
-            aeList[1] = alias3[0].alias
+            aeList[2] = alias3[0].alias
         }
-
     }
 
     let stylePadding = conType === "temp" ? "pe-lg-2" : "ps-lg-2"
-
 
 </script>
 

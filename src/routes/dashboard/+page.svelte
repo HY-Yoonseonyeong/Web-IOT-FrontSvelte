@@ -45,16 +45,6 @@
 <svelte:head>
   <title>대시보드 | HYNUX-IOT</title>
   <meta name="" content=""/>
-  <script src="assets/js/config.js"></script>
-  <script src="vendors/simplebar/simplebar.min.js"></script>
-  <script src="vendors/popper/popper.min.js"></script>
-  <script src="vendors/anchorjs/anchor.min.js"></script>
-  <script src="vendors/is/is.min.js"></script>
-  <script src="vendors/echarts/echarts.min.js"></script>
-  <script src="vendors/fontawesome/all.min.js"></script>
-  <script src="vendors/lodash/lodash.min.js"></script>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-  <script src="assets/js/theme.js"></script>
 </svelte:head>
 
 <!-- ===============================================-->
@@ -69,9 +59,8 @@
 
       <!-- Row (온습도, 날씨)  -->
       <div class="row g-3 mb-3">
-        <!--<TempHumid aei='DHT22_LCD_0001'/>-->
-        <TemphumidEx aei='DHT22_LCD_0001'/>
-        <TemphumidEx aei='test2F230102_01'/>
+        <TemphumidEx aei='dn23100001'/>
+        <TemphumidEx aei='dn23100002'/>
         <TemphumidEx aei='testB1F221205_01'/>
         <Weather/>
       </div>

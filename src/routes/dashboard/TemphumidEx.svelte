@@ -91,20 +91,10 @@
         })
 
         const data = await response.json()
-        // {"_index":1779,"datetime":"2023-06-26T20:16:58.000Z","ae":"DHT22_LCD_0001","cin":"humid","con":"80.80","prev_con":"80.60","con_change":"up"}
 
         console.log(data)
 
         if (0 < data.length) {
-            /*if ('Y' === data[0]['alert_off']) {
-                alertOff = "bg-alert"
-                alertMessage = "기기 접속 에러"
-                cssAlertText = "color-alert"
-            } else {
-                alertOff = ""
-                alertMessage = ""
-                cssAlertText = ""
-            }*/
             alertOff = "bg-alert"
             alertMessage = "기기 접속 에러"
             cssAlertText = "color-alert"

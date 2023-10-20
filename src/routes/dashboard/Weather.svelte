@@ -20,6 +20,7 @@
             await queryWeather();
 
         } catch (e) {
+            console.log(e)
             console.log(e.message)
         }
     })
@@ -42,12 +43,14 @@
         const jsonData = await response.json()
         const data = jsonData.data
 
+        console.log(data)
+
         temp = data.t1h
         humid = data.reh
         prePattern = getTextFromPTY(data.pty)
         pre = data.rn1
 
-        timerID = setTimeout(query, delay)
+        timerID = setTimeout(queryWeather, delay)
     }
 
     /**

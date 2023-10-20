@@ -139,7 +139,6 @@
                 return
             }
 
-
             queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
             queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')
 
