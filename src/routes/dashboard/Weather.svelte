@@ -50,8 +50,6 @@
         timerID = setTimeout(query, delay)
     }
 
-
-
     /**
      * 코드별 날씨 상태
      * @param PTYCode - 날씨 코드
