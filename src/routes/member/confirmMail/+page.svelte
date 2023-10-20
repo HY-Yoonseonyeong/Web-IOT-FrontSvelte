@@ -18,10 +18,8 @@
         userEmail = urlParams.get('email');
     })
 
-
     //console.log("isBetat : ", isBeta)
     // alert(urlParams.get('email'))
-
 
     const onsubmit = (e) => {
         const formData = new FormData(e.target);
@@ -32,6 +30,7 @@
             data[key] = value;
             console.log(field)
         }
+
         console.log(formData.get('email'))
         console.log("FindPasswrd Form")
 
@@ -54,7 +53,6 @@
                 goto('../../login')
             }
         })()
-
     }
 
     console.log("API_KEY : " + PUBLIC_API_URL)

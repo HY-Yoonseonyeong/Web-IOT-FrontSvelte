@@ -1,10 +1,8 @@
 <script>
-    /*import '../../../scss/theme.scss'*/
     import NavSide from "../../../component/nav/NavSide.svelte"
     import NavTop from "../../../component/nav/NavTop.svelte";
     import {onDestroy} from "svelte";
     import {PUBLIC_API_URL, PUBLIC_MOBIUS_URL} from "$env/static/public";
-
 
     let aeid = '' // AE ID
 

@@ -59,14 +59,11 @@
     };
 
     onMount(async () => {
-
         await checkTokenThenLogin()
         await getDashboardDeviceList()
         await reqAeDeviceAlias()
-
         testNumber = 15
     })
-
 
     //
     const reqAeDeviceAlias = async () => {
@@ -296,7 +293,7 @@
             </div>
           </div>
           <div class="card-body p-0">
-            <div class="table-responsive scrollbar">
+            <div class="table-responsive scrollbar" >
               <table class="table table-sm mb-0 fs--1 table-view-tickets">
                 <thead class="text-800 bg-light">
                 <tr>
@@ -321,8 +318,17 @@
                 </tbody>
               </table>
               <div class="text-center d-none" id="tickets-table-fallback">
-                <p class="fw-bold fs-1 mt-3">No ticket found</p>
+                <p class="fw-bold fs-1 mt-3">기간 조회 건수가 0건입니다.</p>
               </div>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <button class="btn btn-sm btn-falcon-default me-1" type="button" title="Previous" data-list-pagination="prev">
+                <span class="fas fa-chevron-left"></span>
+              </button>
+              <ul class="pagination mb-0"></ul>
+              <button class="btn btn-sm btn-falcon-default ms-1" type="button" title="Next" data-list-pagination="next">
+                <span class="fas fa-chevron-right"></span>
+              </button>
             </div>
           </div>
           <!--<Pagination pageNumber={testNumber}, pageInfo={pageInfo} bind:this={pagination}/>-->

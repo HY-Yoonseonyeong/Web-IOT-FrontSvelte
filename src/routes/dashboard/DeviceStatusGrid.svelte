@@ -2,7 +2,6 @@
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
 
-
     let aeiDataList = new Array()
 
     const url = `${PUBLIC_API_URL}/device/la/test2F230102_01`
@@ -22,25 +21,15 @@
         return data
     }
 
-
-    // temp();
-
     onMount(() => {
         setInterval(async () => {
-
             let data = await temp();
             console.log(data)
 
             let test = data['m2m:cin']['ct'].replace('T', '')
-//             console.log(test)
+
             const dattime = new Date(test)
-
-            //         console.log("datatime : " + dattime)
-
             console.log(data['m2m:cin']['ct'])
-            // console.log(date.getHours())
-
-            //  var dt = str.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6');
 
             aeiDataList.push({
                 aei: 'test2F230102_01',
@@ -49,7 +38,6 @@
             })
             console.log(aeiDataList.length)
 
-            //set(aeiDataList);''
             aeiDataList = aeiDataList;
 
             if (aeiDataList.length > 10) {
@@ -58,8 +46,6 @@
 
         }, 10000)
     })
-
-
 </script>
 
 
@@ -104,8 +90,7 @@
           <tr>
             <th class="white-space-nowrap">
               <div class="form-check mb-0 d-flex align-items-center">
-                <input class="form-check-input" id="checkbox-bulk-purchases-select"
-                       type="checkbox"/>
+                <input class="form-check-input" id="checkbox-bulk-purchases-select" type="checkbox"/>
                 <!--data-bulk-select='{"body":"table-purchase-body","actions":"table-purchases-actions","replacedElement":"table-purchases-replace-element"}'-->
               </div>
             </th>
@@ -142,16 +127,15 @@
                           type="button" id="dropdown-recent-purchase-table-0"
                           data-bs-toggle="dropdown" data-boundary="window"
                           aria-haspopup="true" aria-expanded="false"
-                          data-bs-reference="parent"><span
-                          class="fas fa-ellipsis-h fs--1"></span></button>
-                  <div class="dropdown-menu dropdown-menu-end border py-2"
-                       aria-labelledby="dropdown-recent-purchase-table-0"><a
-                          class="dropdown-item" href="#!">View</a><a class="dropdown-item"
-                                                                     href="#!">Edit</a><a
-                          class="dropdown-item" href="#!">Refund</a>
+                          data-bs-reference="parent">
+                    <span class="fas fa-ellipsis-h fs--1"></span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-end border py-2" aria-labelledby="dropdown-recent-purchase-table-0">
+                    <a class="dropdown-item" href="#!">View</a><a class="dropdown-item" href="#!">Edit</a>
+                    <a class="dropdown-item" href="#!">Refund</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-warning" href="#!">Archive</a><a
-                            class="dropdown-item text-danger" href="#!">Delete</a>
+                    <a class="dropdown-item text-warning" href="#!">Archive</a>
+                    <a class="dropdown-item text-danger" href="#!">Delete</a>
                   </div>
                 </div>
               </td>

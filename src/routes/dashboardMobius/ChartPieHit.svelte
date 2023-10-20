@@ -3,8 +3,7 @@
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
 
-
-    export let conType  =""
+    export let conType = ""
 
     let timerID
     let timerDelay = 60 * 1000 // 1분
@@ -39,7 +38,6 @@
             {
                 label: 'Dataset 1',
                 data: [1, 2, 3, 4, 5],
-                /*backgroundColor: Object.values(['#4dc9f6', '#f67019', '#f53794', '#537bc4'])*/
             }
         ]
     };
@@ -85,7 +83,7 @@
         }
 
 
-        queryMobiusHit()
+        await queryMobiusHit()
     })
 
     // Chart Data Query
@@ -103,7 +101,6 @@
         } catch (e) {
             return '0'
         }
-
     }
 
     let selected = '30'; //
@@ -126,12 +123,8 @@
     }
 
 
-
-
-
     //
     const queryChartData = async (period) => {
-
         return;
 
         let url = `${PUBLIC_API_URL}/device/history/min/DHT22_LCD_0001/${conType}?limit=30&period=${period}`
@@ -144,18 +137,15 @@
         myChart.data.labels = queryData.map(row => getTime(row.datetime))
         myChart.data.datasets[0].data = queryData.map(row => row.con)
 
-
         url = `${PUBLIC_API_URL}/device/history/min/test2F230102_01/${conType}?limit=30&period=${period}`
-        const response2 = await fetch(url, {}
-        )
+        const response2 = await fetch(url, {})
 
         const queryData2 = await response2.json()
         myChart.data.datasets[1].data = queryData2.map(row => row.con)
 
 
         url = `${PUBLIC_API_URL}/device/history/min/testB1F221205_01/${conType}?limit=30&period=${period}`
-        const response3 = await fetch(url, {}
-        )
+        const response3 = await fetch(url, {})
 
         const queryData3 = await response3.json()
         myChart.data.datasets[2].data = queryData3.map(row => row.con)
@@ -164,8 +154,6 @@
     }
 
     let stylePadding = conType === "temp" ? "pe-lg-2" : "ps-lg-2"
-
-    //
 
     const queryMobiusHit = async () => {
         console.log("queryMobiusHit")
@@ -186,19 +174,14 @@
 
         console.log(hitData)
 
-
         myChart.data.labels = ['HTTP', 'MQTT', 'CoAP', 'WS']
         myChart.data.datasets[0].data = [hitData[0].http, hitData[0].mqtt, hitData[0].coap, hitData[0].ws]
-        /*myChart.data.datasets[0].backgroundColor = ['#4dc9f6', '#f67019', '#f53794', '#537bc4']*/
 
         myChart.update()
     }
-
-
 </script>
 
 <!--// <div class="col-md-6 col-xxl-3">-->
-
 
 <div class="card-body h-100 pe-0">
   <!-- Find the JS file for the following chart at: src\js\charts\echarts\total-sales.js-->

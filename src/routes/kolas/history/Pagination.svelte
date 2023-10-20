@@ -42,7 +42,6 @@
     }
 
     $: changePageInfo(pageInfo)
-
 </script>
 
 <div class="card-footer {_cssDisplay}">
