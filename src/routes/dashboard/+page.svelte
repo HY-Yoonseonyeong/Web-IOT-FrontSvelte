@@ -1,33 +1,15 @@
 <script>
+    import NavSide from "../../component/nav/NavSide.svelte"
+    import NavTop from "../../component/nav/NavTop.svelte";
+    import Footer from "../../component/nav/Footer.svelte";
     import TemphumidEx from "./TemphumidEx.svelte";
     import {onMount} from "svelte";
     import Weather from "./Weather.svelte";
     import ChartTempHumid from "./ChartTempHumid.svelte";
-    import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
-    import NavSide from "../../component/nav/NavSide.svelte"
-    import NavTop from "../../component/nav/NavTop.svelte";
     import DeviceConChange from "./DeviceConChange.svelte";
-    import Footer from "../../component/nav/Footer.svelte";
+
     import {checkTokenThenLogin} from "$lib/hyToken.js";
-
-    function onclick() {
-        const fetchData = (async () => {
-            const response = await fetch(`${PUBLIC_API_URL}/users/me`, {
-                method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'token': localStorage.getItem('hynuxiot-token')
-                },
-            });
-
-            console.log(response)
-            const fetchData = await response.json();
-            console.log(fetchData)
-        })()
-
-        return false
-    }
 
     onMount(async () => {
         console.log("OnMount")
