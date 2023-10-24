@@ -28,7 +28,6 @@
         queryCodChange().then(data => aeiDataList = data);
 
         setInterval(async () => {
-            console.log("setInterval queryCodChange")
             queryCodChange().then(data => aeiDataList = data);
         }, 10000)
     })
