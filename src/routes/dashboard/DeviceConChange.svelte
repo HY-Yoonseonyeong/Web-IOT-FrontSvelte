@@ -37,6 +37,7 @@
         return date.toISOString().replace('T', ' ').substring(0, 19);
     }
 
+
     const getComment = (item) => {
         let comment = item.prev_con + " --> " + item.con
         return comment
