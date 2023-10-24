@@ -112,7 +112,7 @@
       <div class="row g-0 h-100 align-items-center">
         <div class="col">
           <div class="d-flex align-items-center">
-            {#if prePattern === "비/눈"}
+            {#if prePattern === "맑음"}
               <img
                 class="me-3"
                 src="assets/img/icons/weather/sunny.png"
@@ -126,7 +126,7 @@
                 alt=""
                 height="60"
               />
-            {:else if prePattern === "맑음"}
+            {:else if prePattern === "비/눈"}
               <img
                 class="me-3"
                 src="assets/img/icons/weather/rain_snow.png"
