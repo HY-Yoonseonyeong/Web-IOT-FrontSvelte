@@ -2,6 +2,7 @@
     import {onMount} from "svelte";
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
+    import moment from "moment";
 
     export let conType //
 
@@ -102,19 +103,6 @@
     })
 
     //
-    const getTime = (datetime) => {
-        try {
-            const date = new Date(datetime.slice(0, -1))
-            return String.prototype.concat(
-                ("00" + date.getHours().toString()).slice(-2),
-                ':',
-                ("00" + date.getMinutes().toString()).slice(-2),
-            )
-        } catch (e) {
-            return '0'
-        }
-
-    }
 
     let selected = '30'; //
 
@@ -143,7 +131,7 @@
         const response = await fetch(url, {})
         const queryData = await response.json()
 
-        myChart.data.labels = queryData.map(row => getTime(row.datetime))
+        myChart.data.labels = queryData.map(row => moment(row.datetime).format('HH:mm'))
         myChart.data.datasets[0].label = aeList[0]
         myChart.data.datasets[0].data = queryData.map(row => row.con)
 
