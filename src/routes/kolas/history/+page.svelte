@@ -8,21 +8,14 @@
     import Flatpickr from 'svelte-flatpickr'
     import 'flatpickr/dist/flatpickr.css';
     import moment from "moment";
-    import {goto} from "$app/navigation";
     import {checkTokenThenLogin, getHyToken} from "$lib/hyToken.js";
 
     let historyCount = 0
     let historyRows = new Array()
-    let datePeriod
     let periodStart, periodEnd
-    let _alias = "DHT22_LCD_0001"
     let deviceList = []
     const queryParams = {};
-
-    const aeList = new Array()
-    aeList.push("DHT22_LCD_0001")
-    aeList.push("test2F230102_01")
-    aeList.push("testB1F221205_01")
+    let selectedAe = "-1"
 
     let pagination;
     let testNumber = 2;
@@ -30,10 +23,6 @@
         curIndex: 0,
         totalCount: 0
     }
-
-    let timepicker3
-    let ref;
-    let calendarPicker
 
     const options = {
         mode: "range",
@@ -61,34 +50,10 @@
     onMount(async () => {
         await checkTokenThenLogin()
         await getDashboardDeviceList()
-        await reqAeDeviceAlias()
         testNumber = 15
     })
 
     //
-    const reqAeDeviceAlias = async () => {
-        const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
-        let alias1 = await response1.json()
-
-        if (alias1.length > 0) {
-            aeList[0] = alias1[0].alias
-            _alias = alias1[0].alias
-        }
-
-        const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
-        let alias2 = await response2.json()
-
-        if (alias2.length > 0) {
-            aeList[1] = alias2[0].alias
-        }
-
-        const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
-        let alias3 = await response3.json()
-
-        if (alias3.length > 0) {
-            aeList[1] = alias3[0].alias
-        }
-    }
 
     const getDashboardDeviceList = async () => {
         try {
@@ -107,9 +72,6 @@
             console.log(jsonData)
 
             deviceList = jsonData.rows
-
-    /*        dataRows = jsonData.rows
-            _rowCount = dataRows.length*/
 
         } catch (err) {
             alert("조회 에러!")
@@ -169,7 +131,60 @@
         }
     }
 
+    const test2 = () => {
+
+    }
+
     const clickExport = async () => {
+
+        console.log("clickExport")
+        console.log(selectedAe)
+        console.log(deviceList)
+        console.log(periodStart)
+        console.log(periodEnd)
+
+        let aa = moment(periodStart).format("YYYYMMDD")
+        let bb = moment(periodEnd).format("YYYYMMDD")
+
+        console.log(aa)
+        console.log(bb)
+
+        if (periodStart === periodEnd) {
+            console.log("same")
+        } else {
+            console.log("not same")
+        }
+
+        if (aa === bb) {
+            console.log("same")
+        } else {
+            console.log("not same")
+            aa = aa.concat("_", bb)
+        }
+
+        if (selectedAe === "-1") {
+            alert("디바이스를 선택해 주세요.")
+        }
+
+        // let filename
+        // csv 맞나. 56 처리가 된다면 해당 부분을
+
+        const filename = selectedAe.concat("_", "기간조회", "_", aa, ".csv")
+        console.log(filename)
+
+
+
+        return;
+
+
+        // deviceList
+
+        // CSV 형식 리스트
+        makeCSV()
+
+        //
+        return
+
         if (!queryParams['aei'] || !queryParams['periodStart'] || !queryParams['periodEnd']) {
             alert("기간 조회를 해주세요.")
             return false
@@ -190,6 +205,88 @@
             alert(jsonData.msg)
         }
     }
+
+    const makeCSV = () => {
+        // deviceList
+        let csv = [];
+        let row = [];
+        var test = ""
+
+        console.log("makeCSV")
+
+        console.log(deviceList)
+
+
+        /*if (!historyRows || 1 > historyRows.length) {
+            alert("데이터가 없습니다.")
+        }*/
+
+        let filename = () => {
+
+        }
+
+        //1열에는 컬럼명
+        row.push(
+            '날짜시간',
+            '온도',
+            '습도'
+        );
+
+        test += row.join(",") + '\r\n';
+
+        row = [];
+        row.push(
+            1123123,
+            1231231,
+            123123
+        );
+
+        csv.push(row.join(",") + "\r\n");
+
+        test += row.join(",") + '\r\n';
+
+        console.log(csv)
+
+        console.log(test)
+
+        // downloadCSV(test, "test.csv")
+        // return
+
+        historyRows.forEach((historyRow) => {
+            row = [];
+            row.push(
+                moment(historyRow.datetime).format("YYYY-MM-DD HH:mm:ss"),
+                historyRow.temp,
+                historyRow.humid
+            );
+
+            console.log(row.join(",") + "\r\n")
+            // csv.push(row.join(",") + "\r\n")
+            test += row.join(",") + '\r\n';
+        })
+
+        console.log(csv)
+
+        downloadCSV(test, "test.csv")
+    }
+
+    const downloadCSV = (csv, fileName) => {
+        var csvFile;
+        var downloadLink;
+
+        //한글 처리를 해주기 위해 BOM 추가하기
+        const BOM = "\uFEFF";
+        csv = BOM + csv;
+
+        csvFile = new Blob([csv], {type: "text/csv;charset=utf-8"});
+        downloadLink = document.createElement("a");
+        downloadLink.download = fileName;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+
 
 </script>
 
@@ -214,15 +311,15 @@
         </div>
         <div class="card-body bg-light">
           <div class="tab-content">
-            <div class="tab-pane preview-tab-pane active" role="tabpanel" aria-labelledby="tab-dom-26d05095-7b4a-4368-82bf-8f88f90c61f9" id="dom-26d05095-7b4a-4368-82bf-8f88f90c61f9">
+            <div class="tab-pane preview-tab-pane active" role="tabpanel">
               <form on:submit|preventDefault={clickPeriodQuery}>
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">디바이스</label>
                   <div class="col-sm-10">
-                    <select class="form-select" aria-label="Default select example" name="aei">
+                    <select class="form-select" aria-label="Default select example" name="aei" bind:value={selectedAe}>
                       <option value="-1" selected="">디바이스를 선택해 주세요.</option>
                       {#each deviceList as row, index}
-                        <option value={row.aei}>{row.aei}</option>
+                        <option value={row.aei}>{row.alias} <span>({row.aei})</span></option>
                       {/each}
                     </select>
                   </div>
@@ -230,11 +327,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">날짜 기간 설정</label>
                   <div class="col-sm-10">
-                    <!--{#if browser}-->
                     <Flatpickr {options} class="form-control" name="date" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
-                    <!--<input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>-->
-                    <!--<input bind:this={ref} />-->
-                    <!--{/if}-->
                   </div>
                 </div>
                 <fieldset>
@@ -292,31 +385,31 @@
             </div>
           </div>
           <div class="card-body p-0">
-            <div class="table-responsive scrollbar" >
+            <div class="table-responsive scrollbar">
               <table class="table table-sm mb-0 fs--1 table-view-tickets">
                 <thead class="text-800 bg-light">
                 <tr>
                   <th class=" align-middle ps-2">날짜/시간</th>
-                  <th class=" align-middle">디바이스(AE)</th>
                   <th class=" align-middle ps-2" style="min-width: 100px">디바이스명</th>
+                  <th class=" align-middle">디바이스(RN)</th>
                   <th class=" align-middle">온도(°)</th>
                   <th class=" align-middle">습도(%)</th>
                   <th class=" align-middle text-end"></th>
                 </tr>
                 </thead>
-                <tbody class="list" id="table-ticket-body">
+                <tbody class="list">
                 {#each historyRows as row, index}
                   <tr>
                     <td class="align-middle client white-space-nowrap pe-3 pe-xxl-4 ps-2">{moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
-                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
                     <td class="align-middle py-2 pe-4 white-space-nowrap">{row.alias}</td>
+                    <td class="align-middle py-2 pe-4 white-space-nowrap">{row.aei}</td>
                     <td class="align-middle status fs-0 pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.temp}°</h6></td>
                     <td class="align-middle priority pe-4 white-space-nowrap"><h6 class="mb-0 text-700">{row.humid}%</h6></td>
                   </tr>
                 {/each}
                 </tbody>
               </table>
-              <div class="text-center d-none" id="tickets-table-fallback">
+              <div class="text-center d-none">
                 <p class="fw-bold fs-1 mt-3">기간 조회 건수가 0건입니다.</p>
               </div>
             </div>

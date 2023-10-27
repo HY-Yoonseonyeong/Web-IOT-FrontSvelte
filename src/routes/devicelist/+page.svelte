@@ -26,7 +26,6 @@
         onModalClose()
     }
 
-
     const onModalClose = () => {
         console.log("onModalClose")
     }

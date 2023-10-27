@@ -32,7 +32,6 @@
     let pagination;
 
 
-
     let timepicker3
     let ref;
     let calendarPicker
@@ -86,7 +85,6 @@
         historyRows = data.rows;
 
 
-
     }
 
     const getDashboardDeviceList = async () => {
@@ -106,9 +104,6 @@
             console.log(jsonData)
 
             deviceList = jsonData.rows
-
-            /*        dataRows = jsonData.rows
-                    _rowCount = dataRows.length*/
 
         } catch (err) {
             alert("조회 에러!")
@@ -232,7 +227,7 @@
                     <select class="form-select" aria-label="Default select example" name="aei">
                       <option value="-1" selected="">디바이스를 선택해 주세요.</option>
                       {#each deviceList as row, index}
-                        <option value={row.aei}>{row.aei}</option>
+                        <option value={row.aei}>{row.alias}<span>({row.aei})</span></option>
                       {/each}
                     </select>
                   </div>
@@ -240,11 +235,7 @@
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">날짜 기간 설정</label>
                   <div class="col-sm-10">
-                    <!--{#if browser}-->
-                    <!--<input class="form-control" bind:this={ref} placeholder="yyyy-mm-dd to yyyy-mm-dd"/>-->
-                    <!--<input bind:this={ref} />-->
-                    <!--{/if}-->
-                      <Flatpickr {options} class="form-control" name="date" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
+                    <Flatpickr {options} class="form-control" name="date" placeholder="yyyy-mm-dd to yyyy-mm-dd"/>
                   </div>
                 </div>
                 <fieldset>
@@ -345,10 +336,9 @@
 </main>
 
 
-
 <style>
-  .size-zero {
-      width: 0;
-      height: 0;
-  }
+    .size-zero {
+        width: 0;
+        height: 0;
+    }
 </style>
