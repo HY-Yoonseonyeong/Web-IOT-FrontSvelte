@@ -64,7 +64,7 @@
             </div>
           </div>
           <div id="table-purchases-replace-element">
-            <button class="btn btn-falcon-default btn-sm" type="button">
+            <!--<button class="btn btn-falcon-default btn-sm" type="button">
               <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
               <span class="d-none d-sm-inline-block ms-1">New</span>
             </button>
@@ -75,7 +75,7 @@
             <button class="btn btn-falcon-default btn-sm" type="button">
               <span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span>
               <span class="d-none d-sm-inline-block ms-1">Export</span>
-            </button>
+            </button>-->
           </div>
         </div>
       </div>
@@ -156,11 +156,11 @@
           </p>
         </div>
         <div class="col-auto d-flex">
-          <button class="btn btn-sm btn-primary" type="button" data-list-pagination="prev">
+          <!--<button class="btn btn-sm btn-primary" type="button" data-list-pagination="prev">
             <span>Previous</span></button>
           <button class="btn btn-sm btn-primary px-4 ms-2" type="button" data-list-pagination="next">
             <span>Next</span>
-          </button>
+          </button>-->
         </div>
       </div>
     </div>
