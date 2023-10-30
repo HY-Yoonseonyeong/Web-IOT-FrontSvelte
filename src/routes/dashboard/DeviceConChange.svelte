@@ -35,12 +35,7 @@
     })
 
     onDestroy(() => {
-
-<<<<<<< HEAD
-      
-=======
     })
->>>>>>> 84d4b0ce6eb72dbb5ecc474697cc7c1e071ed002
 
     const getComment = (item) => {
         let comment = item.prev_con + " --> " + item.con
