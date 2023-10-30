@@ -10,9 +10,18 @@
   let humid = "0"; // 습도
   let prePattern = ""; // 강수형태 // 없음(0), 비(1), 비/눈(2), 눈(3), 빗방울(5), 빗방울눈날림(6), 눈날림(7)
   let pre = "0"; // 강수량
+  let adress1 = "";
+  let adress2 = "";
+  let adress3 = "";
 
   let timerID;
   const delay = 1000 * 60 * 5; // 5분
+
+  let WeatherFirst = "";
+  let WeatherFirstList = "";
+  let WeatherSecond = "";
+  let WeatherSecondList = "";
+  let WeatherThirdList = "";
 
   onMount(async () => {
     try {
@@ -22,6 +31,9 @@
       console.log(e);
       console.log(e.message);
     }
+
+    await getWeatherFirst();
+    await getWeatherSecond();
   });
 
   onDestroy(() => {
@@ -50,6 +62,9 @@
     humid = data.reh;
     prePattern = getTextFromPTY(data.pty);
     pre = data.rn1;
+    adress1 = jsonData.lo1;
+    adress2 = jsonData.lo2;
+    adress3 = jsonData.lo3;
 
     timerID = setTimeout(queryWeather, delay);
   };
@@ -79,6 +94,95 @@
         return "";
     }
   };
+
+  const getWeatherFirst = async () => {
+    const url = `${PUBLIC_API_URL}/weather/area`;
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (200 == response.status) {
+      const data = await response.json();
+      WeatherFirstList = data.rows;
+    }
+  };
+
+  const getWeatherSecond = async () => {
+    const url = `${PUBLIC_API_URL}/weather/area?addr1=${WeatherFirst}`;
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (200 == response.status) {
+      const data = await response.json();
+      WeatherSecondList = data.rows;
+    }
+  };
+
+  const getWeatherThird = async () => {
+    const url = `${PUBLIC_API_URL}/weather/area?addr1=${WeatherFirst}&addr2=${WeatherSecond}&xy=1`;
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (200 == response.status) {
+      const data = await response.json();
+      WeatherThirdList = data.rows;
+    }
+    console.log(WeatherThirdList);
+  };
+
+  const WeatherFirstChange = () => {
+    console.log(WeatherFirst);
+    getWeatherSecond();
+  };
+
+  const WeatherSecondChange = () => {
+    console.log(WeatherSecond);
+    getWeatherThird();
+  };
+
+  const getWeatherLocalStorage = () => {
+    const x = localStorage.getItem("lo_x");
+    const y = localStorage.getItem("lo_y");
+    return { x, y };
+  };
+
+  const saveWeatherstorage = () => {
+    localStorage.setItem("lo_x", WeatherThirdList[selectedRowIndex].lo_x);
+    localStorage.setItem("lo_y", WeatherThirdList[selectedRowIndex].lo_y);
+
+    adress1 = WeatherThirdList[selectedRowIndex].addr1;
+    adress2 = WeatherThirdList[selectedRowIndex].addr2;
+    adress3 = WeatherThirdList[selectedRowIndex].addr3;
+
+    const { x, y } = getWeatherLocalStorage();
+    queryWeatherlast(x, y);
+  };
+
+  let selectedRowIndex = 0; // 선택한 행의 인덱스
+
+  const tableSelect = (index) => {
+    selectedRowIndex = index;
+  };
+
+  const queryWeatherlast = async (x, y) => {
+    const response = await fetch(
+      `${PUBLIC_API_URL}/weather/latest?lo_x=${x}&lo_y=${y}`,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const jsonData = await response.json();
+    const data = jsonData.data;
+
+    temp = data.T1H;
+    humid = data.REH;
+    prePattern = getTextFromPTY(data.PTY);
+    pre = data.RN1;
+
+    timerID = setTimeout(queryWeatherlast, delay);
+  };
 </script>
 
 <div class="col-md-6 col-xxl-3">
@@ -87,24 +191,106 @@
       <h6 class="mb-0">오늘의 날씨</h6>
       <div class="dropdown font-sans-serif btn-reveal-trigger">
         <button
-          class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
+          class="btn btn-link btn-primary text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
           type="button"
-          id="dropdown-weather-update"
-          data-bs-toggle="dropdown"
-          data-boundary="viewport"
-          aria-haspopup="true"
-          aria-expanded="false"
+          data-bs-toggle="modal"
+          data-bs-target="#error-modal"
         >
           <span class="fas fa-ellipsis-h fs--2" />
         </button>
         <div
-          class="dropdown-menu dropdown-menu-end border py-2"
-          aria-labelledby="dropdown-weather-update"
+          class="modal fade"
+          id="error-modal"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
         >
-          <a class="dropdown-item" href="#" />
-          <a class="dropdown-item" href="#" />
-          <div class="dropdown-divider" />
-          <a class="dropdown-item text-danger" href="#" />
+          <div
+            class="modal-dialog modal-dialog-centered"
+            role="document"
+            style="max-width: 500px"
+          >
+            <div class="modal-content position-relative">
+              <div class="position-absolute top-0 end-0 mt-2 me-2 z-1">
+                <button
+                  class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                />
+              </div>
+              <div class="modal-body p-0">
+                <div class="rounded-top-3 py-3 ps-4 pe-6 bg-light">
+                  <h4 class="mb-1" id="modalExampleDemoLabel">
+                    오늘의 날씨 지역 변경
+                  </h4>
+                </div>
+                <div class="p-4 pb-0">
+                  <form>
+                    <div class="mb-3 selfsize">
+                      <select
+                        class="form-select"
+                        bind:value={WeatherFirst}
+                        on:change={WeatherFirstChange}
+                      >
+                        <option value="">시/도</option>
+                        {#each WeatherFirstList as item}
+                          <option value={item.addr1}>{item.addr1}</option>
+                        {/each}
+                      </select>
+                      <select
+                        class="form-select"
+                        bind:value={WeatherSecond}
+                        on:change={WeatherSecondChange}
+                      >
+                         <option value="">시/구/군</option>
+                        {#each WeatherSecondList as item}
+                          <option value={item.addr2}>{item.addr2}</option>
+                        {/each}
+                      </select>
+                    </div>
+                  </form>
+                  <div class="table-responsive scrollbar">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">지역</th>
+                          <th scope="col">위경도 X</th>
+                          <th scope="col">위경도 Y</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {#each WeatherThirdList as item, index}
+                          <tr
+                            class:selected={selectedRowIndex === index}
+                            class="select_hover"
+                            on:click={() => tableSelect(index)}
+                          >
+                            <td>{item.addr3}</td>
+                            <td>{item.lo_x}</td>
+                            <td>{item.lo_y}</td>
+                          </tr>
+                        {/each}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  data-bs-dismiss="modal"
+                  on:click={saveWeatherstorage}
+                  >변경
+                </button>
+                <button
+                  class="btn btn-secondary"
+                  type="button"
+                  data-bs-dismiss="modal">취소</button
+                >
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -165,7 +351,7 @@
               <div class="me-3" style="height:60" />
             {/if}
             <div>
-              <h6 class="mb-2 fs--2">서울 문래동</h6>
+              <h6 class="mb-2 fs--2">{adress1}<br />{adress2}</h6>
               <div class="fs--2 fw-semi-bold">
                 <div class="text-warning">{prePattern}</div>
                 강수량 : {pre}mm
@@ -183,3 +369,47 @@
     </div>
   </div>
 </div>
+
+<style>
+  .selfsize {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .selfsize select {
+    width: 48%;
+  }
+
+  .modal-footer {
+    justify-content: center;
+  }
+
+  .table-responsive {
+    min-height: 150px;
+  }
+
+  .table-responsive table {
+    text-align: center;
+  }
+
+  .table-responsive table tr td {
+    cursor: pointer;
+  }
+
+  .select_hover:hover {
+    background-color: #e8e8e8;
+  }
+
+  .fs-4 {
+    font-size: 1.9rem !important;
+  }
+
+  .selected {
+    background-color: #e8e8e8;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.25rem !important;
+  }
+</style>

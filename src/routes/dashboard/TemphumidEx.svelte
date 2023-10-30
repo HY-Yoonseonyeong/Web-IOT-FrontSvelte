@@ -137,4 +137,8 @@
   .color-alert {
       color: white;
   }
+
+  .fs-4 {
+    font-size: 1.9rem !important;
+  }
 </style>
