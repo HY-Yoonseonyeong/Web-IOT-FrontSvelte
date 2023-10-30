@@ -131,23 +131,10 @@
         }
     }
 
-    const test2 = () => {
-
-    }
 
     const clickExport = async () => {
-
-        console.log("clickExport")
-        console.log(selectedAe)
-        console.log(deviceList)
-        console.log(periodStart)
-        console.log(periodEnd)
-
         let aa = moment(periodStart).format("YYYYMMDD")
         let bb = moment(periodEnd).format("YYYYMMDD")
-
-        console.log(aa)
-        console.log(bb)
 
         if (periodStart === periodEnd) {
             console.log("same")

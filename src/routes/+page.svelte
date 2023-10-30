@@ -72,7 +72,7 @@
               <div class="bg-white dark__bg-1000 rounded-3 py-2">
                 <a class="dropdown-item link-600 fw-medium" href="./kolas/history">기간 조회</a>
                 <a class="dropdown-item link-600 fw-medium" href="./kolas/report">리포트 생성</a>
-                <a class="dropdown-item link-600 fw-medium" href="./kolas/filelist">파일 리스트</a>
+                <!--<a class="dropdown-item link-600 fw-medium" href="./kolas/filelist">파일 리스트</a>-->
               </div>
             </div>
           </li>
