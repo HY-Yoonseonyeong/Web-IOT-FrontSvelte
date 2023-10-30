@@ -169,18 +169,22 @@
         // let filename
         // csv 맞나. 56 처리가 된다면 해당 부분을
 
-        const filename = selectedAe.concat("_", "기간조회", "_", aa, ".csv")
+        const find2 = deviceList.find((el, index, arr) => el.aei === selectedAe)
+        console.log(find2)
+        console.log("find2 : " +  find2)
+
+        if (!find2) {
+            alert ("파일 생성 실패!")
+        }
+
+        const filename = find2.alias.concat("_", "기간조회", "_", aa, ".csv")
         console.log(filename)
-
-
-
-        return;
 
 
         // deviceList
 
         // CSV 형식 리스트
-        makeCSV()
+        makeCSV(filename)
 
         //
         return
@@ -206,7 +210,7 @@
         }
     }
 
-    const makeCSV = () => {
+    const makeCSV = (filename) => {
         // deviceList
         let csv = [];
         let row = [];
@@ -221,9 +225,11 @@
             alert("데이터가 없습니다.")
         }*/
 
+/*
         let filename = () => {
 
         }
+*/
 
         //1열에는 컬럼명
         row.push(
@@ -235,11 +241,6 @@
         test += row.join(",") + '\r\n';
 
         row = [];
-        row.push(
-            1123123,
-            1231231,
-            123123
-        );
 
         csv.push(row.join(",") + "\r\n");
 
@@ -267,7 +268,7 @@
 
         console.log(csv)
 
-        downloadCSV(test, "test.csv")
+        downloadCSV(test, filename)
     }
 
     const downloadCSV = (csv, fileName) => {
