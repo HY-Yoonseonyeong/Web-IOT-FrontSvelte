@@ -158,10 +158,10 @@
 
         const find2 = deviceList.find((el, index, arr) => el.aei === selectedAe)
         console.log(find2)
-        console.log("find2 : " +  find2)
+        console.log("find2 : " + find2)
 
         if (!find2) {
-            alert ("파일 생성 실패!")
+            alert("파일 생성 실패!")
         }
 
         const filename = find2.alias.concat("_", "기간조회", "_", aa, ".csv")
@@ -197,48 +197,20 @@
         }
     }
 
+    /**
+     * CSV 파일 생성
+     * @param filename - 파일명
+     */
     const makeCSV = (filename) => {
-        // deviceList
-        let csv = [];
+        let csv = ""
         let row = [];
-        var test = ""
 
-        console.log("makeCSV")
-
-        console.log(deviceList)
-
-
-        /*if (!historyRows || 1 > historyRows.length) {
-            alert("데이터가 없습니다.")
-        }*/
-
-/*
-        let filename = () => {
-
-        }
-*/
-
-        //1열에는 컬럼명
+        // 1열에는 컬럼명
         row.push(
-            '날짜시간',
-            '온도',
-            '습도'
+            '날짜시간', '온도', '습도'
         );
 
-        test += row.join(",") + '\r\n';
-
-        row = [];
-
-        csv.push(row.join(",") + "\r\n");
-
-        test += row.join(",") + '\r\n';
-
-        console.log(csv)
-
-        console.log(test)
-
-        // downloadCSV(test, "test.csv")
-        // return
+        csv += row.join(",") + '\r\n';
 
         historyRows.forEach((historyRow) => {
             row = [];
@@ -248,19 +220,20 @@
                 historyRow.humid
             );
 
-            console.log(row.join(",") + "\r\n")
-            // csv.push(row.join(",") + "\r\n")
-            test += row.join(",") + '\r\n';
+            csv += row.join(",") + '\r\n';
         })
 
-        console.log(csv)
-
-        downloadCSV(test, filename)
+        downloadCSV(csv, filename)
     }
 
+    /**
+     * csv 로컬 다운로드
+     * @param csv - csv 문서ㅍ
+     * @param fileName -  파일명
+     */
     const downloadCSV = (csv, fileName) => {
-        var csvFile;
-        var downloadLink;
+        let csvFile;
+        let downloadLink;
 
         //한글 처리를 해주기 위해 BOM 추가하기
         const BOM = "\uFEFF";
@@ -274,7 +247,6 @@
         document.body.appendChild(downloadLink);
         downloadLink.click();
     }
-
 
 </script>
 

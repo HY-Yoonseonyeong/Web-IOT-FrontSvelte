@@ -73,8 +73,6 @@
             humidChangeStyle = changeColor
         }
 
-        console.log(data);
-
         if (data['alias']) {
             alias = data['alias']
         } else {

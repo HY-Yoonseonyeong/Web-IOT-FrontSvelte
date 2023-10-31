@@ -8,7 +8,6 @@
     import ChartTempHumid from "./ChartTempHumid.svelte";
     import {goto} from "$app/navigation";
     import DeviceConChange from "./DeviceConChange.svelte";
-
     import {checkTokenThenLogin} from "$lib/hyToken.js";
 
     onMount(async () => {
@@ -43,7 +42,7 @@
       <div class="row g-3 mb-3">
         <TemphumidEx aei='dn23100001'/>
         <TemphumidEx aei='dn23100002'/>
-        <TemphumidEx aei='testB1F221205_01'/>
+        <TemphumidEx aei='dn23100003'/>
         <Weather/>
       </div>
       <!-- Row (차트)  -->
