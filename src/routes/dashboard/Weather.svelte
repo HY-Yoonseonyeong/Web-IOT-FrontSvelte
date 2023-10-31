@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { PUBLIC_API_URL } from "$env/static/public";
 
+  let isQueryWeatherRunning = true;
   /*
     대시보드 날씨 컨포넌트
     */
@@ -15,7 +16,7 @@
   let adress3 = "";
 
   let timerID;
-  const delay = 1000 * 60 * 5; // 5분
+  const delay = 1000 * 60 * 1; // 5분
 
   let WeatherFirst = "";
   let WeatherFirstList = "";
@@ -50,23 +51,25 @@
    * @returns {Promise<void>}
    */
   const queryWeather = async () => {
-    const response = await fetch(`${PUBLIC_API_URL}/weather`, {
-      headers: { "Content-Type": "application/json" },
-    });
-    const jsonData = await response.json();
-    const data = jsonData.data;
+    if (isQueryWeatherRunning) {
+      const response = await fetch(`${PUBLIC_API_URL}/weather`, {
+        headers: { "Content-Type": "application/json" },
+      });
+      const jsonData = await response.json();
+      const data = jsonData.data;
 
-    console.log(data);
+      console.log(data);
 
-    temp = data.t1h;
-    humid = data.reh;
-    prePattern = getTextFromPTY(data.pty);
-    pre = data.rn1;
-    adress1 = jsonData.lo1;
-    adress2 = jsonData.lo2;
-    adress3 = jsonData.lo3;
+      temp = data.t1h;
+      humid = data.reh;
+      prePattern = getTextFromPTY(data.pty);
+      pre = data.rn1;
+      adress1 = jsonData.lo1;
+      adress2 = jsonData.lo2;
+      adress3 = jsonData.lo3;
 
-    timerID = setTimeout(queryWeather, delay);
+      timerID = setTimeout(queryWeather, delay);
+    }
   };
 
   /**
@@ -158,6 +161,8 @@
 
     const { x, y } = getWeatherLocalStorage();
     queryWeatherlast(x, y);
+
+    isQueryWeatherRunning = false;
   };
 
   let selectedRowIndex = 0; // 선택한 행의 인덱스
@@ -181,7 +186,7 @@
     prePattern = getTextFromPTY(data.PTY);
     pre = data.RN1;
 
-    timerID = setTimeout(queryWeatherlast, delay);
+    timerID = setTimeout(queryWeatherlast, delay, x, y);
   };
 </script>
 
@@ -242,7 +247,7 @@
                         bind:value={WeatherSecond}
                         on:change={WeatherSecondChange}
                       >
-                         <option value="">시/구/군</option>
+                        <option value="">시/구/군</option>
                         {#each WeatherSecondList as item}
                           <option value={item.addr2}>{item.addr2}</option>
                         {/each}
