@@ -127,10 +127,6 @@
 
     function test() {
         const doc = new jsPDF('l', 'mm', [210, 297]);
-
-        /*doc.text("Hello world!", 10, 10);
-        doc.save("a4.pdf");*/
-
         var elementHTML = document.querySelector("#chartTest");
 
         doc.html(elementHTML, {
@@ -256,7 +252,7 @@
 
             let startDate = moment(queryInfo.periodStart).format('YYYYMMDD')
             let endDate = moment(queryInfo.periodEnd).format('YYYYMMDD')
-            let filename = ''.concat("온습도", startDate, "-", endDate, ".pdf")
+            let filename = ''.concat(queryInfo.alias, "_", "리포트", startDate, "-", endDate, ".pdf")
             doc.save(filename);
         })
     }
@@ -279,10 +275,6 @@
   <canvas bind:this={portfolio}></canvas>
 </div>
 -->
-
-
-<!--// 2480px(가로) X 3508px-->
-
 
 
 <div class="page" bind:this={docPdf} style="backgound-color: white">
@@ -313,7 +305,7 @@
       </div>
     </div>
     <div class="color-red">
-      <div class="align-center mb-2">제2실</div>
+      <div class="align-center mb-2">{queryInfo.alias}</div>
       <div class="align-center mb-3">전기 표준실(27.5m2)</div>
       <div>
         <canvas bind:this={portfolio}></canvas>

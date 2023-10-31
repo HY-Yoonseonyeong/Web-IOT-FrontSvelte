@@ -16,25 +16,12 @@
 
     let historyCount = 0
     let historyRows = new Array()
-    let datePeriod
     let periodStart, periodEnd
-    let _alias = "DHT22_LCD_0001"
     let deviceList = []
     const queryParams = {};
 
     let queryInfo = {}
 
-    const aeList = new Array()
-    aeList.push("DHT22_LCD_0001")
-    aeList.push("test2F230102_01")
-    aeList.push("testB1F221205_01")
-
-    let pagination;
-
-
-    let timepicker3
-    let ref;
-    let calendarPicker
 
     const options = {
         mode: "range",
@@ -59,21 +46,12 @@
         }
     };
 
-
     onMount(async () => {
         await checkTokenThenLogin()
         await getDashboardDeviceList()
-        await reqAeDeviceAlias()
-
-
     })
 
     onDestroy(async () => {
-        /*calendarPicker.destroy()*/
-        /*calendarPicker.destory()*/
-        //
-        // calendarPicker.destroy()
-        //console.log("onDestroy")
     })
 
     //
@@ -110,29 +88,6 @@
         }
     }
 
-    const reqAeDeviceAlias = async () => {
-        const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
-        let alias1 = await response1.json()
-
-        if (alias1.length > 0) {
-            aeList[0] = alias1[0].alias
-            _alias = alias1[0].alias
-        }
-
-        const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
-        let alias2 = await response2.json()
-
-        if (alias2.length > 0) {
-            aeList[1] = alias2[0].alias
-        }
-
-        const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
-        let alias3 = await response3.json()
-
-        if (alias3.length > 0) {
-            aeList[1] = alias3[0].alias
-        }
-    }
 
     const clickPeriodQuery = async (e) => {
         const formData = new FormData(e.target);
@@ -174,6 +129,11 @@
         }
 
         queryInfo = queryParams;
+
+        // 별칭 추가
+        const find = deviceList.find((el, index, arr) => el.aei === queryParams['aei'])
+        queryInfo['alias'] = find.alias
+        console.log(queryInfo)
 
         return;
 
