@@ -15,7 +15,7 @@
     const aeList = new Array()
     aeList.push("dn23100001")
     aeList.push("dn23100002")
-    aeList.push("testB1F221205_01")
+    aeList.push("dn23100003")
 
     console.log(aeList)
 
@@ -40,7 +40,7 @@
                 /*borderWidth: 0*/
             },
             {
-                label: 'testB1F221205_01',
+                label: 'dn23100003',
                 //              data: tempdata.map(row => row.count),
                 /*backgroundColor: ['#7000e1', '#fc8800', '#00b0e8'],*/
                 // hoverOffset: 4,
