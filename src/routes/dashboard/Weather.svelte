@@ -16,7 +16,7 @@
   let adress3 = "";
 
   let timerID;
-  const delay = 1000 * 60 * 1; // 5분
+  const delay = 1000 * 60 * 5; // 5분
 
   let WeatherFirst = "";
   let WeatherFirstList = "";
@@ -180,6 +180,8 @@
     );
     const jsonData = await response.json();
     const data = jsonData.data;
+
+    console.log(data);
 
     temp = data.T1H;
     humid = data.REH;
