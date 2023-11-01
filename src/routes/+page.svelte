@@ -321,13 +321,16 @@
       <div class="container py-3">
         <div class="row justify-content-between fs--1">
           <div class="col-12 col-sm-auto text-center">
-            <p class="mb-0 text-600 opacity-85">Copyright &copy HANYOUNG NUX. All Rights reserved.
-              <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none"/> 2023
-              <a class="text-white opacity-85" href="https://hanyoungnux.co.kr/">Hanyoungnux</a>
+            <p class="mb-0 text-600 opacity-85">
+              <a class="text-white opacity-85" href="./etc/agreement">이용약관</a> 
+              &nbsp;|&nbsp;
+              <a class="text-white opacity-85" href="./etc/privacy">개인정보처리방침</a> 
             </p>
           </div>
           <div class="col-12 col-sm-auto text-center">
-            <p class="mb-0 text-600 opacity-85">v0.0.1</p>
+            <p class="mb-0 text-600 opacity-85">Copyright &copy HANYOUNG NUX. All Rights reserved.
+              <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none"/> 2023
+              <a class="text-white opacity-85" href="https://hanyoungnux.co.kr/">Hanyoungnux</a></p>
           </div>
         </div>
       </div>
