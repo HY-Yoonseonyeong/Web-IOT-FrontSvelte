@@ -67,34 +67,7 @@
                 href="./agreement"
               >
                 <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">2023.01.26 개정</span>
-                </div>
-              </a>
-              <a
-                class="nav-link"
-                class:active={$page.url.pathname === "#"}
-                href="#"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">item 2</span>
-                </div>
-              </a>
-              <a
-                class="nav-link"
-                class:active={$page.url.pathname === "#"}
-                href="#"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">item 3</span>
-                </div>
-              </a>
-              <a
-                class="nav-link"
-                class:active={$page.url.pathname === "#"}
-                href="#"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">item 4</span>
+                  <span class="nav-link-text ps-1">2023.11.02 개정</span>
                 </div>
               </a>
             </li>
@@ -124,34 +97,7 @@
                 href="./privacy"
               >
                 <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">2023.01.01 개정</span>
-                </div>
-              </a>
-              <a
-                class="nav-link"
-                class:active={$page.url.pathname === "#"}
-                href="#"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">item 2</span>
-                </div>
-              </a>
-              <a
-                class="nav-link"
-                class:active={$page.url.pathname === "#"}
-                href="#"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">item 3</span>
-                </div>
-              </a>
-              <a
-                class="nav-link"
-                class:active={$page.url.pathname === "#"}
-                href="#"
-              >
-                <div class="d-flex align-items-center">
-                  <span class="nav-link-text ps-1">item 4</span>
+                  <span class="nav-link-text ps-1">2023.11.02 개정</span>
                 </div>
               </a>
             </li>
