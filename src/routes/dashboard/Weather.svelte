@@ -3,9 +3,10 @@
   import { PUBLIC_API_URL } from "$env/static/public";
 
   let isQueryWeatherRunning = true;
+
   /*
-    대시보드 날씨 컨포넌트
-    */
+  대시보드 날씨 컨포넌트
+  */
 
   let temp = "0"; // 온도
   let humid = "0"; // 습도
@@ -27,14 +28,14 @@
   onMount(async () => {
     try {
       // 날씨 조회
-      await queryWeather();
+      await LocalStorageWeather();
     } catch (e) {
       console.log(e);
       console.log(e.message);
     }
-
     await getWeatherFirst();
     await getWeatherSecond();
+    await getWeatherThird();
   });
 
   onDestroy(() => {
@@ -42,6 +43,17 @@
       clearTimeout(timerID);
     }
   });
+
+  const LocalStorageWeather = async () => {
+    const x = localStorage.getItem("lo_x");
+    const y = localStorage.getItem("lo_y");
+
+    if (x && y) {
+      queryWeatherlast(x, y);
+    } else {
+      queryWeather();
+    }
+  };
 
   /**
    * @param {string} data.t1h - 온도
@@ -135,9 +147,23 @@
     console.log(WeatherThirdList);
   };
 
+  const getWeatherSpace = async () => {
+    const url = `${PUBLIC_API_URL}/weather/area?addr1=${WeatherFirst}&addr2=&xy=1`;
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (200 == response.status) {
+      const data = await response.json();
+      WeatherThirdList = data.rows;
+    }
+    console.log(WeatherThirdList);
+  };
+
   const WeatherFirstChange = () => {
     console.log(WeatherFirst);
     getWeatherSecond();
+    getWeatherSpace();
   };
 
   const WeatherSecondChange = () => {
@@ -154,10 +180,17 @@
   const saveWeatherstorage = () => {
     localStorage.setItem("lo_x", WeatherThirdList[selectedRowIndex].lo_x);
     localStorage.setItem("lo_y", WeatherThirdList[selectedRowIndex].lo_y);
+    localStorage.setItem(
+      "area_code",
+      WeatherThirdList[selectedRowIndex].area_code
+    );
+    localStorage.setItem("addr1", WeatherThirdList[selectedRowIndex].addr1);
+    localStorage.setItem("addr2", WeatherThirdList[selectedRowIndex].addr2);
+    localStorage.setItem("addr3", WeatherThirdList[selectedRowIndex].addr3);
 
-    adress1 = WeatherThirdList[selectedRowIndex].addr1;
+    /* adress1 = WeatherThirdList[selectedRowIndex].addr1;
     adress2 = WeatherThirdList[selectedRowIndex].addr2;
-    adress3 = WeatherThirdList[selectedRowIndex].addr3;
+    adress3 = WeatherThirdList[selectedRowIndex].addr3; */
 
     const { x, y } = getWeatherLocalStorage();
     queryWeatherlast(x, y);
@@ -188,7 +221,13 @@
     prePattern = getTextFromPTY(data.PTY);
     pre = data.RN1;
 
+    adress1 = localStorage.getItem("addr1");
+    adress2 = localStorage.getItem("addr2");
+    adress3 = localStorage.getItem("addr3");
+
     timerID = setTimeout(queryWeatherlast, delay, x, y);
+
+    console.log(adress1, adress2, adress3);
   };
 </script>
 
@@ -201,7 +240,8 @@
           class="btn btn-link btn-primary text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
           type="button"
           data-bs-toggle="modal"
-          data-bs-target="#error-modal"
+          data-bs-target="#error-modal" 
+          on:click={getWeatherThird}
         >
           <span class="fas fa-ellipsis-h fs--2" />
         </button>
@@ -241,7 +281,9 @@
                       >
                         <option value="">시/도</option>
                         {#each WeatherFirstList as item}
-                          <option value={item.addr1}>{item.addr1}</option>
+                          <option value={item.addr1}
+                            >{#if item.addr1}{item.addr1}{:else}{""}{/if}</option
+                          >
                         {/each}
                       </select>
                       <select
@@ -251,7 +293,9 @@
                       >
                         <option value="">시/구/군</option>
                         {#each WeatherSecondList as item}
-                          <option value={item.addr2}>{item.addr2}</option>
+                          <option value={item.addr2}
+                            >{#if item.addr2}{item.addr2}{:else}{""}{/if}</option
+                          >
                         {/each}
                       </select>
                     </div>
@@ -260,7 +304,10 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th scope="col">지역</th>
+                          <th scope="col" style="display:none">area_code</th>
+                          <th scope="col">시/도</th>
+                          <th scope="col">시/구/군</th>
+                          <th scope="col">동/읍/면/리</th>
                           <th scope="col">위경도 X</th>
                           <th scope="col">위경도 Y</th>
                         </tr>
@@ -272,7 +319,18 @@
                             class="select_hover"
                             on:click={() => tableSelect(index)}
                           >
-                            <td>{item.addr3}</td>
+                            <td style="display:none">
+                              {item.area_code}
+                            </td>
+                            <td
+                              >{#if item.addr1}{item.addr1}{:else}{""}{/if}</td
+                            >
+                            <td
+                              >{#if item.addr2}{item.addr2}{:else}{""}{/if}</td
+                            >
+                            <td
+                              >{#if item.addr3}{item.addr3}{:else}{""}{/if}</td
+                            >
                             <td>{item.lo_x}</td>
                             <td>{item.lo_y}</td>
                           </tr>
@@ -358,7 +416,17 @@
               <div class="me-3" style="height:60" />
             {/if}
             <div>
-              <h6 class="mb-2 fs--2">{adress1}<br />{adress2}</h6>
+              <h6 class="mb-2 fs--2">
+                <span class="nowrap">{adress1}</span>
+                <br />
+                <span class="nowrap">
+                  {#if adress3 !== "null" && adress3 !== null}
+                    {adress3}
+                  {:else if adress2 !== "null" && adress2 !== null}
+                    {adress2}
+                  {/if}
+                </span>
+              </h6>
               <div class="fs--2 fw-semi-bold">
                 <div class="text-warning">{prePattern}</div>
                 강수량 : {pre}mm
@@ -417,6 +485,22 @@
   }
 
   .mb-2 {
-    margin-bottom: 0.25rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .table-responsive {
+    max-height: 550px;
+    overflow-y: auto;
+  }
+
+  .modal-dialog {
+    max-width: 650px !important;
+  }
+
+  .nowrap {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 65px;
   }
 </style>
