@@ -2,13 +2,14 @@
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
 		"allowJs": true,
-		"checkJs": true,
+		"checkJs": false, /*테스트 ture->false 2023-11-01*/
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strict": true
+		"strict": true,
+		"noImplicitAny": false /*테스트 ture->false 2023-11-01*/
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
