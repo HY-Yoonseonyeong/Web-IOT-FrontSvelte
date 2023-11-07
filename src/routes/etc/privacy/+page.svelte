@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>대시보드 | HYNUX-IOT</title>
+  <title>개인정보처리방침 | HYNUX-IOT</title>
   <meta name="" content="" />
 </svelte:head>
 
