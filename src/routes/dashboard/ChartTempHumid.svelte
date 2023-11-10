@@ -10,7 +10,6 @@
     let timerDelay = 60 * 1000 // 1분
     let conTypeText = (conType === "temp") ? "온도 차트" : "습도 차트"
 
-    // 65초 58초
     //
     const aeList = new Array()
     aeList.push("dn23100001")
@@ -213,19 +212,15 @@
       </div>
     </div>
     <div class="card-body h-100 pe-0">
-      <!-- Find the JS file for the following chart at: src\js\charts\echarts\total-sales.js-->
-      <!-- If you are not using gulp based workflow, you can find the transpiled code at: public\assets\js\theme.js-->
-      <!--<div class="echart-line-total-sales h-100" data-echart-responsive="true"></div>-->
       <div class="h-100" style="min-height: 250px">
-        <!--<canvas id="chart-temp"></canvas>-->
-        <canvas id=test bind:this={portfolio}></canvas>
+        <canvas class="chart" bind:this={portfolio}></canvas>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-    #test {
+    .chart {
         display: block;
         width: 200px;
         height: 50px;
