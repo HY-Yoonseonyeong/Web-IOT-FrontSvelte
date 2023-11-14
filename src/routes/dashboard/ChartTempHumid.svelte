@@ -1,5 +1,5 @@
 <script>
-    import {onMount} from "svelte";
+    import {onMount, onDestroy} from "svelte";
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
     import moment from "moment";
@@ -16,35 +16,17 @@
     aeList.push("dn23100002")
     aeList.push("dn23100003")
 
-    console.log(aeList)
-
-    let portfolio;
+    let _chart;
     const data = {
-        // labels: tempdata.map(row => row.year),
         datasets: [
             {
                 label: 'dn23100001',
-                //data: tempdata.map(row => row.count),
-                /*backgroundColor: ['#7000e1', '#fc8800', '#00b0e8'],*/
-                // hoverOffset: 4,
-                /*borderColor: 'rgb(255, 99, 132)',*/
-                /*borderWidth: 0*/
             },
             {
                 label: 'dn23100002',
-//                data: tempdata.map(row => row.count),
-                /*backgroundColor: ['#7000e1', '#fc8800', '#00b0e8'],*/
-                // hoverOffset: 4,
-                /*borderColor: 'rgb(255, 99, 132)',*/
-                /*borderWidth: 0*/
             },
             {
                 label: 'dn23100003',
-                //              data: tempdata.map(row => row.count),
-                /*backgroundColor: ['#7000e1', '#fc8800', '#00b0e8'],*/
-                // hoverOffset: 4,
-                /*borderColor: 'rgb(255, 99, 132)',*/
-                /*borderWidth: 0*/
             }
         ]
     };
@@ -74,34 +56,29 @@
                     text: ''
                 }
             }
-            /*  onResize : function (myChart, size) {
-                  var showTicks = (size.width < 550) ? false : true;
-                  console.log("chart size : " + size)
-                  console.log(size)
-                  myChart.options.plugins.legend.display = showTicks;
-              }*/
         },
     };
 
-    let myChart
-
+    let tempHumidChart
     onMount(async () => {
-
         await reqAeDeviceAlias()
 
-        const ctx = portfolio.getContext('2d')
-        myChart = new Chart(ctx, config)
+        const ctx = _chart.getContext('2d')
+        tempHumidChart = new Chart(ctx, config)
 
-        //await queryChartData(selected)
-        if (timerID) {
+        /*if (timerID) {
             console.log("timerID : " + timerID)
             clearTimeout(timerID)
-        }
+        }*/
 
         timerChartQuery()
     })
 
-    //
+    onDestroy(() => {
+        if (timerID) {
+            clearTimeout(timerID)
+        }
+    })
 
     let selected = '30'; //
 
@@ -126,52 +103,60 @@
     //
     const queryChartData = async (period) => {
 
-        let url = `${PUBLIC_API_URL}/device/history/min/dn23100001/${conType}?limit=30&period=${period}`
-        const response = await fetch(url, {})
-        const queryData = await response.json()
+        try {
+            let url = `${PUBLIC_API_URL}/device/history/min/dn23100001/${conType}?limit=30&period=${period}`
+            const response = await fetch(url, {})
+            const queryData = await response.json()
 
-        myChart.data.labels = queryData.map(row => moment(row.datetime).format('HH:mm'))
-        myChart.data.datasets[0].label = aeList[0]
-        myChart.data.datasets[0].data = queryData.map(row => row.con)
+            tempHumidChart.data.labels = queryData.map(row => moment(row.datetime).format('HH:mm'))
+            tempHumidChart.data.datasets[0].label = aeList[0]
+            tempHumidChart.data.datasets[0].data = queryData.map(row => row.con)
 
-        url = `${PUBLIC_API_URL}/device/history/min/dn23100002/${conType}?limit=30&period=${period}`
-        const response2 = await fetch(url, {})
+            url = `${PUBLIC_API_URL}/device/history/min/dn23100002/${conType}?limit=30&period=${period}`
+            const response2 = await fetch(url, {})
 
-        const queryData2 = await response2.json()
-        myChart.data.datasets[1].label = aeList[1]
-        myChart.data.datasets[1].data = queryData2.map(row => row.con)
+            const queryData2 = await response2.json()
+            tempHumidChart.data.datasets[1].label = aeList[1]
+            tempHumidChart.data.datasets[1].data = queryData2.map(row => row.con)
 
-        url = `${PUBLIC_API_URL}/device/history/min/testB1F221205_01/${conType}?limit=30&period=${period}`
-        const response3 = await fetch(url, {})
+            url = `${PUBLIC_API_URL}/device/history/min/testB1F221205_01/${conType}?limit=30&period=${period}`
+            const response3 = await fetch(url, {})
 
-        const queryData3 = await response3.json()
-        myChart.data.datasets[2].label = aeList[2]
-        myChart.data.datasets[2].data = queryData3.map(row => row.con)
+            const queryData3 = await response3.json()
+            tempHumidChart.data.datasets[2].label = aeList[2]
+            tempHumidChart.data.datasets[2].data = queryData3.map(row => row.con)
 
-        myChart.update()
+            tempHumidChart.update()
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
     // 별칭 조회.
     const reqAeDeviceAlias = async () => {
-        const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
-        let alias1 = await response1.json()
+        try {
+            const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
+            let alias1 = await response1.json()
 
-        if (alias1.length > 0) {
-            aeList[0] = alias1[0].alias
-        }
+            if (alias1.length > 0) {
+                aeList[0] = alias1[0].alias
+            }
 
-        const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
-        let alias2 = await response2.json()
+            const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
+            let alias2 = await response2.json()
 
-        if (alias2.length > 0) {
-            aeList[1] = alias2[0].alias
-        }
+            if (alias2.length > 0) {
+                aeList[1] = alias2[0].alias
+            }
 
-        const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
-        let alias3 = await response3.json()
+            const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
+            let alias3 = await response3.json()
 
-        if (alias3.length > 0) {
-            aeList[2] = alias3[0].alias
+            if (alias3.length > 0) {
+                aeList[2] = alias3[0].alias
+            }
+        } catch (e) {
+            console.log(e.message)
         }
     }
 
@@ -194,26 +179,12 @@
             <option value="30">30분</option>
             <option value="60">1시간</option>
           </select>
-          <!--<div class="dropdown font-sans-serif btn-reveal-trigger">
-            <button class="btn btn-link text-600 btn-sm dropdown-toggle dropdown-caret-none btn-reveal"
-                    type="button" id="dropdown-total-sales" data-bs-toggle="dropdown"
-                    data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
-              <span class="fas fa-ellipsis-h fs&#45;&#45;2"></span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end border py-2"
-                 aria-labelledby="dropdown-total-sales">
-              <a class="dropdown-item" href="#!">View</a>
-              <a class="dropdown-item" href="#!">Export</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item text-danger" href="#!">Remove</a>
-            </div>
-          </div>-->
         </div>
       </div>
     </div>
     <div class="card-body h-100 pe-0">
       <div class="h-100" style="min-height: 250px">
-        <canvas class="chart" bind:this={portfolio}></canvas>
+        <canvas class="chart" bind:this={_chart}></canvas>
       </div>
     </div>
   </div>
