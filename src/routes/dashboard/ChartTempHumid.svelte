@@ -55,6 +55,7 @@
         options: {
             borderRadius: '30',
             responsive: true,
+            maintainAspectRatio: false,
             cutout: '95%',
             spacing: 2,
             plugins: {
@@ -212,7 +213,7 @@
       </div>
     </div>
     <div class="card-body h-100 pe-0">
-      <div class="h-100" style="min-height: 250px">
+      <div class="h-100" style="min-height: 260px">
         <canvas class="chart" bind:this={portfolio}></canvas>
       </div>
     </div>

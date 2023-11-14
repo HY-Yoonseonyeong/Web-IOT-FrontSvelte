@@ -49,9 +49,9 @@
     const y = localStorage.getItem("lo_y");
 
     if (x && y) {
-      queryWeatherlast(x, y);
+      await queryWeatherlast(x, y);
     } else {
-      queryWeather();
+      await queryWeather();
     }
   };
 
@@ -89,6 +89,7 @@
    * @param PTYCode - 날씨 코드
    * @returns {string}
    */
+
   const getTextFromPTY = (PTYCode) => {
     switch (PTYCode) {
       case "0":
@@ -144,7 +145,6 @@
       const data = await response.json();
       WeatherThirdList = data.rows;
     }
-    console.log(WeatherThirdList);
   };
 
   const getWeatherSpace = async () => {
@@ -157,7 +157,6 @@
       const data = await response.json();
       WeatherThirdList = data.rows;
     }
-    console.log(WeatherThirdList);
   };
 
   const WeatherFirstChange = () => {
@@ -184,6 +183,7 @@
       "area_code",
       WeatherThirdList[selectedRowIndex].area_code
     );
+
     localStorage.setItem("addr1", WeatherThirdList[selectedRowIndex].addr1);
     localStorage.setItem("addr2", WeatherThirdList[selectedRowIndex].addr2);
     localStorage.setItem("addr3", WeatherThirdList[selectedRowIndex].addr3);

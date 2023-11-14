@@ -82,6 +82,18 @@
               <span class="nav-link-text ps-1">디바이스 관리</span>
             </div>
           </a>
+          <a class="nav-link" class:active={$page.url.pathname === '/mobiusAE'} href="../mobiusAE">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
+              <span class="nav-link-text ps-1">모비우스 AE</span>
+            </div>
+          </a>
+          <a class="nav-link" class:active={$page.url.pathname === '/mobiusdevice'} href="../mobiusdevice">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-tablet"></span></span>
+              <span class="nav-link-text ps-1">모비우스 디바이스</span>
+            </div>
+          </a>
         </li>
         <li class="nav-item">
           <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
