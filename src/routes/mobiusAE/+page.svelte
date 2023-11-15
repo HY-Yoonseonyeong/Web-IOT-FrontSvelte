@@ -1,7 +1,50 @@
 <script>
+  import { onMount } from "svelte";
+  import { PUBLIC_API_URL } from "$env/static/public";
   import NavSide from "../../component/nav/NavSide.svelte";
   import NavTop from "../../component/nav/NavTop.svelte";
   import Footer from "../../component/nav/Footer.svelte";
+
+  let mobiusTableSearch = false;
+  let mobiusAPI = "";
+  let mobiusApiList = "";
+
+  let MobiusAeList = "";
+
+  onMount(async () => {
+    await queryMobiusData();
+  });
+
+  const TablAeChange = () => {
+    console.log(mobiusAPI);
+    queryMobiusAeList();
+  };
+
+  const queryMobiusData = async () => {
+    const response = await fetch(`${PUBLIC_API_URL}/mobius/v2/api`, {
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+
+    mobiusApiList = data;
+
+    console.log(mobiusApiList);
+  };
+
+  const queryMobiusAeList = async () => {
+      const response = await fetch(
+        `${PUBLIC_API_URL}/mobius/v2/ae?api=${mobiusAPI}`,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await response.json();
+
+      MobiusAeList = data;
+
+      console.log(MobiusAeList);
+      
+  };
 </script>
 
 <svelte:head>
@@ -24,15 +67,18 @@
         </div>
         <div class="card-body bg-light">
           <div class="tab-content">
-            <select class="form-select" aria-label="Default select example">
-              <option selected="">Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select
+              class="form-select"
+              bind:value={mobiusAPI}
+              on:change={TablAeChange}
+            >
+              {#each mobiusApiList as item}
+                <option value={item.api}>{item.api}</option>
+              {/each}
             </select>
           </div>
         </div>
-        <div class="card-footer border-top text-end" />
+        <div class="card-footer text-end" />
       </div>
       <div class="card mb-3">
         <div class="card-header">
@@ -42,11 +88,11 @@
             </div>
           </div>
         </div>
-        <div class="card-body bg-light border-top">
+        <div class="card-body">
           <div class="table-responsive scrollbar">
-            <table class="table table-hover">
+            <table class="table">
               <thead>
-                <tr>
+                <tr class="text-black bg-200">
                   <th scope="col" title="resourceID">ri</th>
                   <th scope="col" title="appName">apn</th>
                   <th scope="col" title="App-ID">api</th>
@@ -59,13 +105,37 @@
                   <th scope="col" title="supportedReleaseVersion">srv</th>
                 </tr>
               </thead>
-              <tbody />
+              <tbody>
+                {#each MobiusAeList as item}
+                  <tr>
+                    <td class="text-nowrap">{item.ri}</td>
+                    <td class="text-nowrap">{item.apn}</td>
+                    <td class="text-nowrap">{item.api}</td>
+                    <td class="text-nowrap">{item.aei}</td>
+                    <td class="text-nowrap">{item.poa}</td>
+                    <td class="text-nowrap">{item.or}</td>
+                    <td class="text-nowrap">{item.rr}</td>
+                    <td class="text-nowrap">{item.nl}</td>
+                    <td class="text-nowrap">{item.csz}</td>
+                    <td class="text-nowrap">{item.srv}</td>
+                  </tr>
+                {/each}
+              </tbody>
             </table>
           </div>
         </div>
-        <div class="card-footer border-top text-end" />
+        <div class="card-footer text-end" />
       </div>
       <Footer />
     </div>
   </div>
 </main>
+
+<style>
+  table {
+    text-align: center;
+  }
+  table th{
+    cursor: default;
+  }
+</style>
