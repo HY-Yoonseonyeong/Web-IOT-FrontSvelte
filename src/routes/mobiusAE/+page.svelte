@@ -5,7 +5,6 @@
   import NavTop from "../../component/nav/NavTop.svelte";
   import Footer from "../../component/nav/Footer.svelte";
 
-  let mobiusTableSearch = false;
   let mobiusAPI = "";
   let mobiusApiList = "";
 
@@ -15,7 +14,7 @@
     await queryMobiusData();
   });
 
-  const TablAeChange = () => {
+  const TableAeChange = () => {
     console.log(mobiusAPI);
     queryMobiusAeList();
   };
@@ -43,7 +42,6 @@
       MobiusAeList = data;
 
       console.log(MobiusAeList);
-      
   };
 </script>
 
@@ -70,7 +68,7 @@
             <select
               class="form-select"
               bind:value={mobiusAPI}
-              on:change={TablAeChange}
+              on:change={TableAeChange}
             >
               {#each mobiusApiList as item}
                 <option value={item.api}>{item.api}</option>
