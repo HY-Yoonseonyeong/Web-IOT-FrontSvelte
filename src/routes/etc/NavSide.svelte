@@ -46,11 +46,11 @@
         <li class="nav-item">
           <a
             class="nav-link dropdown-indicator"
-            href="#dashboard"
+            href="#agreement"
             role="button"
             data-bs-toggle="collapse"
             aria-expanded="true"
-            aria-controls="dashboard"
+            aria-controls="agreement"
           >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"
@@ -59,7 +59,7 @@
               <span class="nav-link-text ps-1">이용약관</span>
             </div>
           </a>
-          <ul class="nav collapse show" id="dashboard">
+          <ul class="nav collapse show" id="agreement">
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -76,11 +76,11 @@
         <li class="nav-item">
           <a
             class="nav-link dropdown-indicator"
-            href="#dashboard"
+            href="#privacy"
             role="button"
             data-bs-toggle="collapse"
             aria-expanded="true"
-            aria-controls="dashboard"
+            aria-controls="privacy"
           >
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"
@@ -89,7 +89,7 @@
               <span class="nav-link-text ps-1">개인정보처리방침</span>
             </div>
           </a>
-          <ul class="nav collapse show" id="dashboard">
+          <ul class="nav collapse show" id="privacy">
             <li class="nav-item">
               <a
                 class="nav-link"
