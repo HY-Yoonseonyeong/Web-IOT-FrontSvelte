@@ -7,9 +7,6 @@
     let deviceLa = '-'
     let humidCon = '-'
 
-    //
-    //
-    // text-700
     let tempChangeStyle = "text-700"
     let humidChangeStyle = "text-700"
 
@@ -20,7 +17,7 @@
 
 
     let timerID // 타이머 아이디
-    const delay = 10000 // 타이머 10초 간격
+    const delay = 30 * 1000 // 타이머 30초 간격
 
     onMount(async () => {
         const url2 = {
@@ -54,9 +51,6 @@
         })
 
         const data = await response.json()
-        // {"_index":1779,"datetime":"2023-06-26T20:16:58.000Z","ae":"DHT22_LCD_0001","cin":"humid","con":"80.80","prev_con":"80.60","con_change":"up"}
-
-        console.log(data)
 
         let changeColor = "text-700"
         if (data['con_change'] == 'up') {
@@ -81,7 +75,6 @@
     }
 
     const queryDeviceAlert = async (url, aei) => {
-        console.log(url)
         const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json"
@@ -89,8 +82,6 @@
         })
 
         const data = await response.json()
-
-        console.log(data)
 
         if (0 < data.length) {
             alertOff = "bg-alert"
@@ -128,15 +119,15 @@
 
 
 <style>
-  .bg-alert {
-      background-color: #ff121287;
-  }
+    .bg-alert {
+        background-color: #ff121287;
+    }
 
-  .color-alert {
-      color: white;
-  }
+    .color-alert {
+        color: white;
+    }
 
-  .fs-4 {
-    font-size: 1.9rem !important;
-  }
+    .fs-4 {
+        font-size: 1.9rem !important;
+    }
 </style>
