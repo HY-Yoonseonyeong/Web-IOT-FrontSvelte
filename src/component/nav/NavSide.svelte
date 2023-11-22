@@ -94,6 +94,12 @@
               <span class="nav-link-text ps-1">모비우스 AE</span>
             </div>
           </a>
+          <a class="nav-link" class:active={$page.url.pathname === '/mobiusgroup'} href="../mobiusgroup">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
+              <span class="nav-link-text ps-1">모비우스 Group</span>
+            </div>
+          </a>
           <a class="nav-link" class:active={$page.url.pathname === '/mobiusdevice'} href="../mobiusdevice">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-tablet"></span></span>

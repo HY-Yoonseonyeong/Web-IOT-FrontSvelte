@@ -5,56 +5,55 @@
   import NavTop from "../../component/nav/NavTop.svelte";
   import Footer from "../../component/nav/Footer.svelte";
 
-  let mobiusAPI = "";
-  let mobiusApiList = "";
+  let mobiusGroup = "";
+  let mobiusGroupList = "";
 
-  let MobiusAeList = "";
+  let MobiusGroupData = "";
 
   let isLoading = false;
 
   onMount(async () => {
-    await queryMobiusData();
+    // await queryMobiusGroup();
+    await queryMobiusGroupData();
   });
 
-  const TableAeChange = () => {
-    console.log(mobiusAPI);
-    queryMobiusAeList();
+  /* const TableChange = () => {
+    console.log(mobiusGroup);
+    queryMobiusGroupData();
   };
 
-  const queryMobiusData = async () => {
-    isLoading = true; // 로딩 시작
+  const queryMobiusGroup = async () => {
+    isLoading = true; 
     try {
-      const response = await fetch(`${PUBLIC_API_URL}/mobius/v2/api`, {
+      const response = await fetch(`${PUBLIC_API_URL}/mobius/group`, {
         headers: { "Content-Type": "application/json" },
       });
       const data = await response.json();
 
-      mobiusApiList = data;
+      mobiusGroupList = data;
 
       console.log(mobiusApiList);
     } catch (error) {
       console.error("error", error);
     } finally {
-      isLoading = false; // 로딩 종료
+      isLoading = false; 
     }
-  };
-  const queryMobiusAeList = async () => {
-    const response = await fetch(
-      `${PUBLIC_API_URL}/mobius/v2/ae?api=${mobiusAPI}`,
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+  }; */
+
+  const queryMobiusGroupData = async () => {
+    const response = await fetch(`${PUBLIC_API_URL}/mobius/group`, {
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await response.json();
 
-    MobiusAeList = data;
+    MobiusGroupData = data;
 
-    console.log(MobiusAeList);
+    console.log(MobiusGroupData);
   };
 </script>
 
 <svelte:head>
-  <title>모비우스 AE | HYNUX-IOT</title>
+  <title>모비우스 Group | HYNUX-IOT</title>
   <meta name="description" content="About this app" />
 </svelte:head>
 
@@ -63,11 +62,11 @@
     <NavSide />
     <div class="content">
       <NavTop />
-      <div class="card mb-3">
+      <!-- <div class="card mb-3">
         <div class="card-header">
           <div class="row flex-between-end">
             <div class="col-auto align-self-center">
-              <h5 class="mb-0" data-anchor="data-anchor">AE 조회</h5>
+              <h5 class="mb-0" data-anchor="data-anchor">Group 조회</h5>
             </div>
           </div>
         </div>
@@ -82,24 +81,24 @@
             {:else}
               <select
                 class="form-select"
-                bind:value={mobiusAPI}
-                on:change={TableAeChange}
+                bind:value={mobiusGroup}
+                on:change={TableChange}
               >
-                <option value="" hidden>API-ID를 선택하세요.</option>
-                {#each mobiusApiList as item}
-                  <option value={item.api}>{item.api}</option>
+                <option value="" hidden>ID를 선택하세요.</option>
+                {#each mobiusGroupList as item}
+                  <option value={item.cr}>{item.cr}</option>
                 {/each}
               </select>
             {/if}
           </div>
         </div>
         <div class="card-footer text-end" />
-      </div>
+      </div> -->
       <div class="card mb-3">
         <div class="card-header">
           <div class="row align-items-center">
             <div class="col">
-              <h5 class="mb-0">AE 조회 결과</h5>
+              <h5 class="mb-0">Group</h5>
             </div>
           </div>
         </div>
@@ -109,30 +108,30 @@
               <thead>
                 <tr class="text-black bg-200">
                   <th scope="col" title="resourceID">ri</th>
-                  <th scope="col" title="appName">apn</th>
-                  <th scope="col" title="App-ID">api</th>
-                  <th scope="col" title="AE-ID">aei</th>
-                  <th scope="col" title="pointOfAccess">poa</th>
-                  <th scope="col" title="ontologyRef">or</th>
-                  <th scope="col" title="requestReachability">rr</th>
-                  <th scope="col" title="nodeLink">nl</th>
-                  <th scope="col" title="contentSerialization">csz</th>
-                  <th scope="col" title="supportedReleaseVersion">srv</th>
+                  <th scope="col" title="creator">cr</th>
+                  <th scope="col" title="memberType">mt</th>
+                  <th scope="col" title="currentNrOfMembers">cnm</th>
+                  <th scope="col" title="maxNrOfMembers">mnm</th>
+                  <th scope="col" title="memberIDs">mid</th>
+                  <th scope="col" title="membersAccessControlPolicyIDs">macp</th>
+                  <th scope="col" title="memberTypeValidated">mtv</th>
+                  <th scope="col" title="consistencyStrategy">csy</th>
+                  <th scope="col" title="groupName">gn</th>
                 </tr>
               </thead>
               <tbody>
-                {#each MobiusAeList as item}
+                {#each MobiusGroupData as item}
                   <tr>
-                    <td class="text-nowrap">{item.ri}</td>
-                    <td class="text-nowrap">{item.apn}</td>
-                    <td class="text-nowrap">{item.api}</td>
-                    <td class="text-nowrap">{item.aei}</td>
-                    <td class="text-nowrap">{item.poa}</td>
-                    <td class="text-nowrap">{item.or}</td>
-                    <td class="text-nowrap">{item.rr}</td>
-                    <td class="text-nowrap">{item.nl}</td>
-                    <td class="text-nowrap">{item.csz}</td>
-                    <td class="text-nowrap">{item.srv}</td>
+                    <td>{item.ri}</td>
+                    <td>{item.cr}</td>
+                    <td>{item.mt}</td>
+                    <td>{item.cnm}</td>
+                    <td>{item.mnm}</td>
+                    <td>{item.mid}</td>
+                    <td>{item.macp}</td>
+                    <td>{item.mtv}</td>
+                    <td>{item.csy}</td>
+                    <td>{item.gn}</td>
                   </tr>
                 {/each}
               </tbody>
@@ -154,7 +153,7 @@
     cursor: default;
   }
 
-  .loading-box{
+  .loading-box {
     width: 100%;
     display: flex;
     justify-content: center;
