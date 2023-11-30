@@ -15,9 +15,7 @@
     <NavSide />
     <div class="content">
       <NavTop />
-
       <Sterilizer />
-      
       <Footer />
     </div>
   </div>
