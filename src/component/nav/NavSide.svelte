@@ -88,6 +88,12 @@
               <span class="nav-link-text ps-1">온습도</span>
             </div>
           </a>
+          <a class="nav-link" class:active={$page.url.pathname === '/sterilizer'} href="../sterilizer">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"><span class="fas fa-fire"></span></span>
+              <span class="nav-link-text ps-1">멸균기</span>
+            </div>
+          </a>
           <a class="nav-link" class:active={$page.url.pathname === '/mobiusAE'} href="../mobiusAE">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span>
