@@ -23,6 +23,8 @@
       TempHumList = data;
 
       console.log(TempHumList);
+    } else {
+        alert ("조회 실패")
     }
   };
 </script>
