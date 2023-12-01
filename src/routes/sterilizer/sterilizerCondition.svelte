@@ -70,6 +70,7 @@
             error_0 = data["m2m:cin"].con;
         } else if (url === url2.e1) {
             error_1 = data["m2m:cin"].con;
+            console.log(parseInt(error_1).toString(2))
         } else if (url === url2.ps) {
             Pressure = data["m2m:cin"].con;
         } else if (url === url2.st) {
@@ -132,6 +133,18 @@
               <tr>
                 <th>Digital Input 상태(diStatus)</th>
                 <td>{diStatus}</td>
+                <td>
+                  <div>
+                    <!--Digital Input 7bit-->
+                    <span class="badge badge-subtle-secondary">0</span>
+                    <span class="badge bg-success">1</span>
+                    <span class="badge bg-success">1</span>
+                    <span class="badge badge-subtle-secondary">0</span>
+                    <span class="badge bg-success">1</span>
+                    <span class="badge bg-success">1</span>
+                    <span class="badge badge-subtle-secondary">0</span>
+                  </div>`
+                </td>
               </tr>
               <tr>
                 <th>알람 상태(alarmStatus)</th>
@@ -144,6 +157,17 @@
               <tr>
                 <th>보조 출력 상태(subStatus)</th>
                 <td>{subStatus}</td>
+                <td>
+                  <div>
+                    <!--Sub Status 6bit-->
+                    <span class="badge badge-subtle-secondary">0</span>
+                    <span class="badge badge-subtle-secondary">0</span>
+                    <span class="badge bg-success">1</span>
+                    <span class="badge badge-subtle-secondary">0</span>
+                    <span class="badge bg-success">1</span>
+                    <span class="badge bg-success">1</span>
+                  </div>`
+                </td>
               </tr>
               <tr>
                 <th>에러 상태1(error_0)</th>
