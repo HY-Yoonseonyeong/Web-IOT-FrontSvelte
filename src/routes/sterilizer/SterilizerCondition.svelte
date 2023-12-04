@@ -238,9 +238,10 @@
           class="row g-0 justify-content-between border-bottom py-2 fs--1_5 reactivePadding"
         >
           <div class="px-1 col-6 col-md-6 ps-sm-3">
-            현재 증류수 값(WaterResistance)
+            현재 증류수 상태(WaterResistance)
           </div>
-          <div class="px-1 col-6 col-md-2 text-center">{WaterResistance}</div>
+          <!--<div class="px-1 col-6 col-md-2 text-center">{WaterResistance}</div>-->
+          <div class="px-1 col-6 col-md-2 text-center">정상</div>
           <div class="px-1 col-6 col-md-4 reactiveCenter"></div>
         </div>
 
