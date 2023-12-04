@@ -114,7 +114,7 @@
 <div class="col-xxl-6 col-xl-12">
   <div class="card py-3 mb-3">
     <div class="card-header pb-0">
-      <h6 class="mb-0 mt-2">멸균기 | <span>연구소</span></h6>
+      <h6 class="mb-0 mt-2">1번 멸균기 | <span>연구소</span></h6>
     </div>
     <div class="card-body py-3">
       <div class="row g-0 justify-content-between">
