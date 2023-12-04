@@ -119,25 +119,25 @@
     <div class="card-body py-3">
       <div class="row g-0 justify-content-between">
         <div class="col-6 col-md-3 pb-2">
-          <div class="fs-2_5 fw-normal font-sans-serif lh-1 mb-1">
+          <div class="fs-4 fw-normal font-sans-serif lh-1 mb-1">
             {vessleExternalTemperature}<span class="fs-0">&deg;C</span>
           </div>
           <span class="badge rounded-pill fs--2 bg-200 text-primary">외부</span>
         </div>
         <div class="col-6 col-md-3 pb-2">
-          <div class="fs-2_5 fw-normal font-sans-serif lh-1 mb-1">
+          <div class="fs-4 fw-normal font-sans-serif lh-1 mb-1">
             {steamgeneratorTemperature}<span class="fs-0">&deg;C</span>
           </div>
           <span class="badge rounded-pill fs--2 bg-200 text-primary">스팀</span>
         </div>
         <div class="col-6 col-md-3 pb-2">
-          <div class="fs-2_5 fw-normal font-sans-serif lh-1 mb-1">
+          <div class="fs-4 fw-normal font-sans-serif lh-1 mb-1">
             {Pressure}<span class="fs-0">Bar</span>
           </div>
           <span class="badge rounded-pill fs--2 bg-200 text-primary">압력</span>
         </div>
         <div class="col-6 col-md-3 pb-2">
-          <div class="fs-2_5 fw-normal font-sans-serif lh-1 mb-1">
+          <div class="fs-4 fw-normal font-sans-serif lh-1 mb-1">
             {vessleInternalTemperature}<span class="fs-0">&deg;C</span>
           </div>
           <span class="badge rounded-pill fs--2 bg-200 text-primary">내부</span>
@@ -338,7 +338,7 @@
 
 <style>
   .fs-2_5 {
-    font-size: 1.46rem;
+    /*font-size: 1.46rem;*/
   }
 
   .fs--1_5 {
