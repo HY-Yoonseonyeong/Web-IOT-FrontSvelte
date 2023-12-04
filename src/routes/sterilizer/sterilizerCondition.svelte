@@ -102,6 +102,12 @@
   let error_1Bin = "";
 </script>
 
+<svelte:head>
+  <title>모비우스 멸균기 | HYNUX-IOT</title>
+  <meta name="description" content="About this app" />
+</svelte:head>
+
+
 <div class="col-xxl-6 col-xl-12">
   <div class="card py-3 mb-3">
     <div class="card-header pb-0">
