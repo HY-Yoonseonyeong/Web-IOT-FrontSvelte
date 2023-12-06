@@ -1,53 +1,53 @@
 <script>
-  import { onMount } from "svelte";
-  import { PUBLIC_API_URL } from "$env/static/public";
-  import NavSide from "../../component/nav/NavSide.svelte";
-  import NavTop from "../../component/nav/NavTop.svelte";
-  import Footer from "../../component/nav/Footer.svelte";
-  import TemphumidEx from "../dashboard/TemphumidEx.svelte";
+    import {onMount} from "svelte";
+    import {PUBLIC_API_URL} from "$env/static/public";
+    import NavSide from "../../component/nav/NavSide.svelte";
+    import NavTop from "../../component/nav/NavTop.svelte";
+    import Footer from "../../component/nav/Footer.svelte";
+    import TemphumidEx from "../dashboard/TemphumidEx.svelte";
 
-  let TempHumList = "";
+    let TempHumList = "";
 
-  onMount(async () => {
-    await getTempHum();
-  });
-
-  const getTempHum = async () => {
-    const url = `${PUBLIC_API_URL}/mobius/v2/group`;
-    const response = await fetch(url, {
-      method: "GET",
+    onMount(async () => {
+        await getTempHum();
     });
 
-    if (200 == response.status) {
-      const data = await response.json();
-      TempHumList = data;
+    const getTempHum = async () => {
+        const url = `${PUBLIC_API_URL}/mobius/v2/group`;
+        const response = await fetch(url, {
+            method: "GET",
+        });
 
-      console.log(TempHumList);
-    } else {
-        alert ("조회 실패")
-    }
-  };
+        if (200 == response.status) {
+            const data = await response.json();
+            TempHumList = data;
+
+            console.log(TempHumList);
+        } else {
+            alert("조회 실패")
+        }
+    };
 </script>
 
 <svelte:head>
   <title>온습도 | HYNUX-IOT</title>
-  <meta name="" content="" />
+  <meta name="" content=""/>
 </svelte:head>
 
 <main class="main" id="top">
   <div class="container" data-layout="container">
-    <NavSide />
+    <NavSide/>
 
     <div class="content">
-      <NavTop />
+      <NavTop/>
       {#if TempHumList}
         <div class="row g-3 mb-3">
           {#each TempHumList.slice(0, 20) as item}
-            <TemphumidEx aei={item.rn} />
+            <TemphumidEx aei={item.rn}/>
           {/each}
         </div>
       {/if}
-      <Footer />
+      <Footer/>
     </div>
   </div>
 </main>

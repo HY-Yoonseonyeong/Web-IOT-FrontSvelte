@@ -3,30 +3,25 @@
     import Chart from "chart.js/auto"
     import {PUBLIC_API_URL} from '$env/static/public'
     import moment from "moment";
-    export let conType // 차트 데이터 타입 (온도, 습도)
+
+    export let conType  // 차트 데이터 타입 (온도, 습도)
+    export let ae  = ""     //
 
     let timerID
     let timerDelay = 60 * 1000 // 1분
     let conTypeText = (conType === "temp") ? "온도 차트" : "습도 차트"
+    let selected = '30'; //
 
     //
     const aeList = new Array()
-    aeList.push("dn23100001")
-    aeList.push("dn23100002")
-    aeList.push("dn23100003")
+    aeList.push("dn23100004")
 
     let _chart;
     const data = {
         datasets: [
             {
-                label: 'dn23100001',
+                label: ae,
             },
-            {
-                label: 'dn23100002',
-            },
-            {
-                label: 'dn23100003',
-            }
         ]
     };
 
@@ -61,7 +56,6 @@
 
     let tempHumidChart
     onMount(async () => {
-        await reqAeDeviceAlias()
 
         const ctx = _chart.getContext('2d')
         tempHumidChart = new Chart(ctx, config)
@@ -71,7 +65,7 @@
             clearTimeout(timerID)
         }*/
 
-        timerChartQuery()
+        await query()
     })
 
     onDestroy(() => {
@@ -80,7 +74,10 @@
         }
     })
 
-    let selected = '30'; //
+    const query = async () => {
+        await reqAeDeviceAlias()
+        timerChartQuery()
+    }
 
     const change = () => {
         const period = selected
@@ -104,27 +101,13 @@
     const queryChartData = async (period) => {
 
         try {
-            let url = `${PUBLIC_API_URL}/device/history/min/dn23100001/${conType}?limit=30&period=${period}`
+            let url = `${PUBLIC_API_URL}/device/history/min/${ae}/${conType}?limit=30&period=${period}`
             const response = await fetch(url, {})
             const queryData = await response.json()
 
             tempHumidChart.data.labels = queryData.map(row => moment(row.datetime).format('HH:mm'))
             tempHumidChart.data.datasets[0].label = aeList[0]
             tempHumidChart.data.datasets[0].data = queryData.map(row => row.con)
-
-            url = `${PUBLIC_API_URL}/device/history/min/dn23100002/${conType}?limit=30&period=${period}`
-            const response2 = await fetch(url, {})
-
-            const queryData2 = await response2.json()
-            tempHumidChart.data.datasets[1].label = aeList[1]
-            tempHumidChart.data.datasets[1].data = queryData2.map(row => row.con)
-
-            url = `${PUBLIC_API_URL}/device/history/min/testB1F221205_01/${conType}?limit=30&period=${period}`
-            const response3 = await fetch(url, {})
-
-            const queryData3 = await response3.json()
-            tempHumidChart.data.datasets[2].label = aeList[2]
-            tempHumidChart.data.datasets[2].data = queryData3.map(row => row.con)
 
             tempHumidChart.update()
         } catch (e) {
@@ -135,29 +118,22 @@
     // 별칭 조회.
     const reqAeDeviceAlias = async () => {
         try {
-            const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[0]}`, {})
+            const response1 = await fetch(`${PUBLIC_API_URL}/device/alias/${ae}`, {})
             let alias1 = await response1.json()
 
             if (alias1.length > 0) {
                 aeList[0] = alias1[0].alias
             }
 
-            const response2 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[1]}`, {})
-            let alias2 = await response2.json()
-
-            if (alias2.length > 0) {
-                aeList[1] = alias2[0].alias
-            }
-
-            const response3 = await fetch(`${PUBLIC_API_URL}/device/alias/${aeList[2]}`, {})
-            let alias3 = await response3.json()
-
-            if (alias3.length > 0) {
-                aeList[2] = alias3[0].alias
-            }
         } catch (e) {
             console.log(e.message)
         }
+    }
+
+    $: changeAE(ae)
+
+    const changeAE = (ae) => {
+        query()
     }
 
     let stylePadding = conType === "temp" ? "pe-lg-2" : "ps-lg-2"
