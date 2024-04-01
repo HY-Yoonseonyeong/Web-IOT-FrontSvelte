@@ -471,8 +471,7 @@
             quality: 1,
             scale: 5,
         }).then((canvas) => {
-            h2c = canvas
-            console.log("html2canvas")
+            h2c = canvasF
             var img = canvas.toDataURL("image/png"); //image data of canvas
             var doc = new jsPDF('l', 'mm', 'a4');
             doc.addImage(img, "PNG", 0, 0, 297, 210);

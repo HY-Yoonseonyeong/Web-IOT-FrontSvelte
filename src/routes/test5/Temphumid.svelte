@@ -28,7 +28,6 @@
         async function query() {
             deviceLa = await queryDeviceLa(url2.temp, aei)
             humidCon = await queryDeviceLa(url2.humid, aei)
-            console.log("Hello Query")
             timeID = setTimeout(query, delay)
         }
 

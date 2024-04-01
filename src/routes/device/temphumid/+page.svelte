@@ -25,7 +25,6 @@
 
         if (200 == response.status) {
             const data = await response.json();
-            console.log(data)
             deviceIds = data
 
         } else {

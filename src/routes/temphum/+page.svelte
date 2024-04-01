@@ -21,8 +21,6 @@
         if (200 == response.status) {
             const data = await response.json();
             TempHumList = data;
-
-            console.log(TempHumList);
         } else {
             alert("조회 실패")
         }

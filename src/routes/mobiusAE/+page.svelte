@@ -17,7 +17,6 @@
   });
 
   const TableAeChange = () => {
-    console.log(mobiusAPI);
     queryMobiusAeList();
   };
 
@@ -30,8 +29,6 @@
       const data = await response.json();
 
       mobiusApiList = data;
-
-      console.log(mobiusApiList);
     } catch (error) {
       console.error("error", error);
     } finally {

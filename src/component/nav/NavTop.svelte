@@ -7,7 +7,6 @@
     let userChar = "H"
 
     onMount(() => {
-        console.log("NavTop.")
         queryUserName().then((data) => {
             if (data.username) {
                 let split = Array.from(data.username);
@@ -27,10 +26,8 @@
                 }
             })
             const fetchData = await response.json()
-            console.log(fetchData)
             return fetchData;
         } catch (e) {
-            console.log("조회 에러")
             return ""
         }
     }
@@ -146,7 +143,7 @@
               </div>
             </div>
           </div>
-          <div class="card-footer text-center border-top display-none">
+          <div class="card-footer text-center border-top display-none">0
             <a class="card-link d-block" href="/">View all</a></div>
         </div>
       </div>
@@ -164,7 +161,7 @@
       <div class="dropdown-menu dropdown-caret dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
         <div class="bg-white dark__bg-1000 rounded-2 py-2">
           <!--<a class="dropdown-item fw-bold text-warning" href="#!">
-            <span class="fas fa-crown me-1"></span><span>Go Pro</span>
+              <span class="fas fa-crown me-1"></span><span>Go Pro</span>
           </a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#!">Set status</a>

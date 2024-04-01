@@ -44,7 +44,6 @@
                 alert(jsonData.msg);
                 await goto("../../login");
             }
-            console.log(data);
         })();
     };
 </script>

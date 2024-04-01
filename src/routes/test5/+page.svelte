@@ -150,8 +150,6 @@
 
     let docPdf
     const clickCreatePdf = () => {
-        console.log("clickCreatePdf")
-
         let doc = new jsPDF('p', 'pt', 'a4');
 
         //doc.

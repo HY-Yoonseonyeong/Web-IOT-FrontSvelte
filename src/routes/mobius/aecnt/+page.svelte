@@ -36,12 +36,7 @@
 
 
     const onClickCheckAE = async () => {
-        console.log(_aei)
-
         _aei = "S".concat(_rn)
-
-        console.log(_rn)
-        console.log(_aei)
 
         try {
             const response = await fetch(`${PUBLIC_MOBIUS_AZURE_URL}/Mobius/${_rn}?rcn=1`, {
@@ -88,12 +83,8 @@
 
             });
 
-            console.log(response)
             const fetchData = await response.json();
             _message2 = JSON.stringify(fetchData)
-            console.log(fetchData)
-            console.log("1")
-
         } catch (e) {
             console.log(e.message)
         }
@@ -136,7 +127,6 @@
 
             const fetchData = await response.json();
             _message2 = JSON.stringify(fetchData)
-            console.log(fetchData)
 
         } catch (e) {
             console.log(e.message)

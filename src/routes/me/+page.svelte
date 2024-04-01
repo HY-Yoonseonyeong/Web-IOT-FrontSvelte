@@ -1,10 +1,5 @@
 <script>
     function onclick() {
-        console.log("click me");
-
-
-        // console.log(localStorage.getItem('token'))
-
         const fetchData = (async () => {
 
             const response = await fetch('http://127.0.0.1:8183/users/me', {
@@ -15,14 +10,8 @@
                 },
             });
 
-            console.log(response)
             const fetchData = response.json();
-            console.log(fetchData)
-            console.log("1")
         })()
-
-        console.log("2")
-
 
         return false
     }

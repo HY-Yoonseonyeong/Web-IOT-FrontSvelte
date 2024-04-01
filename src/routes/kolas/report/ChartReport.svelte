@@ -187,25 +187,6 @@
             periodEnd: '20230731000000'
         };
 
-
-        /*let date = new Date(periodEnd)
-        console.log(date)
-        date.setHours(23)
-        date.setMinutes(59)
-        date.setSeconds(59)
-
-        queryParams['periodStart'] = periodStart
-        queryParams['periodEnd'] = date
-
-         */
-
-        console.log(queryParams)
-
-        /*queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
-        queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')*/
-
-
-
         const response = await fetch(`${PUBLIC_API_URL}/kolas/report`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -213,17 +194,6 @@
         });
 
         const data = await response.json()
-
-
-        /*        historyCount = data.count;
-                historyRows = data.rows;
-
-                testNumber = 20
-
-                pageInfo = {
-                    curIndex: 0,
-                    totalCount: historyCount
-                }*/
 
         myChart.data.labels = data.rows.map(row => row.datetime)
         myChart.data.datasets[0].yAxisID = 'y1'
@@ -251,49 +221,21 @@
 
         const data = await response.json()
 
-        console.log(data)
-
-
         let sliceDate3 = ''
 
         data.rows.forEach((row, index) => {
-            // console.log('Index: ' + index + ' Value: ' + number);
-
-            //console.log(row)
-            /*console.log(row.datetime)*/
 
             let datetime = moment(row.datetime)
 
             if (0 !== index % 4) {
                 row.datetime = ''
             } else {
-
                 let date = moment(row.datetime).format("YYYY-MM-DD")
                 let time = moment(row.datetime).format("HH:mm")
 
-
-
-                console.log(date)
-                console.log(time)
-
                 let cDate = moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")
-                console.log(cDate)
-                // cDate = cDate.setTime(cDate.getTime())
-                // cDate = new Date(cDate)
-                // let sDate = [cDate.getFullYear(), cDate.getMonth(), cDate.getDay()].join('-');
-
-                // console.log(cDate.getDay())
-                //console.log(new Date(row.datetime).toISOString().slice(0, 10))
-
-                // let sliceDate2 = new Date(row.datetime).toISOString().slice(0, 10)
-
-                // row.datetime = sliceDate2
-
-                // moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
 
                 if (sliceDate3 !== date) {
-                    // moment(row.datetime).format("YYYY-MM-DD HH:mm:ss")}</td>
-
                     row.datetime = date
                     sliceDate3 = date
                 } else {
@@ -317,15 +259,10 @@
 
         myChart.update()
     }
-
     const changeQueryInfo = (queryInfo) => {
-        console.log("changeQueryInfo")
-
-        console.log(queryInfo)
         if (queryInfo.aei) {
             reqHistoryData(queryInfo)
         }
-
     }
 
     $: changeQueryInfo(queryInfo)

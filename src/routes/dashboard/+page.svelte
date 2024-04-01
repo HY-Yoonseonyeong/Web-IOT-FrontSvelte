@@ -11,12 +11,10 @@
     import {checkTokenThenLogin} from "$lib/hyToken.js";
 
     onMount(async () => {
-        console.log("OnMount")
         await checkTokenThenLogin()
     })
 
     const clickLogout = () => {
-        console.log("clickLogout")
         localStorage.removeItem('hynuxiot-token')
         goto('./')
     }

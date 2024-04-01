@@ -27,10 +27,6 @@
         })
 
         let data2 = await response.blob()
-        console.log(data2)
-
-        //let blob = blob = new Blob(["\ufeff", data2]);
-        // var blob = new Blob(["\ufeff"+blob2+], {type: 'text/csv;charset=utf-8;'//});
 
         var blob = new Blob([data2], {type: 'text/csv;charset=utf-8;'});
 

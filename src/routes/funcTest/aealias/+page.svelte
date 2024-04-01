@@ -33,9 +33,7 @@
             return
         }
         //on:click={noService}
-        console.log("clickQueryAE")
         // AE 조회
-
         const response = await fetch(`${PUBLIC_API_URL}/mobius/ae/${aeid}`, {headers: {"Content-Type": "application/json"}})
         const fetchData = await response.json()
 
@@ -46,11 +44,7 @@
             return
         }
 
-        console.log(fetchData)
-        console.log(fetchData['m2m:ae'])
-
         m2m_ae = fetchData['m2m:ae']
-        console.log(m2m_ae)
     }
 
     let m2m_ae = init_m2m_ae()

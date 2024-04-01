@@ -70,8 +70,6 @@
       const jsonData = await response.json();
       const data = jsonData.data;
 
-      console.log(data);
-
       temp = data.t1h;
       humid = data.reh;
       prePattern = getTextFromPTY(data.pty);
@@ -160,13 +158,11 @@
   };
 
   const WeatherFirstChange = () => {
-    console.log(WeatherFirst);
     getWeatherSecond();
     getWeatherSpace();
   };
 
   const WeatherSecondChange = () => {
-    console.log(WeatherSecond);
     getWeatherThird();
   };
 
@@ -214,8 +210,6 @@
     const jsonData = await response.json();
     const data = jsonData.data;
 
-    console.log(data);
-
     temp = data.T1H;
     humid = data.REH;
     prePattern = getTextFromPTY(data.PTY);
@@ -226,8 +220,6 @@
     adress3 = localStorage.getItem("addr3");
 
     timerID = setTimeout(queryWeatherlast, delay, x, y);
-
-    console.log(adress1, adress2, adress3);
   };
 </script>
 

@@ -19,26 +19,15 @@
     })
 
     onMount(async () => {
-
-        console.log("aei : " + aei)
-
-
         const url2 = {
             temp : `http://49.50.175.207:8183/device/la/${aei}`,
             humid : `http://49.50.175.207:8183/device/humid/la/${aei}`
         }
 
-        // deviceLa = await queryDeviceLa(url2.temp, aei)
-        // humidCon = await queryDeviceLa(url2.humid, aei)
-
-        // console.log("onMount")
-
-        // setInterval()
         // 함수가 끝나고 타이머 재실행
         async function query() {
             deviceLa = await queryDeviceLa(url2.temp, aei)
             humidCon = await queryDeviceLa(url2.humid, aei)
-            console.log("Hello Query")
             timeID = setTimeout(query, delay)
         }
 
@@ -54,7 +43,6 @@
         })
 
         const data = await response.json()
-        // console.log(data)
         return data['m2m:cin']['con']
     }
 

@@ -14,15 +14,11 @@
     })
 
     const onChangePassword = (e) => {
-        console.log("changeUserPassword")
         const formData = new FormData(e.target);
-        console.log(formData)
         const params = {};
         for (let field of formData) {
             const [key, value] = field;
             params[key] = value;
-
-            console.log(field)
 
             if (!value) {
                 alert("입력 정보가 잘못되었습니다.")
@@ -43,7 +39,6 @@
                 }
             })
             const jsonData = await response.json()
-            console.log(jsonData)
 
             userName = jsonData.name
             userNick = jsonData.nick
@@ -69,8 +64,6 @@
                 return
             }
         }
-
-        console.log(params)
 
         // {{local_api_url}}/users/:user_no/password
         const response = await fetch(`${PUBLIC_API_URL}/users/user/password`,
@@ -130,8 +123,6 @@
         } else {
             alert(jsonData.msg)
         }
-
-        console.log(jsonData)
     }
 
 </script>

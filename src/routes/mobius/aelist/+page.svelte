@@ -87,12 +87,8 @@
                 body: JSON.stringify(body)
 
             });
-
-            console.log(response)
             const fetchData = await response.json();
             _message2 = JSON.stringify(fetchData)
-            console.log(fetchData)
-            console.log("1")
 
         } catch (e) {
             console.log(e.message)
@@ -135,8 +131,7 @@
             });
 
             const fetchData = await response.json();
-            _message2 = JSON.stringify(fetchData)
-            console.log(fetchData)
+            _message2 = JSON.stringify(fetchData)F
 
         } catch (e) {
             console.log(e.message)

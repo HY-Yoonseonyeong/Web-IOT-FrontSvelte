@@ -27,8 +27,6 @@
         ]
     };
 
-    console.log(data)
-
     const DATA_COUNT = 5;
     const NUMBER_CFG = {count: DATA_COUNT, min: 0, max: 100};
 
@@ -130,9 +128,6 @@
         let url = `${PUBLIC_API_URL}/device/history/min/DHT22_LCD_0001/${conType}?limit=30&period=${period}`
         const response = await fetch(url, {})
         const queryData = await response.json()
-
-        console.log("queryData Chart")
-        console.log(queryData)
 
         myChart.data.labels = queryData.map(row => getTime(row.datetime))
         myChart.data.datasets[0].data = queryData.map(row => row.con)

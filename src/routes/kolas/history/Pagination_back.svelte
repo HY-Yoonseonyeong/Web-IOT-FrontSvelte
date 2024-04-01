@@ -18,29 +18,22 @@
     })
 
     export const changePage = () => {
-        console.log("changePage")
     }
 
     export const someFunc = () => console.log('someFunc');
 
     const changeNumber = (pageNumber) => {
-        console.log("changeNumber : " + pageNumber)
     }
 
     $: changeNumber(pageNumber)
 
     const changePageInfo = (pageInfo) => {
-        console.log("changePageInfo")
-        console.log(pageInfo.totalCount)
 
-        //
         if (pageInfo.totalCount < 21) {
             _cssDisplay = "display-none"
         } else {
             _cssDisplay = ""
         }
-
-        console.log("_cssDisplay:" + _cssDisplay )
     }
 
     $: changePageInfo(pageInfo)

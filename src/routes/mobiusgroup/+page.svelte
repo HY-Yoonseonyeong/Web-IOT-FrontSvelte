@@ -17,28 +17,6 @@
     await queryMobiusGroupData();
   });
 
-  /* const TableChange = () => {
-    console.log(mobiusGroup);
-    queryMobiusGroupData();
-  };
-
-  const queryMobiusGroup = async () => {
-    isLoading = true; 
-    try {
-      const response = await fetch(`${PUBLIC_API_URL}/mobius/group`, {
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await response.json();
-
-      mobiusGroupList = data;
-
-      console.log(mobiusApiList);
-    } catch (error) {
-      console.error("error", error);
-    } finally {
-      isLoading = false; 
-    }
-  }; */
 
   const queryMobiusGroupData = async () => {
     const response = await fetch(`${PUBLIC_API_URL}/mobius/group`, {

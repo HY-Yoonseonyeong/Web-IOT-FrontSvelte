@@ -69,7 +69,6 @@
                 throw new Error(response.statusText);
 
             const jsonData = await response.json();
-            console.log(jsonData)
 
             deviceList = jsonData.rows
 
@@ -87,9 +86,6 @@
                 const [key, value] = field;
                 queryParams[key] = value;
             }
-
-            console.log(periodStart)
-            console.log(queryParams)
 
             if (queryParams['aei'] === "-1") {
                 alert("디바이스를 선택해 주세요")
@@ -136,16 +132,8 @@
         let aa = moment(periodStart).format("YYYYMMDD")
         let bb = moment(periodEnd).format("YYYYMMDD")
 
-        if (periodStart === periodEnd) {
-            console.log("same")
-        } else {
-            console.log("not same")
-        }
-
         if (aa === bb) {
-            console.log("same")
         } else {
-            console.log("not same")
             aa = aa.concat("_", bb)
         }
 
@@ -153,23 +141,13 @@
             alert("디바이스를 선택해 주세요.")
         }
 
-        // let filename
-        // csv 맞나. 56 처리가 된다면 해당 부분을
-
         const find2 = deviceList.find((el, index, arr) => el.aei === selectedAe)
-        console.log(find2)
-        console.log("find2 : " + find2)
 
         if (!find2) {
             alert("파일 생성 실패!")
         }
 
         const filename = find2.alias.concat("_", "기간조회", "_", aa, ".csv")
-        console.log(filename)
-
-
-        // deviceList
-
         // CSV 형식 리스트
         makeCSV(filename)
 
@@ -188,7 +166,6 @@
         })
 
         const jsonData = await response.json()
-        console.log(jsonData)
 
         if (jsonData.errors) {
             alert(jsonData.msg)

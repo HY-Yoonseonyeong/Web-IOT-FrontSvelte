@@ -28,8 +28,6 @@
         ]
     };
 
-    console.log(data)
-
     const config = {
         type: 'line',
         data: data,
@@ -55,12 +53,6 @@
                     text: ''
                 }
             }
-            /*  onResize : function (myChart, size) {
-                  var showTicks = (size.width < 550) ? false : true;
-                  console.log("chart size : " + size)
-                  console.log(size)
-                  myChart.options.plugins.legend.display = showTicks;
-              }*/
         },
     };
 

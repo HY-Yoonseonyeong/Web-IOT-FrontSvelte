@@ -15,41 +15,21 @@
         })
 
         const data = await response.json()
-        // console.log(data)
-        //return data['m2m:cin']['con']
-
-
         return data
     }
 
-
-    // temp();
-
     onMount(() => {
         setInterval(async () => {
-
             let data = await temp();
-            console.log(data)
-
             let test = data['m2m:cin']['ct'].replace('T', '')
-//             console.log(test)
+
             const dattime = new Date(test)
-
-            //         console.log("datatime : " + dattime)
-
-            console.log(data['m2m:cin']['ct'])
-            // console.log(date.getHours())
-
-            //  var dt = str.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6');
-
             aeiDataList.push({
                 aei: 'test2F230102_01',
                 ct: test.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6'),
                 con: data['m2m:cin']['con']
             })
-            console.log(aeiDataList.length)
 
-            //set(aeiDataList);''
             aeiDataList = aeiDataList;
 
             if (aeiDataList.length > 3) {

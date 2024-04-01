@@ -13,10 +13,6 @@
     let _message2 = ""
     const _YYMM = moment().format('YYMM')
 
-    // console.log(moment().format('YYMM'))
-    // console.log(String(random).padStart(4, "0")); // '00123'
-    // console.log("random : " + random)
-
     onMount(async () => {
         _rn = "dn".concat(_YYMM)
         _aei = "Sdn".concat(_YYMM)

@@ -7,8 +7,6 @@
      */
 
     onMount(async () => {
-        console.log("onMount : test/token")
-
         const response = await fetch(`${PUBLIC_API_URL}/token`, {
             method: "GET",
             headers: {
@@ -18,7 +16,6 @@
         });
 
         const fetchData = await response.json();
-        console.log(fetchData)
     })
 
 </script>

@@ -158,21 +158,12 @@
         });
 
         const data = await response.json()
-
-        console.log(data)
-
-
         let sliceDate3 = ''
 
         data.rows.forEach((row, index) => {
-            // console.log('Index: ' + index + ' Value: ' + number);
-
-            //console.log(row)
-
             if (0 !== index % 4) {
                 row.datetime = ''
             } else {
-
                 let date = moment(row.datetime).format("YYYY-MM-DD")
                 let time = moment(row.datetime).format("HH:mm")
 

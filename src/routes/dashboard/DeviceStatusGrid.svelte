@@ -14,29 +14,20 @@
         })
 
         const data = await response.json()
-        // console.log(data)
-        //return data['m2m:cin']['con']
-
-
         return data
     }
 
     onMount(() => {
         setInterval(async () => {
             let data = await temp();
-            console.log(data)
-
             let test = data['m2m:cin']['ct'].replace('T', '')
-
             const dattime = new Date(test)
-            console.log(data['m2m:cin']['ct'])
 
             aeiDataList.push({
                 aei: 'test2F230102_01',
                 ct: test.replace(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$1-$2-$3 $4:$5:$6'),
                 con: data['m2m:cin']['con']
             })
-            console.log(aeiDataList.length)
 
             aeiDataList = aeiDataList;
 

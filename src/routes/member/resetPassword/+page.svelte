@@ -18,23 +18,13 @@
     //
 
     const onsubmit = (e) => {
-
-        console.log("in")
-        //return
-
-        console.log("out")
-
-
         const formData = new FormData(e.target);
         const data = {};
 
         for (let field of formData) {
             const [key, value] = field;
-            console.log(field)
             data[key] = value;
         }
-        console.log(formData.get('email'))
-        console.log("FindPasswrd Form")
 
         let userEmail = formData.get('email')
 
@@ -52,7 +42,6 @@
                 throw new Error(response.statusText);
 
             const fetchData = await response.json();
-            console.log(fetchData)
 
             if (fetchData.error) {
                 alert(fetchData.userEmail)

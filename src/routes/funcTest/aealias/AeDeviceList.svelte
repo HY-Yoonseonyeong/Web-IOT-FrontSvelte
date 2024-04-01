@@ -39,8 +39,6 @@
         if (!response.ok) //
             throw new Error(response.statusText);
 
-        console.log(response)
-
         const fetchData = await response.json();
 
         await queryAeDeviceAliasList()

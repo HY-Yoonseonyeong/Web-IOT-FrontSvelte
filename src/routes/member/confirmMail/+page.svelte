@@ -1,25 +1,16 @@
 <script>
-    // import '../../../scss/theme.scss'
     import {page} from '$app/stores';
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
 
-    //const urlParams = new URLSearchParams(window.location.search);
     let urlParams = '' //new URLSearchParams(window.location.search);
-    // const isBeta = urlParams.has('email');
-
     let userEmail = '';
 
     onMount(() => {
-        console.log($page.path)
-        console.log(window.location)
-
         userEmail = urlParams.get('email');
     })
 
-    //console.log("isBetat : ", isBeta)
-    // alert(urlParams.get('email'))
 
     const onsubmit = (e) => {
         const formData = new FormData(e.target);
@@ -30,9 +21,6 @@
             data[key] = value;
             console.log(field)
         }
-
-        console.log(formData.get('email'))
-        console.log("FindPasswrd Form")
 
         let userEmail = formData.get('email')
 
@@ -53,6 +41,12 @@
                 goto('../../login')
             }
         })()
+    }
+
+    async function formDataToJson(formData) {
+        const fields = Object.fromEntries(formData.entries());
+        console.log(`Form data:`, fields);
+        return fields;
     }
 
     console.log("API_KEY : " + PUBLIC_API_URL)

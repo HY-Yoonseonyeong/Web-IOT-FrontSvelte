@@ -79,7 +79,6 @@
                 throw new Error(response.statusText);
 
             const jsonData = await response.json();
-            console.log(jsonData)
 
             deviceList = jsonData.rows
 
@@ -98,7 +97,6 @@
         }
 
         let date = new Date(periodEnd)
-        console.log(date)
         date.setHours(23)
         date.setMinutes(59)
         date.setSeconds(59)
@@ -121,7 +119,6 @@
         queryParams['periodStart'] = moment(periodStart).format('YYYY-MM-DDTHH:mm:ss')
         queryParams['periodEnd'] = moment(periodEnd).format('YYYY-MM-DDTHH:mm:ss')
 
-        console.log(queryParams)
 
         if (queryParams['aei'] === "-1") {
             alert("디바이스를 선택해 주세요")
@@ -133,7 +130,7 @@
         // 별칭 추가
         const find = deviceList.find((el, index, arr) => el.aei === queryParams['aei'])
         queryInfo['alias'] = find.alias
-        console.log(queryInfo)
+
 
         return;
 

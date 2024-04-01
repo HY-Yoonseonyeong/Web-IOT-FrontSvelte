@@ -66,11 +66,6 @@
         const ctx = _chart.getContext('2d')
         tempHumidChart = new Chart(ctx, config)
 
-        /*if (timerID) {
-            console.log("timerID : " + timerID)
-            clearTimeout(timerID)
-        }*/
-
         timerChartQuery()
     })
 
@@ -86,7 +81,6 @@
         const period = selected
 
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
 
@@ -94,7 +88,6 @@
     }
 
     const timerChartQuery = () => {
-        console.log("timerChartQuery")
         queryChartData(selected).then(() => {
             timerID = setTimeout(timerChartQuery, timerDelay)
         })

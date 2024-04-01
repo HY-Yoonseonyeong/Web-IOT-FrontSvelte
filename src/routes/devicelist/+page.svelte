@@ -22,12 +22,10 @@
     })
 
     const clickDeviceQuery = () => {
-        console.log("clickDeviceQuery")
         onModalClose()
     }
 
     const onModalClose = () => {
-        console.log("onModalClose")
     }
 
     const getMyDeviceList = async () => {
@@ -44,7 +42,6 @@
                 throw new Error(response.statusText);
 
             const jsonData = await response.json();
-            console.log(jsonData)
 
             dataRows = jsonData.rows
             _rowCount = dataRows.length
@@ -55,7 +52,6 @@
     }
 
     const onClickDeviceAdd = async () => {
-        console.log(_aei)
         _showState[0] = ""
         _showState[1] = "hide"
         _showState[2] = "hide"
@@ -76,8 +72,6 @@
 
             const jsonData = await response.json()
 
-            console.log(jsonData)
-
             if (jsonData.errors) {
                 _addMessage = jsonData.msg
             } else {
@@ -92,7 +86,6 @@
 
 
     const onClickAddDevice = async (item) => {
-        console.log("onClickAddDevice")
         _showState[0] = ""
         _showState[1] = "hide"
         _showState[2] = "hide"
@@ -101,8 +94,6 @@
     }
 
     const onClickDeviceModify = async (item) => {
-        console.log("onClickDeviceModify")
-        console.log(item.aei)
         _aei = item.aei
         _deviceAlias = item.alias
 
@@ -111,8 +102,6 @@
         _showState[2] = "hide"
     }
     const onClickDeleteDevice = async (item) => {
-        console.log("onClickDeviceModify")
-        console.log(item.aei)
         _aei = item.aei
         _deviceAlias = item.alias
 
@@ -124,7 +113,6 @@
 
 
     const onClickModalAddDevice = async () => {
-        console.log("onClickModalAddDevice")
         try {
             const response = await fetch(`${PUBLIC_API_URL}/device`, {
                 method: "POST",

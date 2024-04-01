@@ -20,7 +20,7 @@
     const delay = 30 * 1000 // 타이머 30초 간격
 
     onMount(async () => {
-        const url2 = {
+         const url2 = {
             temp: `${PUBLIC_API_URL}/device/con/temp/${aei}`,
             humid: `${PUBLIC_API_URL}/device/con/humid/${aei}`,
             alert: `${PUBLIC_API_URL}/device/alert/${aei}`
@@ -53,7 +53,6 @@
     $: testFunc(aei)
 
     const testFunc = (aei) => {
-        console.log("testFunc :" + aei)
         query()
     }
 

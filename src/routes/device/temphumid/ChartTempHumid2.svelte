@@ -56,14 +56,8 @@
 
     let tempHumidChart
     onMount(async () => {
-
         const ctx = _chart.getContext('2d')
         tempHumidChart = new Chart(ctx, config)
-
-        /*if (timerID) {
-            console.log("timerID : " + timerID)
-            clearTimeout(timerID)
-        }*/
 
         await query()
     })
@@ -91,7 +85,6 @@
     }
 
     const timerChartQuery = () => {
-        console.log("timerChartQuery")
         queryChartData(selected).then(() => {
             timerID = setTimeout(timerChartQuery, timerDelay)
         })

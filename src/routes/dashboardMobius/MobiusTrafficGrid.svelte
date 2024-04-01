@@ -13,10 +13,8 @@
             // 화면 노출은 순서 변경 후 갯수 30개로 제한
             trafficData = data.reverse().slice(0, 30)
 
-            console.log(trafficData[0])
             if (trafficData.length > 1) {
                 let trafficSum = trafficData[0].http + trafficData[0].coap + trafficData[0].mqtt + trafficData[0].ws
-                console.log(trafficSum)
                 trafficDataStore.set(trafficSum)
             }
         })
@@ -36,11 +34,7 @@
     export const trafficLastData = writable(0)
 
     // 날짜 포맷.
-    console.log("Date Format")
     let testData = '20230523'
-
-    // let testDate = new Date(testData)
-    // console.log(testDate)
 
     function to_date(date_str) {
         var yyyyMMdd = String(date_str);
