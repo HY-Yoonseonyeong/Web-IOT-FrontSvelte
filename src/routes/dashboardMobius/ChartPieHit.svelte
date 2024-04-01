@@ -107,19 +107,11 @@
         console.log(selected)
         const period = selected
 
-        /*
-        queryChartData(period).then(() => {
-            console.log("query complete!!!")
-        })
-        */
-
         if (timerID) {
             console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
-
     }
-
 
     //
     const queryChartData = async (period) => {
@@ -151,13 +143,10 @@
     let stylePadding = conType === "temp" ? "pe-lg-2" : "ps-lg-2"
 
     const queryMobiusHit = async () => {
-        console.log("queryMobiusHit")
         const response = await fetch(`${PUBLIC_API_URL}/mobius/hit`, {
             headers: {"Content-Type": "application/json",}
         })
         const fetchData = await response.json()
-
-        console.log(fetchData)
 
         // 마지막 데이터 30개
         let hitData
@@ -167,11 +156,8 @@
             hitData = fetchData
         }
 
-        console.log(hitData)
-
         myChart.data.labels = ['HTTP', 'MQTT', 'CoAP', 'WS']
         myChart.data.datasets[0].data = [hitData[0].http, hitData[0].mqtt, hitData[0].coap, hitData[0].ws]
-
         myChart.update()
     }
 </script>

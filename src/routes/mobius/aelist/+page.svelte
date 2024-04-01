@@ -131,7 +131,7 @@
             });
 
             const fetchData = await response.json();
-            _message2 = JSON.stringify(fetchData)F
+            _message2 = JSON.stringify(fetchData)
 
         } catch (e) {
             console.log(e.message)
