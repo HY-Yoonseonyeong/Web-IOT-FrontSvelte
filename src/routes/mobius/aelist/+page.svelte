@@ -13,17 +13,11 @@
     let _message = ""
     let _message2 = ""
     const _YYMM = moment().format('YYMM')
-    console.log(moment().format('YYMM'))
-
-    //     console.log(String(random).padStart(4, "0")); // '00123'
-    //    console.log("random : " + random)
 
     onMount(async () => {
         _rn = "dn".concat(_YYMM)
         _aei = "Sdn".concat(_YYMM)
     })
-
-    //
 
     /**
      * 랜덤 4자리
@@ -33,7 +27,6 @@
         _rn = "dn".concat(_YYMM, random)
         _aei = "Sdn".concat(_YYMM, random)
     }
-
 
     const onClickCheckAE = async () => {
         console.log(_aei)
@@ -108,7 +101,6 @@
 
     //
     const createCNT = async (cnt_rn) => {
-
         const body = {
             "m2m:cnt": {
                 "rn": cnt_rn,
@@ -137,8 +129,6 @@
             console.log(e.message)
         }
     }
-
-
 </script>
 
 <svelte:head>
@@ -151,11 +141,7 @@
     <NavSide/>
     <div class="content">
       <NavTop/>
-
       <p>AE 디바이스 CNT(container)</p>
-
-
-
       <Footer/>
     </div>
   </div>
