@@ -1,6 +1,7 @@
 <script>
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from "$env/static/public";
+    import moment from "moment";
 
     let selectedFile;
     let aeFirmwareVersion = ""
@@ -169,7 +170,7 @@
         <td>{item.fw_version}</td>
         <td>{item.file_path}</td>
         <td>{item.file_size}</td>
-        <td>{item.datetime}</td>
+        <td>{moment(item.datetime).format('YYYY-MM-DD HH:mm:ss')}</td>
       </tr>
     {/each}
     </tbody>
