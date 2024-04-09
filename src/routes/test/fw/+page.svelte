@@ -34,7 +34,7 @@
     const getAeFirmwareVersion = async () => {
         console.log(aeFirmwareVersion)
         // http://127.0.0.1:8185/fw/AE/test2/version
-        const response = await fetch(`${PUBLIC_API_URL}/fw/AE/${aeFirmwareVersion}/version`, { // Replace '/upload' with your API endpoint
+        const response = await fetch(`${PUBLIC_API_URL}/fw/${aeFirmwareVersion}/version`, { // Replace '/upload' with your API endpoint
             method: 'GET'
         });
 
@@ -45,7 +45,7 @@
     }
 
     const getAeFirmwareSize = async () => {
-        const response = await fetch(`${PUBLIC_API_URL}/fw/AE/${aeFirmwareVersionSize}/${fwVersion}/size`, { // Replace '/upload' with your API endpoint
+        const response = await fetch(`${PUBLIC_API_URL}/fw/${aeFirmwareVersionSize}/${fwVersion}/size`, { // Replace '/upload' with your API endpoint
             method: 'GET'
         });
 
@@ -62,7 +62,7 @@
         formData.append("file", selectedFile);
         formData.append("ae", uploadAE);
         formData.append("firmware_version", uploadFirmwareVersion);
-        const response = await fetch(`${PUBLIC_API_URL}/fw/AE/${uploadAE}/ver`, { // Replace '/upload' with your API endpoint
+        const response = await fetch(`${PUBLIC_API_URL}/fw/${uploadAE}/ver`, { // Replace '/upload' with your API endpoint
             method: 'POST',
             body: formData,
         });
@@ -78,27 +78,15 @@
 
 
     const downloadFirmware = async () => {
-        /*const response = await fetch(`${PUBLIC_API_URL}/fw/AE/${downloadAE}/${downloadFirmwareVersion}/data/block`, { // Replace '/upload' with your API endpoint
-            method: 'GET'
-        });
-
-        const data = await response.json()
-        console.log(data)*/
-        //firmwareVersionSize = data
-
         var a = document.createElement("a");
-
-// Set the `href` and `download` attributes
-        a.href = `${PUBLIC_API_URL}/fw/AE/${downloadAE}/${downloadFirmwareVersion}/data/block`; // URL of the file to be downloaded
-        // a.download = "myfile.txt"; // Suggested name for the file to be saved as
-
-// Append the anchor to the document body
+        a.href = `${PUBLIC_API_URL}/fw/${downloadAE}/${downloadFirmwareVersion}/data/block`; // URL of the file to be downloaded
+        // Append the anchor to the document body
         document.body.appendChild(a);
 
-// Simulate a click on the anchor
+        // Simulate a click on the anchor
         a.click();
 
-// Remove the anchor from the document
+        // Remove the anchor from the document
         document.body.removeChild(a);
 
     }
@@ -140,7 +128,7 @@
   <p>펌웨어 버전 업로드</p>
   <input placeholder="AE" bind:value="{uploadAE}">
   <input placeholder="Firmware Version" bind:value="{uploadFirmwareVersion}">
-  <input type="file" on:change={handleFileUpload} />
+  <input type="file" on:change={handleFileUpload}/>
   <button on:click={submitFile}>파일 업로드</button>
 </div>
 
