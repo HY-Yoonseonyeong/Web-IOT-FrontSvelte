@@ -92,18 +92,14 @@
     }
 
     const leaveMember = async () => {
-
     }
 
 
     const onLeaveMember = async (e) => {
-
     }
 
 
     const meCheck = async () => {
-        console.log(localStorage.getItem('hynuxiot-token'))
-
         const response = await fetch(`${PUBLIC_API_URL}/users/mec`, {
             headers: {
                 "Content-Type": "application/json",

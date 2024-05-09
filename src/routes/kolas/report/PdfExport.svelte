@@ -149,8 +149,6 @@
 
     const reqHistoryData = async (queryInfo) => {
 
-        console.log(queryInfo)
-
         const response = await fetch(`${PUBLIC_API_URL}/kolas/report2`, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
@@ -197,11 +195,7 @@
         myChart.update()
     }
 
-
     const changeQueryInfo = (queryInfo) => {
-        console.log("changeQueryInfo")
-
-        console.log(queryInfo)
         try {
             if (queryInfo.aei) {
                 reqHistoryData(queryInfo)
@@ -230,13 +224,11 @@
     let h2c
     let docPdf
     const clickCreatePdf = () => {
-        console.log("clickCreatePdf")
         html2canvas(docPdf, {
             quality: 1,
             scale: 2,
         }).then((canvas) => {
             h2c = canvas
-            console.log("html2canvas")
             var img = canvas.toDataURL("image/png"); //image data of canvas
             var doc = new jsPDF('l', 'mm', 'a4');
             doc.addImage(img, "PNG", 0, 0, 297, 210);
@@ -251,22 +243,7 @@
     export function createPDF() {
         clickCreatePdf()
     }
-
 </script>
-
-
-
-<!--<button on:click={test}>pdf</button>
-<button on:click={clickCreatePdf}>Create Pdf</button>-->
-
-
-<!--
-<div class="h-100" id="chartTest" style="min-height: 250px; display:none">
-  <div>test</div>
-  <canvas bind:this={portfolio}></canvas>
-</div>
--->
-
 
 <div class="page" bind:this={docPdf} style="backgound-color: white">
   <div style="background-color: white">

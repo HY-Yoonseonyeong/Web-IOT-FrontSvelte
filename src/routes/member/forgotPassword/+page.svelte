@@ -4,12 +4,8 @@
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
-//    import {page} from '$app/stores';
 
     onMount(() => {
-        console.log($page.path)
-        //console.log(window.location)
-
     })
 
     const onsubmit = (e) => {
@@ -19,10 +15,7 @@
         for (let field of formData) {
             const [key, value] = field;
             data[key] = value;
-            console.log(field)
         }
-        console.log(formData.get('email'))
-        console.log("FindPasswrd Form")
 
         let userEmail = formData.get('email')
 
@@ -34,27 +27,13 @@
 
             const fetchData = await response.json();
 
-            console.log(fetchData)
-
             if (fetchData.error) {
                 alert(fetchData.userEmail)
             } else {
-                // alert("test" + fetchData.userEmail)
-                // let query = new URLSearchParams($page.query.toString());
-
-                // query.set('word', 'sdfasf');
-
-                // goto(`?${query.toString()}`);
-
                 await goto(`./confirmMail?email=${fetchData.userEmail}`)
-                /*    goto('../../login')*/
             }
         })()
-
     }
-
-    console.log("API_KEY : " + PUBLIC_API_URL)
-
 </script>
 
 <svelte:head>

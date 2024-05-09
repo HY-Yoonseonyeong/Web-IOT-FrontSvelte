@@ -9,8 +9,6 @@
     path = currentPath;
   }
 
-  console.log($page.url.pathname);
-
   onMount(() => {
   });
 

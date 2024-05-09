@@ -58,12 +58,6 @@
                     text: ''
                 }
             }
-            /*  onResize : function (myChart, size) {
-                  var showTicks = (size.width < 550) ? false : true;
-                  console.log("chart size : " + size)
-                  console.log(size)
-                  myChart.options.plugins.legend.display = showTicks;
-              }*/
         },
     };
 
@@ -73,19 +67,12 @@
         const ctx = portfolio.getContext('2d')
         myChart = new Chart(ctx, config)
 
-
-        //await queryChartData(selected)
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
 
-
         await queryMobiusHit()
     })
-
-    // Chart Data Query
-
 
     //
     const getTime = (datetime) => {
@@ -104,11 +91,9 @@
     let selected = '30'; //
 
     const change = () => {
-        console.log(selected)
         const period = selected
 
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
     }

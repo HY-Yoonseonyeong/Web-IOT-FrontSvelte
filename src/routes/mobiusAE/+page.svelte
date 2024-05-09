@@ -45,8 +45,6 @@
     const data = await response.json();
 
     MobiusAeList = data;
-
-    console.log(MobiusAeList);
   };
 </script>
 

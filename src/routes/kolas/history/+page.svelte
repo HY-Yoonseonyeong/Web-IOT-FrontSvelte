@@ -40,7 +40,6 @@
         },
         onChange: ([start, end]) => {
             if (start && end) {
-                console.log({start, end});
                 periodStart = start
                 periodEnd = end
             }

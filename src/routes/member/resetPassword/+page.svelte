@@ -4,19 +4,12 @@
     import {onMount} from "svelte";
     import {PUBLIC_API_URL} from '$env/static/public'
     import {goto} from "$app/navigation";
-    //    import {page} from '$app/stores';
 
     onMount(() => {
-        console.log($page.path)
-        console.log(window.location)
-
-        //
-
     })
 
     // 유효 링크인지 확인
     //
-
     const onsubmit = (e) => {
         const formData = new FormData(e.target);
         const data = {};
@@ -46,21 +39,11 @@
             if (fetchData.error) {
                 alert(fetchData.userEmail)
             } else {
-                // alert("test" + fetchData.userEmail)
-                // let query = new URLSearchParams($page.query.toString());
-
-                // query.set('word', 'sdfasf');
-
-                // goto(`?${query.toString()}`);
-
                 goto('./confirmMail?email=test@test')
-                /*    goto('../../login')*/
             }
         })()
 
     }
-
-    console.log("API_KEY : " + PUBLIC_API_URL)
 
 </script>
 

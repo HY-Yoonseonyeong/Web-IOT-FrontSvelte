@@ -19,10 +19,6 @@
     })
 
     onMount(async () => {
-
-        console.log("aei : " + aei)
-
-
         const url2 = {
             temp : `http://49.50.175.207:8183/device/la/${aei}`,
             humid : `http://49.50.175.207:8183/device/humid/la/${aei}`
@@ -39,7 +35,6 @@
     })
 
     const queryDeviceLa = async (url, aei) => {
-
         const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json"

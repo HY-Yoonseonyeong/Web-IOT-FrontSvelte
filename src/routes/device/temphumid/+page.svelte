@@ -2,9 +2,7 @@
     import NavSide from "../../../component/nav/NavSide.svelte"
     import NavTop from "../../../component/nav/NavTop.svelte";
     import Footer from "../../../component/nav/Footer.svelte";
-    import TemphumidEx from "../../dashboard/TemphumidEx.svelte";
     import TemphumidEx2 from "./TemphumidEx2.svelte";
-    import ChartTempHumid from "../../dashboard/ChartTempHumid.svelte";
     import ChartTempHumid2 from "./ChartTempHumid2.svelte";
     import DeviceConChange2 from "./DeviceConChange2.svelte";
     import {onMount} from "svelte";

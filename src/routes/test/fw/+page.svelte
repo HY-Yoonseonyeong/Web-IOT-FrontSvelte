@@ -28,19 +28,14 @@
 
     const handleFileUpload = (event) => {
         selectedFile = event.target.files[0];
-        console.log(selectedFile);
     };
 
     const getAeFirmwareVersion = async () => {
-        console.log(aeFirmwareVersion)
-        // http://127.0.0.1:8185/fw/AE/test2/version
         const response = await fetch(`${PUBLIC_API_URL}/fw/${aeFirmwareVersion}/version`, { // Replace '/upload' with your API endpoint
             method: 'GET'
         });
 
-        console.log(response)
         const data = await response.text()
-        console.log(data)
         firmwareVersion = data
     }
 
@@ -50,13 +45,11 @@
         });
 
         const data = await response.json()
-        console.log(data)
         firmwareVersionSize = data
     }
 
 
     const submitFile = async () => {
-        console.log("submitFile")
         const formData = new FormData();
 
         formData.append("file", selectedFile);
@@ -71,11 +64,9 @@
             // handle error
             console.log('File upload failed');
         } else {
-            /*console.log(await response.json()); // or response.text() depending on server response*/
             alert("업로드 완료")
         }
     };
-
 
     const downloadFirmware = async () => {
         var a = document.createElement("a");

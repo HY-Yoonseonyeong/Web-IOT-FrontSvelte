@@ -9,10 +9,7 @@
         path = currentPath;
     }
 
-    console.log($page.url.pathname)
-
     onMount(() => {
-        console.log(page)
     })
 
     const noService = () => {

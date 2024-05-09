@@ -41,9 +41,6 @@
             const fetchData = await response.json();
             _message = JSON.stringify(fetchData)
 
-            console.log(fetchData)
-            console.log("1")
-
         } catch (e) {
             console.log(e.message)
         }
@@ -78,8 +75,6 @@
 
             const fetchData = await response.json();
             _message2 = JSON.stringify(fetchData)
-            console.log(fetchData)
-
         } catch (e) {
             console.log(e.message)
         }

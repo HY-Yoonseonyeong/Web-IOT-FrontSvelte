@@ -61,11 +61,7 @@
     onMount(async () => {
         const ctx = portfolio.getContext('2d')
         myChart = new Chart(ctx, config)
-
-
-        //await queryChartData(selected)
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
 
@@ -95,17 +91,9 @@
     let selected = '30'; //
 
     const change = () => {
-        console.log(selected)
         const period = selected
 
-        /*
-        queryChartData(period).then(() => {
-            console.log("query complete!!!")
-        })
-        */
-
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
 
@@ -114,7 +102,6 @@
 
 
     const timerChartQuery = () => {
-        console.log("timerChartQuery")
         queryChartData(selected).then(() => {
             timerID = setTimeout(timerChartQuery, timerDelay)
         })
@@ -128,9 +115,6 @@
         let url = `${PUBLIC_API_URL}/device/history/min/DHT22_LCD_0001/${conType}?limit=30&period=${period}`
         const response = await fetch(url, {})
         const queryData = await response.json()
-
-        console.log("queryData Chart")
-        console.log(queryData)
 
         myChart.data.labels = queryData.map(row => getTime(row.datetime))
         myChart.data.datasets[0].data = queryData.map(row => row.con)
@@ -156,10 +140,7 @@
 
     let stylePadding = conType === "temp" ? "pe-lg-2" : "ps-lg-2"
 
-    //
-
     const queryMobiusHit = async () => {
-        console.log("queryMobiusHit")
         const response = await fetch(`${PUBLIC_API_URL}/mobius/hit`, {
             headers: {"Content-Type": "application/json",}
         })

@@ -26,7 +26,6 @@
 
     MobiusGroupData = data;
 
-    console.log(MobiusGroupData);
   };
 </script>
 

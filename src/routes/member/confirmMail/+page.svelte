@@ -11,7 +11,6 @@
         userEmail = urlParams.get('email');
     })
 
-
     const onsubmit = (e) => {
         const formData = new FormData(e.target);
         const data = {};
@@ -19,7 +18,6 @@
         for (let field of formData) {
             const [key, value] = field;
             data[key] = value;
-            console.log(field)
         }
 
         let userEmail = formData.get('email')
@@ -32,8 +30,6 @@
 
             const fetchData = await response.json();
 
-            console.log(fetchData)
-
             if (fetchData.error) {
                 alert(fetchData.userEmail)
             } else {
@@ -45,11 +41,8 @@
 
     async function formDataToJson(formData) {
         const fields = Object.fromEntries(formData.entries());
-        console.log(`Form data:`, fields);
         return fields;
     }
-
-    console.log("API_KEY : " + PUBLIC_API_URL)
 
 </script>
 

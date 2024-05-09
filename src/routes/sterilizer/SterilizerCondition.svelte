@@ -80,7 +80,6 @@
       error_0Bin = BianryReverseChange(error_0);
     } else if (url === url2.e1) {
       error_1 = data["m2m:cin"].con;
-      //console.log(parseInt(error_1).toString(2));
       error_1Bin = BianryReverseChange(error_1);
     } else if (url === url2.ps) {
       Pressure = data["m2m:cin"].con;

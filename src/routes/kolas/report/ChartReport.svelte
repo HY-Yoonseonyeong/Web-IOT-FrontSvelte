@@ -163,19 +163,12 @@
     let selected = '30'; //
 
     const change = () => {
-        console.log(selected)
         const period = selected
 
-
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
-
-
     }
-
-
 
 
     const clickPeriodQuery = async (e) => {
@@ -210,8 +203,6 @@
     }
 
     const reqHistoryData = async (queryInfo) => {
-
-        console.log(queryInfo)
 
         const response = await fetch(`${PUBLIC_API_URL}/kolas/report2`, {
             method: "POST",

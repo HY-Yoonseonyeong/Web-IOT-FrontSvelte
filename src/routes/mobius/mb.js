@@ -13,7 +13,6 @@ export const postMobiusGroup = async (rn) => {
         });
 
         const fetchData = await response.json();
-        // _message = JSON.stringify(fetchData)
 
     } catch (e) {
         console.log(e.message)

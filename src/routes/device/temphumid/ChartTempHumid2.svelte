@@ -77,7 +77,6 @@
         const period = selected
 
         if (timerID) {
-            console.log("timerID : " + timerID)
             clearTimeout(timerID)
         }
 

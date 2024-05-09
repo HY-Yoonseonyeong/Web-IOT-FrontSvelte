@@ -129,8 +129,6 @@
 
             const jsonData = await response.json()
 
-            console.log(jsonData)
-
             if (jsonData.errors) {
                 _addMessage = jsonData.msg
             } else {
@@ -147,7 +145,6 @@
      * 모달 디바이스 수정 버튼 클릭 이벤트
      */
     const onClickModalModifyDevice = async () => {
-        console.log("onClickModalModifyDevice")
 
         try {
             const response = await fetch(`${PUBLIC_API_URL}/device/${_aei}/detail`, {
@@ -163,8 +160,6 @@
                 throw new Error(response.statusText);
 
             const jsonData = await response.json()
-
-            console.log(jsonData)
 
             if (jsonData.errors) {
                 _addMessage = jsonData.msg
@@ -183,7 +178,6 @@
      * 모달 디바이스 삭제 버튼 클릭 이벤트
      */
     const onClickModalDeleteDevice = async () => {
-        console.log("onClickModalDeleteDevice")
 
         try {
             const response = await fetch(`${PUBLIC_API_URL}/device/`, {
@@ -195,12 +189,10 @@
                 body: JSON.stringify({"aei": _aei})
             });
 
-            if (!response.ok) //
+            if (!response.ok)
                 throw new Error(response.statusText);
 
             const jsonData = await response.json()
-
-            console.log(jsonData)
 
             if (jsonData.errors) {
                 _addMessage = jsonData.msg

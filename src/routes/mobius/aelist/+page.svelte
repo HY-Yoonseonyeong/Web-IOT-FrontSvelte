@@ -29,12 +29,7 @@
     }
 
     const onClickCheckAE = async () => {
-        console.log(_aei)
-
         _aei = "S".concat(_rn)
-
-        console.log(_rn)
-        console.log(_aei)
 
         try {
             const response = await fetch(`${PUBLIC_MOBIUS_AZURE_URL}/Mobius/${_rn}?rcn=1`, {
