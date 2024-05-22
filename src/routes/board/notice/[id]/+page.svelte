@@ -1,5 +1,12 @@
 <script>
-    export let data;
+    import {page} from '$app/stores';
+    import {posts} from "../data";
+
+    let id;
+    $: {
+        id = $page.params.id;
+        console.log(id)
+    }
 </script>
 
-<h1>{data.post.title}</h1>
+<h1>{posts[id].title}</h1>

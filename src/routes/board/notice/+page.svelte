@@ -1,18 +1,10 @@
 <script>
-    export let data;
-    
-	  import NavTop from '../../../component/nav/NavTop.svelte';
-    import NavSide from '../../etc/NavSide.svelte';
-    import '../../../scss/theme.scss'
+    import {posts} from "./data";
     import { goto } from '$app/navigation';
-
     let searchTerm = '';
     let filteredSummaries = [];
 
-    //data나 searchTearm이 변경되면 filteredSummaries이 업데이트됨.
-    $: filteredSummaries  = data.summaries.filter(summary => 
-      summary.title.toLowerCase
-    )
+
 </script>
 
 <svelte:head>
@@ -27,9 +19,9 @@
 
 <main class="main" id="top">
     <div class="container" data-layout="container">
-        <NavSide />
+<!--        <NavSide />-->
         <div class="content">
-            <NavTop/>
+<!--            <NavTop/>-->
 
             <div class="card mb-3">
               <div class="card-header">
@@ -71,7 +63,7 @@
                               </tr>
                             </thead>
                             <tbody class="list">
-                              {#each data.summaries as { id, title, date, hits }}
+                              {#each posts as { id, title, date, hits }}
                               <tr on:click={() => goto(`/board/notice/${id}`)}>
                                   <td class="title">{title}</td>
                                   <td class="date">{date}</td>
